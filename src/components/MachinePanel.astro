@@ -1,0 +1,34 @@
+    <section class="panel area-machine" aria-labelledby="h-machine">
+      <div class="panel-head"><h2 id="h-machine">The machine</h2><span class="eyebrow">PassMark scores</span></div>
+      <div class="field">
+        <label for="preset" class="eyebrow">Start from</label>
+        <select id="preset"></select>
+      </div>
+      <div class="field">
+        <label for="mname" class="eyebrow">Name</label>
+        <input type="text" id="mname" autocomplete="off">
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="owned"> I already own it (count power only)</label>
+      </div>
+      <div class="fields two" id="machine-fields"></div>
+      <div class="field">
+        <span class="eyebrow">Memory kept back for the system</span>
+        <div class="row">
+          <div class="seg" role="group" aria-label="Operating system" id="os-seg">
+            <button type="button" data-v="6" aria-pressed="true">Linux · 6 GB</button>
+            <button type="button" data-v="8" aria-pressed="false">macOS + Docker VM · 8 GB</button>
+          </div>
+        </div>
+      </div>
+      <div class="upgrade">
+        <span class="eyebrow">Optional RAM upgrade</span>
+        <div class="row">
+          <label for="upgb">Upgrade to</label>
+          <span class="num"><input type="number" id="upgb" min="0" step="4" inputmode="numeric"><span class="unit">GB</span></span>
+          <label for="upcost">for</label>
+          <span class="num"><span class="pre">$</span><input type="number" id="upcost" min="0" step="10" inputmode="numeric"></span>
+        </div>
+      </div>
+      <p class="note" id="mnote"></p>
+    </section>

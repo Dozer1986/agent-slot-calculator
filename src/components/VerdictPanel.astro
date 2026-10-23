@@ -1,0 +1,24 @@
+    <section class="panel area-result" aria-labelledby="h-result" aria-live="polite">
+      <div class="panel-head"><h2 id="h-result">Verdict</h2><span class="eyebrow" id="res-assume"></span></div>
+      <div class="verdict-band" id="vband">
+        <span class="pill" id="vpill">—</span>
+        <p class="verdict-name" id="vname"></p>
+      </div>
+      <div class="agents">
+        <span class="big" id="agents">—</span>
+        <span class="big-label"><strong>agents at once</strong><span id="limit">—</span></span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><span class="eyebrow">Hardware per agent</span><span class="v" id="m-hw">—</span><span class="s" id="m-hw-s">purchase ÷ agents</span></div>
+        <div class="metric"><span class="eyebrow">Lifetime per agent</span><span class="v" id="m-tco">—</span><span class="s" id="m-tco-s">incl. power</span></div>
+        <div class="metric"><span class="eyebrow">Power per year</span><span class="v" id="m-pwr">—</span><span class="s" id="m-pwr-s">—</span></div>
+        <div class="metric"><span class="eyebrow">vs. 128 GB desktop</span><span class="v" id="m-ref">—</span><span class="s" id="m-ref-s">—</span></div>
+      </div>
+      <p class="fleet" id="fleet"></p>
+      <ul class="flags" id="flags"></ul>
+      <div class="chart-wrap">
+        <span class="eyebrow" id="chart-title">Builds running at once</span>
+        <svg id="chart" viewBox="0 0 320 132" role="img" aria-label="Chance of each number of builds running at once"></svg>
+        <p class="hint">Bars: the chance that this many builds run at the same moment. Lines: how many builds fit in memory and in CPU. Memory has to cover the 99% case, because running out kills jobs.</p>
+      </div>
+    </section>
