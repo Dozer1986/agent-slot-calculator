@@ -1,0 +1,354 @@
+[
+  {
+    "name": "prototype",
+    "width": 400,
+    "theme": "light",
+    "page": 400,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 16,
+        "y": 196.796875,
+        "width": 368,
+        "height": 1108.75
+      },
+      {
+        "id": "h-result",
+        "x": 16,
+        "y": 1321.546875,
+        "width": 368,
+        "height": 799.4375
+      },
+      {
+        "id": "h-work",
+        "x": 16,
+        "y": 2136.984375,
+        "width": 368,
+        "height": 641.75
+      },
+      {
+        "id": "h-table",
+        "x": 16,
+        "y": 2794.734375,
+        "width": 368,
+        "height": 2018
+      },
+      {
+        "id": "h-how",
+        "x": 16,
+        "y": 4828.734375,
+        "width": 368,
+        "height": 691
+      }
+    ]
+  },
+  {
+    "name": "prototype",
+    "width": 400,
+    "theme": "dark",
+    "page": 400,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 16,
+        "y": 196.796875,
+        "width": 368,
+        "height": 1108.75
+      },
+      {
+        "id": "h-result",
+        "x": 16,
+        "y": 1321.546875,
+        "width": 368,
+        "height": 799.4375
+      },
+      {
+        "id": "h-work",
+        "x": 16,
+        "y": 2136.984375,
+        "width": 368,
+        "height": 641.75
+      },
+      {
+        "id": "h-table",
+        "x": 16,
+        "y": 2794.734375,
+        "width": 368,
+        "height": 2018
+      },
+      {
+        "id": "h-how",
+        "x": 16,
+        "y": 4828.734375,
+        "width": 368,
+        "height": 691
+      }
+    ]
+  },
+  {
+    "name": "prototype",
+    "width": 1280,
+    "theme": "light",
+    "page": 1280,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 66,
+        "y": 188.25,
+        "width": 611.265625,
+        "height": 775.75
+      },
+      {
+        "id": "h-result",
+        "x": 693.265625,
+        "y": 188.25,
+        "width": 520.734375,
+        "height": 805.296875
+      },
+      {
+        "id": "h-work",
+        "x": 66,
+        "y": 980,
+        "width": 611.265625,
+        "height": 438.375
+      },
+      {
+        "id": "h-table",
+        "x": 66,
+        "y": 1434.375,
+        "width": 1148,
+        "height": 1109.5
+      },
+      {
+        "id": "h-how",
+        "x": 66,
+        "y": 2559.875,
+        "width": 1148,
+        "height": 427
+      }
+    ]
+  },
+  {
+    "name": "prototype",
+    "width": 1280,
+    "theme": "dark",
+    "page": 1280,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 66,
+        "y": 188.25,
+        "width": 611.265625,
+        "height": 775.75
+      },
+      {
+        "id": "h-result",
+        "x": 693.265625,
+        "y": 188.25,
+        "width": 520.734375,
+        "height": 805.296875
+      },
+      {
+        "id": "h-work",
+        "x": 66,
+        "y": 980,
+        "width": 611.265625,
+        "height": 438.375
+      },
+      {
+        "id": "h-table",
+        "x": 66,
+        "y": 1434.375,
+        "width": 1148,
+        "height": 1109.5
+      },
+      {
+        "id": "h-how",
+        "x": 66,
+        "y": 2559.875,
+        "width": 1148,
+        "height": 427
+      }
+    ]
+  },
+  {
+    "name": "astro",
+    "width": 400,
+    "theme": "light",
+    "page": 400,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 16,
+        "y": 196.796875,
+        "width": 368,
+        "height": 1108.75
+      },
+      {
+        "id": "h-result",
+        "x": 16,
+        "y": 1321.546875,
+        "width": 368,
+        "height": 799.4375
+      },
+      {
+        "id": "h-work",
+        "x": 16,
+        "y": 2136.984375,
+        "width": 368,
+        "height": 641.75
+      },
+      {
+        "id": "h-table",
+        "x": 16,
+        "y": 2794.734375,
+        "width": 368,
+        "height": 2018
+      },
+      {
+        "id": "h-how",
+        "x": 16,
+        "y": 4828.734375,
+        "width": 368,
+        "height": 691
+      }
+    ]
+  },
+  {
+    "name": "astro",
+    "width": 400,
+    "theme": "dark",
+    "page": 400,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 16,
+        "y": 196.796875,
+        "width": 368,
+        "height": 1108.75
+      },
+      {
+        "id": "h-result",
+        "x": 16,
+        "y": 1321.546875,
+        "width": 368,
+        "height": 799.4375
+      },
+      {
+        "id": "h-work",
+        "x": 16,
+        "y": 2136.984375,
+        "width": 368,
+        "height": 641.75
+      },
+      {
+        "id": "h-table",
+        "x": 16,
+        "y": 2794.734375,
+        "width": 368,
+        "height": 2018
+      },
+      {
+        "id": "h-how",
+        "x": 16,
+        "y": 4828.734375,
+        "width": 368,
+        "height": 691
+      }
+    ]
+  },
+  {
+    "name": "astro",
+    "width": 1280,
+    "theme": "light",
+    "page": 1280,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 66,
+        "y": 188.25,
+        "width": 611.265625,
+        "height": 775.75
+      },
+      {
+        "id": "h-result",
+        "x": 693.265625,
+        "y": 188.25,
+        "width": 520.734375,
+        "height": 805.296875
+      },
+      {
+        "id": "h-work",
+        "x": 66,
+        "y": 980,
+        "width": 611.265625,
+        "height": 438.375
+      },
+      {
+        "id": "h-table",
+        "x": 66,
+        "y": 1434.375,
+        "width": 1148,
+        "height": 1109.5
+      },
+      {
+        "id": "h-how",
+        "x": 66,
+        "y": 2559.875,
+        "width": 1148,
+        "height": 427
+      }
+    ]
+  },
+  {
+    "name": "astro",
+    "width": 1280,
+    "theme": "dark",
+    "page": 1280,
+    "mode": "CSS1Compat",
+    "panels": [
+      {
+        "id": "h-machine",
+        "x": 66,
+        "y": 188.25,
+        "width": 611.265625,
+        "height": 775.75
+      },
+      {
+        "id": "h-result",
+        "x": 693.265625,
+        "y": 188.25,
+        "width": 520.734375,
+        "height": 805.296875
+      },
+      {
+        "id": "h-work",
+        "x": 66,
+        "y": 980,
+        "width": 611.265625,
+        "height": 438.375
+      },
+      {
+        "id": "h-table",
+        "x": 66,
+        "y": 1434.375,
+        "width": 1148,
+        "height": 1109.5
+      },
+      {
+        "id": "h-how",
+        "x": 66,
+        "y": 2559.875,
+        "width": 1148,
+        "height": 427
+      }
+    ]
+  }
+]

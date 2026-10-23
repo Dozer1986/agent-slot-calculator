@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import MachinePanel from '../components/MachinePanel.astro';
+import VerdictPanel from '../components/VerdictPanel.astro';
+import WorkloadPanel from '../components/WorkloadPanel.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import PhoneBar from '../components/PhoneBar.astro';
+---
+
+<Base>
+  <div class="wrap">
+    <Header />
+    <div class="grid">
+      <MachinePanel />
+      <VerdictPanel />
+      <WorkloadPanel />
+      <ComparisonTable />
+      <HowItWorks />
+    </div>
+  </div>
+  <PhoneBar />
+  <script>
+    import '../scripts/calculator';
+  </script>
+</Base>

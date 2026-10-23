@@ -1,0 +1,57 @@
+project = "Agent Slot Calculator"
+owner = "dbeihl"
+end_date = 2026-10-23
+non_goals = ["Model or preset changes", "URL state, theme toggle, CSV export", "Pages settings or deployment in the worker stage"]
+open_questions = ["Memory per build of zero is below the 4 GB slider minimum, but the number box accepts it and the prototype passes it to the model. `ramFitBuilds` divides by zero, so the chart shows \"Memory fits 100+\". It produces NaN only when usable memory exactly equals shown × residentGB. The port keeps prototype behavior and flags this edge for the user."]
+
+[customer]
+users = "Hardware buyers and operators running cloud-backed coding agents"
+outcome = "Compare concurrent agent capacity and lifetime cost against a 128 GB desktop"
+evidence = "Prototype parity vectors and handoff browser acceptance cases"
+platforms = ["Desktop browser at 1280px", "Phone browser at 400px", "Keyboard navigation"]
+
+[delivery]
+deploy = "GitHub Pages through .github/workflows/deploy.yml after merge to main"
+rollback = "Revert the implementation through a pull request and redeploy main"
+data_class = "synthetic"
+
+[[criterion]]
+name = "Model parity"
+kind = "gate"
+measure = "Failed supplied parity tests"
+threshold = "== 0"
+check = "npm test"
+
+[[criterion]]
+name = "Browser acceptance"
+kind = "gate"
+measure = "Failed browser acceptance tests"
+threshold = "== 0"
+check = "npm run test:e2e"
+
+[[criterion]]
+name = "Static build"
+kind = "gate"
+measure = "TypeScript errors and build failures"
+threshold = "== 0"
+check = "npm run build"
+
+[[criterion]]
+name = "Runtime network"
+kind = "gate"
+measure = "Requests to origins other than the site"
+threshold = "== 0"
+check = "npm run test:e2e"
+
+[[milestone]]
+name = "Committed port"
+date = 2026-10-23
+demonstrable = "Built static site passes parity and browser acceptance locally"
+audience = "Firstmate validation stage"
+
+[[criterion]]
+name = "Scope budget"
+kind = "budget"
+measure = "Changes to supplied model, preset and vector files"
+threshold = "== 0"
+check = "Byte comparison against the supplied handoff seed files"

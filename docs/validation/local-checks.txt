@@ -1,0 +1,75 @@
+v24.22.1
+
+> agent-slot-calculator@0.0.1 test
+> vitest run
+
+
+ RUN  v5.0.5 /Users/davidbeihl/.firstmate-pools/firstmate-b446607dce1a/.treehouse/agent-slot-calculator-627624/1/agent-slot-calculator
+
+
+ Test Files  1 passed (1)
+      Tests  33 passed (33)
+   Start at  18:31:45
+   Duration  135ms (transform 63%, import 19%, tests 11%, worker 6%)
+
+
+> agent-slot-calculator@0.0.1 build
+> astro check && astro build
+
+18:31:46 [types] Generated 29ms
+18:31:46 [check] Getting diagnostics for Astro files in /Users/davidbeihl/.firstmate-pools/firstmate-b446607dce1a/.treehouse/agent-slot-calculator-627624/1/agent-slot-calculator...
+Result (18 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+18:31:49 [types] Generated 23ms
+18:31:49 [build] output: "static"
+18:31:49 [build] mode: "static"
+18:31:49 [build] directory: /Users/davidbeihl/.firstmate-pools/firstmate-b446607dce1a/.treehouse/agent-slot-calculator-627624/1/agent-slot-calculator/dist/
+18:31:49 [build] Collecting build info...
+18:31:49 [build] ✓ Completed in 48ms.
+18:31:49 [build] Building static entrypoints...
+18:31:49 [vite] ✓ built in 100ms
+18:31:49 [vite] ✓ built in 16ms
+18:31:49 [build] Rearranging server assets...
+
+ generating static routes 
+18:31:49   ├─ /index.html (+6ms) 
+18:31:49 ✓ Completed in 14ms.
+
+18:31:49 [build] ✓ Completed in 151ms.
+18:31:49 [build] 1 page(s) built in 202ms
+18:31:49 [build] Complete!
+
+> agent-slot-calculator@0.0.1 test:e2e
+> playwright test
+
+[WebServer] (node:16650) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18189) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:18975) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:19184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › e2e/calculator.spec.ts:5:1 › hardware buyer gets the report default verdict (234ms)
+  ✓   2 [chromium] › e2e/calculator.spec.ts:14:1 › zero memory per build is rejected without corrupting the verdict (132ms)
+  ✓   3 [chromium] › e2e/calculator.spec.ts:24:1 › hardware buyer can reject the M920q and model a 15 percent duty cycle (136ms)
+  ✓   4 [chromium] › e2e/calculator.spec.ts:38:1 › machine edits synchronize sliders and switch to Custom (380ms)
+  ✓   5 [chromium] › e2e/calculator.spec.ts:64:1 › fleet operator gets power-only costs and an upgrade scenario (195ms)
+  ✓   6 [chromium] › e2e/calculator.spec.ts:79:1 › workload chips and advanced assumptions apply to all machines and reset (350ms)
+  ✓   7 [chromium] › e2e/calculator.spec.ts:109:1 › keyboard user activates comparison rows with Enter and Space (131ms)
+  ✓   8 [chromium] › e2e/calculator.spec.ts:124:1 › keyboard can reach every control with a visible focus ring (275ms)
+  ✓   9 [chromium] › e2e/calculator.spec.ts:147:1 › reload restores custom machine and workload settings (157ms)
+  ✓  10 [chromium] › e2e/calculator.spec.ts:160:1 › blocked storage leaves the calculator usable (146ms)
+  ✓  11 [chromium] › e2e/calculator.spec.ts:177:5 › 400px light layout contains overflow and respects motion (1.5s)
+  ✓  12 [chromium] › e2e/calculator.spec.ts:177:5 › 400px dark layout contains overflow and respects motion (1.5s)
+  ✓  13 [chromium] › e2e/calculator.spec.ts:177:5 › 1280px light layout contains overflow and respects motion (133ms)
+  ✓  14 [chromium] › e2e/calculator.spec.ts:177:5 › 1280px dark layout contains overflow and respects motion (120ms)
+
+  14 passed (9.9s)
+PASS test gate

@@ -1,0 +1,687 @@
+<title>Agent Slot Calculator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: spec-sheet calculator. Inputs on the left, a live verdict panel pinned on the right; on phones it stacks and a fixed summary bar keeps the answer in view. */
+:root {
+  --bg: #F1F3F7;
+  --panel: #FFFFFF;
+  --panel-2: #F6F7FA;
+  --ink: #121925;
+  --muted: #576274;
+  --line: #D7DCE4;
+  --track: #E2E6ED;
+  --accent: #2A52C4;
+  --accent-ink: #FFFFFF;
+  --accent-weak: #E3E9FA;
+  --ok: #1C7046; --ok-bg: #E0F1E7;
+  --warn: #8C5400; --warn-bg: #FAEDD4;
+  --bad: #AE251D; --bad-bg: #FAE2DF;
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1219; --panel: #141B25; --panel-2: #18202C; --ink: #E6EBF2; --muted: #96A2B3;
+    --line: #263041; --track: #232D3C; --accent: #8DA8FF; --accent-ink: #0D1219; --accent-weak: #1B2645;
+    --ok: #5ACB8C; --ok-bg: #11301F; --warn: #F0B259; --warn-bg: #33250E; --bad: #FF8B80; --bad-bg: #3A1613;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1219; --panel: #141B25; --panel-2: #18202C; --ink: #E6EBF2; --muted: #96A2B3;
+  --line: #263041; --track: #232D3C; --accent: #8DA8FF; --accent-ink: #0D1219; --accent-weak: #1B2645;
+  --ok: #5ACB8C; --ok-bg: #11301F; --warn: #F0B259; --warn-bg: #33250E; --bad: #FF8B80; --bad-bg: #3A1613;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-body); }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 40px;
+}
+header { display: grid; gap: 6px; margin-bottom: 20px; max-width: 70ch; }
+h1 {
+  font-family: var(--font-display); font-stretch: 112%; font-weight: 780;
+  font-size: clamp(26px, 5.2vw, 40px); line-height: 1.05; letter-spacing: -0.015em; margin: 0;
+  text-wrap: balance;
+}
+header p { margin: 0; color: var(--muted); font-size: 15.5px; }
+h2 {
+  font-family: var(--font-display); font-stretch: 100%; font-weight: 720; font-size: 18px;
+  margin: 0; letter-spacing: -0.005em; text-wrap: balance;
+}
+.eyebrow {
+  font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+.grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "machine" "result" "workload" "table" "how"; }
+.area-machine { grid-area: machine; }
+.area-result { grid-area: result; }
+.area-workload { grid-area: workload; }
+.area-table { grid-area: table; }
+.area-how { grid-area: how; }
+@media (min-width: 920px) {
+  .grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    grid-template-areas: "machine result" "workload result" "table table" "how how"; }
+  .area-result { align-self: start; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+}
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; min-width: 0; }
+.panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.panel-head .eyebrow { white-space: nowrap; }
+
+select, input[type="text"], input[type="number"] {
+  font: inherit; color: var(--ink); background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 7px; padding: 8px 10px; min-width: 0;
+}
+select { width: 100%; font-weight: 500; }
+input[type="text"] { width: 100%; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.fields { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 560px) { .fields.two { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; } }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.field-top label { font-weight: 500; font-size: 14px; }
+.num { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 14px; }
+.num input { width: 7.2em; text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; padding: 5px 8px; }
+.num .unit { color: var(--muted); font-size: 12.5px; min-width: 1.6em; }
+.num .pre { color: var(--muted); }
+input[type="range"] { width: 100%; accent-color: var(--accent); margin: 2px 0; }
+.hint { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.check { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; cursor: pointer; }
+.check input { width: 17px; height: 17px; accent-color: var(--accent); }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; flex-wrap: wrap; }
+.seg button {
+  font: 500 13px var(--font-body); color: var(--ink); background: var(--panel-2); border: 0;
+  padding: 6px 10px; cursor: pointer; border-right: 1px solid var(--line);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+.upgrade { display: grid; gap: 8px; padding: 12px; border-radius: 8px; background: var(--panel-2); border: 1px dashed var(--line); }
+.upgrade .row { gap: 8px 14px; }
+.upgrade label { font-size: 13.5px; color: var(--muted); }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.note:empty { display: none; }
+
+/* Result panel */
+.verdict-band { display: grid; gap: 4px; padding: 14px 16px; border-radius: 8px; background: var(--panel-2); }
+.verdict-band[data-state="ok"] { background: var(--ok-bg); }
+.verdict-band[data-state="warn"] { background: var(--warn-bg); }
+.verdict-band[data-state="bad"] { background: var(--bad-bg); }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; font: 600 12.5px var(--font-body);
+  letter-spacing: 0.02em; padding: 3px 10px; border-radius: 999px; width: fit-content;
+  background: var(--panel); color: var(--ink); border: 1px solid currentColor;
+}
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill[data-state="ok"] { color: var(--ok); }
+.pill[data-state="warn"] { color: var(--warn); }
+.pill[data-state="bad"] { color: var(--bad); }
+.verdict-name { font-size: 13.5px; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
+.agents { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.agents .big {
+  font-family: var(--font-display); font-stretch: 72%; font-weight: 800; font-size: 68px; line-height: 0.95;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.agents .big-label { display: grid; gap: 2px; }
+.agents .big-label strong { font-size: 15px; font-weight: 600; }
+.agents .big-label span { color: var(--muted); font-size: 13.5px; }
+
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.metric { background: var(--panel); padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.metric .v { font-family: var(--font-mono); font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.metric .s { font-size: 12px; color: var(--muted); }
+
+.fleet { margin: 0; font-size: 14.5px; }
+.fleet b { font-family: var(--font-mono); font-weight: 600; font-variant-numeric: tabular-nums; }
+.flags { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.flags li { font-size: 13.5px; padding-left: 16px; position: relative; }
+.flags li::before { content: ""; position: absolute; left: 2px; top: 0.55em; width: 7px; height: 7px; border-radius: 2px; background: var(--muted); }
+.flags li[data-state="warn"]::before { background: var(--warn); }
+.flags li[data-state="bad"]::before { background: var(--bad); }
+.flags li[data-state="ok"]::before { background: var(--ok); }
+.flags:empty { display: none; }
+
+.chart-wrap { display: grid; gap: 6px; }
+.chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-wrap .hint { font-size: 12px; }
+
+/* Table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); background: var(--panel-2); position: sticky; top: 0; }
+td.n, th.n { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+th.n { font-family: var(--font-body); }
+tbody tr { cursor: pointer; }
+tbody tr:hover td { background: var(--accent-weak); }
+tbody tr[aria-selected="true"] td { background: var(--accent-weak); }
+tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+tr.group td { background: var(--panel-2); font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); cursor: default; }
+tr.group:hover td { background: var(--panel-2); }
+td .pill { font-size: 11.5px; padding: 1px 8px; }
+
+.how ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 75ch; }
+.how p { margin: 0; color: var(--muted); font-size: 13px; max-width: 75ch; }
+
+details summary { cursor: pointer; font-weight: 500; font-size: 14px; color: var(--accent); }
+details[open] summary { margin-bottom: 12px; }
+
+/* Phone summary bar */
+.bar { display: none; }
+@media (max-width: 919px) {
+  .bar {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    background: var(--panel); border-top: 1px solid var(--line);
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
+  }
+  .bar .bar-txt { font-size: 14px; min-width: 0; }
+  .bar b { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .verdict-band { transition: background-color 160ms ease; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Build &amp; test fleet · October 2026 prices</span>
+    <h1>Agent Slot Calculator</h1>
+    <p>Enter a machine you're eyeing. It works out how many coding agents the box can carry at once, what each slot costs over its life, and how that compares with buying a 128 GB desktop.</p>
+  </header>
+
+  <div class="grid">
+    <section class="panel area-machine" aria-labelledby="h-machine">
+      <div class="panel-head"><h2 id="h-machine">The machine</h2><span class="eyebrow">PassMark scores</span></div>
+      <div class="field">
+        <label for="preset" class="eyebrow">Start from</label>
+        <select id="preset"></select>
+      </div>
+      <div class="field">
+        <label for="mname" class="eyebrow">Name</label>
+        <input type="text" id="mname" autocomplete="off">
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="owned"> I already own it (count power only)</label>
+      </div>
+      <div class="fields two" id="machine-fields"></div>
+      <div class="field">
+        <span class="eyebrow">Memory kept back for the system</span>
+        <div class="row">
+          <div class="seg" role="group" aria-label="Operating system" id="os-seg">
+            <button type="button" data-v="6" aria-pressed="true">Linux · 6 GB</button>
+            <button type="button" data-v="8" aria-pressed="false">macOS + Docker VM · 8 GB</button>
+          </div>
+        </div>
+      </div>
+      <div class="upgrade">
+        <span class="eyebrow">Optional RAM upgrade</span>
+        <div class="row">
+          <label for="upgb">Upgrade to</label>
+          <span class="num"><input type="number" id="upgb" min="0" step="4" inputmode="numeric"><span class="unit">GB</span></span>
+          <label for="upcost">for</label>
+          <span class="num"><span class="pre">$</span><input type="number" id="upcost" min="0" step="10" inputmode="numeric"></span>
+        </div>
+      </div>
+      <p class="note" id="mnote"></p>
+    </section>
+
+    <section class="panel area-result" aria-labelledby="h-result" aria-live="polite">
+      <div class="panel-head"><h2 id="h-result">Verdict</h2><span class="eyebrow" id="res-assume"></span></div>
+      <div class="verdict-band" id="vband">
+        <span class="pill" id="vpill">—</span>
+        <p class="verdict-name" id="vname"></p>
+      </div>
+      <div class="agents">
+        <span class="big" id="agents">—</span>
+        <span class="big-label"><strong>agents at once</strong><span id="limit">—</span></span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><span class="eyebrow">Hardware per agent</span><span class="v" id="m-hw">—</span><span class="s" id="m-hw-s">purchase ÷ agents</span></div>
+        <div class="metric"><span class="eyebrow">Lifetime per agent</span><span class="v" id="m-tco">—</span><span class="s" id="m-tco-s">incl. power</span></div>
+        <div class="metric"><span class="eyebrow">Power per year</span><span class="v" id="m-pwr">—</span><span class="s" id="m-pwr-s">—</span></div>
+        <div class="metric"><span class="eyebrow">vs. 128 GB desktop</span><span class="v" id="m-ref">—</span><span class="s" id="m-ref-s">—</span></div>
+      </div>
+      <p class="fleet" id="fleet"></p>
+      <ul class="flags" id="flags"></ul>
+      <div class="chart-wrap">
+        <span class="eyebrow" id="chart-title">Builds running at once</span>
+        <svg id="chart" viewBox="0 0 320 132" role="img" aria-label="Chance of each number of builds running at once"></svg>
+        <p class="hint">Bars: the chance that this many builds run at the same moment. Lines: how many builds fit in memory and in CPU. Memory has to cover the 99% case, because running out kills jobs.</p>
+      </div>
+    </section>
+
+    <section class="panel area-workload" aria-labelledby="h-work">
+      <div class="panel-head"><h2 id="h-work">Your workload</h2><span class="eyebrow">applies to every machine</span></div>
+      <div class="fields two" id="work-fields"></div>
+      <details>
+        <summary>More assumptions</summary>
+        <div class="fields two" id="adv-fields"></div>
+      </details>
+      <div class="row"><button type="button" class="seg-like" id="reset">Reset to report defaults</button></div>
+    </section>
+
+    <section class="panel area-table" aria-labelledby="h-table">
+      <div class="panel-head"><h2 id="h-table">Every machine from the report, under your settings</h2><span class="eyebrow">Tap a row to load it</span></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th>Machine</th><th class="n">Price</th><th class="n">Agents</th><th>Limit</th><th class="n">HW / agent</th><th class="n">Lifetime / agent</th><th>Verdict</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel area-how how" aria-labelledby="h-how">
+      <h2 id="h-how">How the numbers work</h2>
+      <ol>
+        <li>Agents spend most of their time waiting on the model. The duty cycle is the share they spend building or running tests.</li>
+        <li>With that share, the number of builds running at once follows a binomial distribution. Memory must hold the 99th-percentile count, because running out kills jobs. CPU must cover the 95th, because contention only slows things down.</li>
+        <li>Each agent also holds a little memory all the time, and the system keeps some back.</li>
+        <li>Slower single-thread scores stretch the serial part of every build, which raises that machine's effective duty cycle. Weak multi-thread scores stretch the parallel part.</li>
+        <li>Lifetime per agent is (price + years × yearly power) ÷ agents. Machines you already own count power only. "Worth it" means it beats the 128 GB Core Ultra 7 270K Plus desktop under the same settings; "Close call" is within 25%.</li>
+      </ol>
+      <p>Defaults come from the October 2026 research report. Mac scores are estimates converted into PassMark terms, several power figures are estimated, and used prices vary by listing. Your own duty cycle is the number that matters most, so measure it.</p>
+    </section>
+  </div>
+</div>
+
+<div class="bar" aria-hidden="true">
+  <span class="bar-txt"><b id="bar-agents">—</b> agents · <b id="bar-tco">—</b>/agent</span>
+  <span class="pill" id="bar-pill">—</span>
+</div>
+
+<script>
+// MODEL START
+const REF = { st: 4726, mt: 65693 }; // Ryzen 9 9950X, PassMark single-thread and CPU Mark
+const LF = [0];
+function logFact(n) { while (LF.length <= n) { const i = LF.length; LF.push(LF[i - 1] + Math.log(i)); } return LF[n]; }
+function binomPmf(n, p) {
+  const out = new Array(n + 1).fill(0);
+  if (p <= 0) { out[0] = 1; return out; }
+  if (p >= 1) { out[n] = 1; return out; }
+  const lp = Math.log(p), lq = Math.log(1 - p), lfn = logFact(n);
+  for (let k = 0; k <= n; k++) out[k] = Math.exp(lfn - logFact(k) - logFact(n - k) + k * lp + (n - k) * lq);
+  return out;
+}
+function quantile(pmf, q) {
+  let c = 0;
+  for (let k = 0; k < pmf.length; k++) { c += pmf[k]; if (c >= q - 1e-12) return k; }
+  return pmf.length - 1;
+}
+function evaluate(m, a, ramOverride, priceOverride) {
+  const ram = ramOverride != null ? ramOverride : m.ram;
+  const price = priceOverride != null ? priceOverride : m.price;
+  const slotMT = a.threads * REF.mt / 32;
+  const stStretch = REF.st / Math.max(1, m.st);
+  const mtStretch = Math.max(1, slotMT / Math.max(1, m.mt));
+  const stretch = a.serial * stStretch + (1 - a.serial) * mtStretch;
+  const pEff = Math.min(0.95, a.p * stretch);
+  const usable = ram - m.reserve;
+  let n = 0, limit = 'ram';
+  for (let k = 1; k <= 400; k++) {
+    const pmf = binomPmf(k, pEff);
+    const q99 = quantile(pmf, 0.99), q95 = quantile(pmf, 0.95);
+    const ramOk = k * a.residentGB + q99 * a.slotGB <= usable;
+    const cpuOk = q95 <= 1 || q95 * slotMT <= m.mt * 1.05; // CPU contention only slows builds, so allow a 5% overshoot
+    if (!ramOk || !cpuOk) { limit = !ramOk ? 'ram' : 'cpu'; break; }
+    n = k;
+    if (k === 400) limit = 'cap';
+  }
+  const shown = Math.max(n, 1);
+  const pmf = binomPmf(shown, pEff);
+  const q95 = quantile(pmf, 0.95), q99 = quantile(pmf, 0.99);
+  const watts = m.idle * (1 - a.loadShare) + m.load * a.loadShare;
+  const powerYr = watts * 8.76 * a.rate;
+  const cost = m.owned ? 0 : price;
+  const hwPer = n ? cost / n : Infinity;
+  const lifePer = n ? (cost + a.years * powerYr) / n : Infinity;
+  const ramFitBuilds = Math.max(0, (usable - shown * a.residentGB) / a.slotGB);
+  const cpuFitBuilds = m.mt / slotMT;
+  const ramUsedP99 = n ? (m.reserve + n * a.residentGB + q99 * a.slotGB) / ram : 0;
+  const cpuUsedP95 = n ? (q95 * slotMT) / m.mt : 0;
+  return { n, limit, pEff, stretch, stStretch, mtStretch, slotMT, powerYr, watts, cost, price, ram, hwPer, lifePer,
+    pmf, shown, q95, q99, ramFitBuilds, cpuFitBuilds, ramUsedP99, cpuUsedP95 };
+}
+function judge(r, ref, m) {
+  if (r.n === 0) return { key: 'bad', label: "Can't hold an agent", ratio: Infinity };
+  const ratio = r.lifePer / ref.lifePer;
+  let key = ratio <= 1.0001 ? 'ok' : ratio <= 1.25 ? 'warn' : 'bad';
+  let label = key === 'ok' ? (m.owned ? 'Use it' : 'Worth it') : key === 'warn' ? 'Close call' : (m.owned ? 'Not worth the power' : 'Skip');
+  if (m.st < 2500 && key !== 'bad') { key = 'warn'; label = 'Cheap but slow'; }
+  return { key, label, ratio };
+}
+const PRESETS = [
+  { id: 'm920q', group: 'Used small PCs', name: 'Lenovo M920q · i5-8500T · 16 GB (used)', price: 225, ram: 16, st: 1997, mt: 7880, idle: 13, load: 65, reserve: 6, upGB: 32, upCost: 390, note: 'Used price $210–240. Load watts estimated. 32 GB of SO-DIMM is about $390.' },
+  { id: 'm720q', group: 'Used small PCs', name: 'Lenovo M720q · i7-8700T · 32 GB (used)', price: 363, ram: 32, st: 2320, mt: 10510, idle: 12, load: 65, reserve: 6, upGB: 0, upCost: 0, note: 'Price from one listing. Load watts estimated.' },
+  { id: 't10500', group: 'Used small PCs', name: '1-litre i5-10500T · 16 GB (used)', price: 320, ram: 16, st: 2270, mt: 10510, idle: 11, load: 65, reserve: 6, upGB: 64, upCost: 650, note: 'ThinkCentre M90q / OptiPlex 7080 / EliteDesk 800 G6 class, $289–350. Upgrade cost estimated.' },
+  { id: 't12500', group: 'Used small PCs', name: 'ThinkCentre Gen 3+ · i5-12500T · 16 GB (used)', price: 400, ram: 16, st: 3440, mt: 16312, idle: 11, load: 65, reserve: 6, upGB: 64, upCost: 650, note: 'PassMark scores are real. The price is a placeholder: enter the listing you found. Power and upgrade cost estimated.' },
+  { id: 'ser8', group: 'New mini PCs', name: 'Beelink SER8 · Ryzen 7 8845HS · 64 GB', price: 1750, ram: 64, st: 3730, mt: 28250, idle: 9, load: 78, reserve: 6, upGB: 0, upCost: 0, note: '$799 with 24 GB; about $1,000 more for 64 GB of SO-DIMM.' },
+  { id: 'ser9', group: 'New mini PCs', name: 'Beelink SER9 · Ryzen AI 9 HX 370 · 32 GB', price: 1075, ram: 32, st: 3920, mt: 34820, idle: 8, load: 77, reserve: 6, upGB: 0, upCost: 0, note: 'RAM is soldered, so it can’t be upgraded.' },
+  { id: 'evox2', group: 'New mini PCs', name: 'GMKtec EVO-X2 · Ryzen AI Max+ 395 · 128 GB', price: 3575, ram: 128, st: 4160, mt: 54530, idle: 11, load: 165, reserve: 6, upGB: 0, upCost: 0, note: 'RAM is soldered. $3,499–3,649.' },
+  { id: '5950x', group: 'Desktops', name: 'Ryzen 9 5950X · 128 GB DDR4 (used build)', price: 1875, ram: 128, st: 3500, mt: 45330, idle: 70, load: 225, reserve: 6, upGB: 0, upCost: 0, note: 'Build price estimated from one CPU listing. Power estimated. AM4 is a dead platform.' },
+  { id: '270k64', group: 'Desktops', name: 'Core Ultra 7 270K Plus · 64 GB (new build)', price: 2050, ram: 64, st: 5073, mt: 68506, idle: 77, load: 252, reserve: 6, upGB: 128, upCost: 930, note: 'Includes an estimated $400–450 for board, PSU, case and cooler. A second 64 GB kit is about $930.' },
+  { id: '270k128', group: 'Desktops', name: 'Core Ultra 7 270K Plus · 128 GB (new build)', price: 3000, ram: 128, st: 5073, mt: 68506, idle: 77, load: 252, reserve: 6, upGB: 0, upCost: 0, note: 'The reference box. $2.8–3.2k including an estimated $400–450 for board, PSU, case and cooler.' },
+  { id: '9950x64', group: 'Desktops', name: 'Ryzen 9 9950X · 64 GB (new build)', price: 2400, ram: 64, st: 4726, mt: 65693, idle: 80, load: 300, reserve: 6, upGB: 128, upCost: 930, note: 'Load watts estimated. Board allowance estimated.' },
+  { id: '9950x128', group: 'Desktops', name: 'Ryzen 9 9950X · 128 GB (new build)', price: 3400, ram: 128, st: 4726, mt: 65693, idle: 80, load: 300, reserve: 6, upGB: 192, upCost: 2050, note: '$3.1–3.7k. AM5 has a verified path to 192 GB.' },
+  { id: '9950x192', group: 'Desktops', name: 'Ryzen 9 9950X · 192 GB (new build)', price: 5600, ram: 192, st: 4726, mt: 65693, idle: 80, load: 300, reserve: 6, upGB: 0, upCost: 0, note: 'Memory above 128 GB costs more per GB.' },
+  { id: 'epyc', group: 'Servers and Threadripper', name: 'EPYC 7B13 · 64 cores · 256 GB DDR4 (used)', price: 4600, ram: 256, st: 2550, mt: 80800, idle: 110, load: 350, reserve: 6, upGB: 0, upCost: 0, note: 'Listings are mostly engineering samples or vendor-locked parts. Loud. Power estimated.' },
+  { id: 'tr9970', group: 'Servers and Threadripper', name: 'Threadripper 9970X · 128 GB RDIMM', price: 8950, ram: 128, st: 4537, mt: 107740, idle: 128, load: 500, reserve: 6, upGB: 256, upCost: 3780, note: 'Needs registered ECC memory at $35–46/GB.' },
+  { id: 'tr9980', group: 'Servers and Threadripper', name: 'Threadripper 9980X · 128 GB RDIMM', price: 10800, ram: 128, st: 4537, mt: 143870, idle: 140, load: 534, reserve: 6, upGB: 256, upCost: 3800, note: 'Needs registered ECC memory at $35–46/GB.' },
+  { id: 'tr9980b', group: 'Servers and Threadripper', name: 'Threadripper 9980X · 256 GB RDIMM', price: 14600, ram: 256, st: 4537, mt: 143870, idle: 140, load: 534, reserve: 6, upGB: 0, upCost: 0, note: 'Needs registered ECC memory at $35–46/GB.' },
+  { id: 'm6', group: 'New Macs', name: 'Mac mini M6 · 32 GB', price: 1299, ram: 32, st: 4726, mt: 44010, idle: 4, load: 70, reserve: 8, upGB: 0, upCost: 0, note: 'Mac scores are estimates in PassMark terms. RAM is fixed at purchase.' },
+  { id: 'm5pro', group: 'New Macs', name: 'Mac mini M5 Pro 18-core · 64 GB', price: 2899, ram: 64, st: 4726, mt: 60440, idle: 6, load: 145, reserve: 8, upGB: 0, upCost: 0, note: 'Mac scores are estimates in PassMark terms. RAM is fixed at purchase.' },
+  { id: 'm5max', group: 'New Macs', name: 'Mac Studio M5 Max · 128 GB', price: 4799, ram: 128, st: 4726, mt: 62410, idle: 7, load: 200, reserve: 8, upGB: 0, upCost: 0, note: 'Mac scores are estimates in PassMark terms. Worth it mainly if you need macOS lanes anyway.' },
+  { id: 'mbp', group: 'Already yours', owned: true, name: 'Your MacBook Pro M1 Max', price: 0, ram: 32, st: 3690, mt: 26930, idle: 11, load: 115, reserve: 8, upGB: 0, upCost: 0, note: 'Set RAM to 64 if yours has it. Scores and power are estimates.' },
+  { id: 'imac', group: 'Already yours', owned: true, name: 'Workplace iMac M4 · 16 GB', price: 0, ram: 16, st: 4726, mt: 28900, idle: 43, load: 100, reserve: 8, upGB: 0, upCost: 0, note: 'Power includes the display. Scores are estimates. Only if your workplace agrees.' },
+  { id: 'xeon', group: 'Already yours', owned: true, name: '2015 Proxmox box (if dual Xeon E5 v4, 128 GB)', price: 0, ram: 128, st: 1610, mt: 28900, idle: 75, load: 272, reserve: 6, upGB: 0, upCost: 0, note: 'Assumes dual E5 v4 with 128 GB; run lscpu and free -g to check. Idle ranges 47 to 100+ W.' }
+];
+const DEFAULTS = { p: 0.30, slotGB: 12, threads: 4, residentGB: 1, serial: 0.5, rate: 0.35, loadShare: 0.35, years: 3, target: 20, refPrice: 3000 };
+// MODEL END
+
+const $ = (id) => document.getElementById(id);
+const STORE_KEY = 'agent-slot-calc-v1';
+const fmt$ = (v) => !isFinite(v) ? '—' : '$' + Math.round(v).toLocaleString('en-US');
+const fmtN = (v) => Math.round(v).toLocaleString('en-US');
+
+let A = { ...DEFAULTS };
+let M = null;
+let presetId = '270k128';
+
+const MACHINE_FIELDS = [
+  { k: 'price', label: 'Price', min: 0, max: 15000, step: 25, pre: '$', hint: 'What you would pay, all in.' },
+  { k: 'ram', label: 'Memory', min: 8, max: 512, step: 4, unit: 'GB', hint: 'Installed RAM.' },
+  { k: 'st', label: 'Single-thread', min: 800, max: 6000, step: 10, unit: 'pts', hint: 'PassMark single-thread rating. Ryzen 9 9950X = 4,726.' },
+  { k: 'mt', label: 'Multi-thread', min: 2000, max: 160000, step: 100, unit: 'pts', hint: 'PassMark CPU Mark. Ryzen 9 9950X = 65,693.' },
+  { k: 'idle', label: 'Idle power', min: 1, max: 250, step: 1, unit: 'W', hint: 'Watts at the wall when idle.' },
+  { k: 'load', label: 'Full-load power', min: 10, max: 700, step: 5, unit: 'W', hint: 'Watts at the wall with every core busy.' }
+];
+const WORK_FIELDS = [
+  { k: 'p', label: 'Duty cycle', min: 5, max: 70, step: 5, unit: '%', scale: 100, hint: 'Share of each agent’s time spent building or testing; the rest is waiting on the model. 30% is the planning case. Measure yours.' },
+  { k: 'slotGB', label: 'Memory per running build', min: 4, max: 32, step: 1, unit: 'GB', hint: 'Peak of one build plus its test database.', chips: [['Python', 6], ['TS / Ruby', 8], ['Mixed', 12], ['Rust / C++ / Java', 16]] },
+  { k: 'target', label: 'Agents you want', min: 1, max: 60, step: 1, unit: '', hint: 'Used for the fleet line: how many of this box you’d need.' },
+  { k: 'rate', label: 'Electricity', min: 0.05, max: 0.6, step: 0.01, unit: '$/kWh', dec: 2, hint: 'California is about $0.33–0.39.' }
+];
+const ADV_FIELDS = [
+  { k: 'threads', label: 'Threads per running build', min: 2, max: 16, step: 1, unit: '', hint: '4 threads is an eighth of a 16-core Ryzen 9 9950X.' },
+  { k: 'residentGB', label: 'Memory per idle agent', min: 0.5, max: 4, step: 0.5, unit: 'GB', dec: 1, hint: 'Held all the time: the agent CLI, language servers, file watchers.' },
+  { k: 'serial', label: 'Serial share of a build', min: 0, max: 90, step: 10, unit: '%', scale: 100, hint: 'Linking, type checks, single big crates. Stretched by slow single-thread scores.' },
+  { k: 'loadShare', label: 'Time at full load', min: 5, max: 100, step: 5, unit: '%', scale: 100, hint: 'The rest of the day counts as idle. Boxes run 24/7.' },
+  { k: 'years', label: 'Years of use', min: 1, max: 5, step: 1, unit: 'yr', hint: 'How long the purchase is spread over.' },
+  { k: 'refPrice', label: '128 GB desktop price', min: 1500, max: 6000, step: 50, pre: '$', hint: 'The Core Ultra 7 270K Plus box everything is compared with.' }
+];
+
+function buildField(def, container, getObj, onChange) {
+  const wrap = document.createElement('div');
+  wrap.className = 'field';
+  const top = document.createElement('div'); top.className = 'field-top';
+  const lab = document.createElement('label'); lab.htmlFor = 'f-' + def.k + '-n'; lab.textContent = def.label;
+  const num = document.createElement('span'); num.className = 'num';
+  if (def.pre) { const pre = document.createElement('span'); pre.className = 'pre'; pre.textContent = def.pre; num.appendChild(pre); }
+  const ni = document.createElement('input'); ni.type = 'number'; ni.id = 'f-' + def.k + '-n'; ni.min = def.min; ni.step = def.step; ni.inputMode = 'decimal';
+  num.appendChild(ni);
+  if (def.unit) { const u = document.createElement('span'); u.className = 'unit'; u.textContent = def.unit; num.appendChild(u); }
+  top.append(lab, num);
+  const r = document.createElement('input'); r.type = 'range'; r.id = 'f-' + def.k; r.min = def.min; r.max = def.max; r.step = def.step; r.setAttribute('aria-label', def.label);
+  wrap.append(top, r);
+  if (def.chips) {
+    const seg = document.createElement('div'); seg.className = 'seg'; seg.setAttribute('role', 'group'); seg.setAttribute('aria-label', def.label + ' presets');
+    def.chips.forEach(([t, v]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = t + ' ' + v; b.dataset.v = v; seg.appendChild(b); });
+    seg.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; set(Number(b.dataset.v)); });
+    wrap.appendChild(seg);
+    def._seg = seg;
+  }
+  if (def.hint) { const h = document.createElement('p'); h.className = 'hint'; h.textContent = def.hint; wrap.appendChild(h); }
+  container.appendChild(wrap);
+  const scale = def.scale || 1;
+  function set(uiVal, from) {
+    if (!isFinite(uiVal)) return;
+    getObj()[def.k] = uiVal / scale;
+    if (from !== 'n') ni.value = def.dec ? uiVal.toFixed(def.dec) : uiVal;
+    if (from !== 'r') r.value = uiVal;
+    if (def._seg) def._seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.v) === uiVal)));
+    onChange();
+  }
+  r.addEventListener('input', () => set(Number(r.value), 'r'));
+  ni.addEventListener('input', () => { const v = Number(ni.value); if (ni.value !== '' && isFinite(v) && v >= 0) set(v, 'n'); });
+  def.sync = () => {
+    const v = getObj()[def.k] * scale;
+    const uiVal = Math.round(v * 1000) / 1000;
+    ni.value = def.dec ? uiVal.toFixed(def.dec) : uiVal;
+    r.value = uiVal;
+    if (def._seg) def._seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.v) === uiVal)));
+  };
+}
+
+function loadPreset(id) {
+  const p = PRESETS.find((x) => x.id === id) || PRESETS.find((x) => x.id === '270k128');
+  presetId = p.id;
+  M = { name: p.name, price: p.price, ram: p.ram, st: p.st, mt: p.mt, idle: p.idle, load: p.load, reserve: p.reserve, owned: !!p.owned, upGB: p.upGB, upCost: p.upCost, note: p.note };
+  syncMachine();
+}
+function syncMachine() {
+  $('preset').value = presetId;
+  $('mname').value = M.name;
+  $('owned').checked = M.owned;
+  MACHINE_FIELDS.forEach((d) => d.sync());
+  document.querySelectorAll('#os-seg button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.v) === M.reserve)));
+  $('upgb').value = M.upGB || '';
+  $('upcost').value = M.upCost || '';
+  $('mnote').textContent = M.note || '';
+}
+function syncWork() { [...WORK_FIELDS, ...ADV_FIELDS].forEach((d) => d.sync()); }
+
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({ A, M, presetId })); } catch (e) { /* storage unavailable */ }
+}
+function restore() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (s && s.A && s.M) { A = { ...DEFAULTS, ...s.A }; M = s.M; presetId = s.presetId || 'custom'; return true; }
+  } catch (e) { /* ignore */ }
+  return false;
+}
+
+function refResult() {
+  const ref = PRESETS.find((x) => x.id === '270k128');
+  return evaluate({ ...ref, owned: false }, A, null, A.refPrice);
+}
+
+function render() {
+  const ref = refResult();
+  const r = evaluate(M, A);
+  const v = judge(r, ref, M);
+
+  $('vband').dataset.state = v.key;
+  $('vpill').dataset.state = v.key; $('vpill').textContent = v.label;
+  $('bar-pill').dataset.state = v.key; $('bar-pill').textContent = v.label;
+  $('vname').textContent = M.name || 'Custom machine';
+  $('res-assume').textContent = Math.round(A.p * 100) + '% duty · ' + A.slotGB + ' GB/build';
+
+  $('agents').textContent = r.n;
+  $('bar-agents').textContent = r.n;
+  const limitTxt = r.n === 0
+    ? (r.limit === 'ram' ? 'not enough memory for one build' : 'too slow for one build')
+    : r.limit === 'ram' ? 'limited by memory' : r.limit === 'cpu' ? 'limited by CPU' : 'more than 400';
+  $('limit').textContent = limitTxt;
+
+  $('m-hw').textContent = M.owned ? '$0' : fmt$(r.hwPer);
+  $('m-hw-s').textContent = M.owned ? 'already paid for' : 'purchase ÷ agents';
+  $('m-tco').textContent = fmt$(r.lifePer);
+  $('bar-tco').textContent = fmt$(r.lifePer);
+  $('m-tco-s').textContent = A.years + ' yr incl. power' + (M.owned ? ' only' : '');
+  $('m-pwr').textContent = fmt$(r.powerYr);
+  $('m-pwr-s').textContent = '~' + Math.round(r.watts) + ' W average';
+  if (r.n === 0) { $('m-ref').textContent = '—'; $('m-ref-s').textContent = 'no agents'; }
+  else {
+    $('m-ref').textContent = '×' + v.ratio.toFixed(2);
+    $('m-ref-s').textContent = v.ratio <= 1.0001 ? 'cheaper or equal per agent' : Math.round((v.ratio - 1) * 100) + '% more per agent';
+  }
+
+  // Fleet line
+  const fleet = $('fleet');
+  fleet.textContent = '';
+  if (r.n > 0) {
+    const boxes = Math.ceil(A.target / r.n);
+    const up = boxes * r.cost;
+    const life = boxes * (r.cost + A.years * r.powerYr);
+    const parts = [['For ', null], [String(A.target), 'b'], [' agents: ', null], [boxes + (boxes === 1 ? ' box' : ' boxes'), 'b'], [' · ', null], [fmt$(up), 'b'], [' up front · ', null], [fmt$(life), 'b'], [' over ' + A.years + ' years', null]];
+    if (M.owned) { parts.splice(5, 2, ['', null], ['', null]); }
+    parts.forEach(([t, tag]) => { if (!t) return; if (tag) { const b = document.createElement('b'); b.textContent = t; fleet.appendChild(b); } else fleet.appendChild(document.createTextNode(t)); });
+    const refBoxes = Math.ceil(A.target / ref.n);
+    fleet.appendChild(document.createTextNode('. The 128 GB desktop needs ' + refBoxes + ' for ' + fmt$(refBoxes * (A.refPrice + A.years * ref.powerYr)) + '.'));
+  } else {
+    fleet.textContent = 'This box can’t run one full build with these settings.';
+  }
+
+  // Flags
+  const flags = [];
+  if (M.st < 2500) flags.push(['warn', 'Slow cores: serial steps run about ' + r.stStretch.toFixed(1) + '× slower than a Ryzen 9 9950X. Below about 2,500 single-thread points, agents feel sluggish.']);
+  if (r.mtStretch > 1.01) flags.push(['warn', 'Not enough CPU for one full build slot, so each build runs about ' + r.mtStretch.toFixed(1) + '× slower.']);
+  if (r.n > 0 && r.limit === 'ram' && r.cpuUsedP95 < 0.7) flags.push(['ok', 'Memory-bound with spare CPU: about ' + Math.round((1 - r.cpuUsedP95) * 100) + '% of the CPU is still free at peak, so more RAM adds agents.']);
+  if (r.n > 0 && r.limit === 'cpu' && r.ramUsedP99 < 0.7) flags.push(['warn', 'CPU-bound: about ' + Math.round((1 - r.ramUsedP99) * 100) + '% of the memory sits unused even at peak.']);
+  if (M.upGB > M.ram && M.upCost >= 0) {
+    const u = evaluate(M, A, M.upGB, M.price + M.upCost);
+    const uCost = M.owned ? M.upCost : M.price + M.upCost;
+    const uLife = u.n ? (uCost + A.years * u.powerYr) / u.n : Infinity;
+    const added = u.n - r.n;
+    let txt = 'With ' + M.upGB + ' GB (+' + fmt$(M.upCost) + '): ' + u.n + ' agents, ' + fmt$(uLife) + ' per agent over ' + A.years + ' years';
+    if (added > 0 && M.upCost > 0) txt += '. That’s ' + fmt$(M.upCost / added) + ' per added agent.';
+    else if (added <= 0) txt += '. No gain: something else is the limit.';
+    else txt += '.';
+    const better = uLife < r.lifePer;
+    flags.push([better ? 'ok' : 'warn', txt]);
+  }
+  if (M.owned && r.n > 0) flags.push(['ok', 'Already paid for, so only electricity counts.']);
+  const ul = $('flags'); ul.textContent = '';
+  flags.forEach(([s, t]) => { const li = document.createElement('li'); li.dataset.state = s; li.textContent = t; ul.appendChild(li); });
+
+  drawChart(r);
+  renderTable(ref);
+  save();
+}
+
+function drawChart(r) {
+  const svg = $('chart');
+  const NS = 'http://www.w3.org/2000/svg';
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  const n = r.shown;
+  const ramCap = r.ramFitBuilds, cpuCap = r.cpuFitBuilds;
+  const xMax = Math.min(Math.max(n, Math.ceil(Math.min(Math.max(ramCap, cpuCap), n * 2 + 2))), 60);
+  const W = 320, x0 = 10, x1 = 310, yTop = 26, yBase = 102;
+  const slot = (x1 - x0) / (xMax + 1);
+  const xc = (k) => x0 + slot * (k + 0.5);
+  const xCap = (v) => Math.min(x1, x0 + slot * (Math.min(Math.max(v, 0), xMax) + 1));
+  const maxP = Math.max(...r.pmf);
+  $('chart-title').textContent = 'Builds running at once · ' + n + (n === 1 ? ' agent' : ' agents');
+  const mk = (tag, attrs, text) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); if (text != null) el.textContent = text; svg.appendChild(el); return el; };
+  mk('line', { x1: x0, x2: x1, y1: yBase, y2: yBase, stroke: 'var(--line)', 'stroke-width': 1 });
+  for (let k = 0; k <= xMax; k++) {
+    const p = k <= n ? r.pmf[k] : 0;
+    if (p <= 0) continue;
+    const h = (yBase - yTop) * (p / maxP);
+    mk('rect', { x: xc(k) - slot * 0.36, y: yBase - h, width: Math.max(1, slot * 0.72), height: h, rx: 1.5, fill: k <= r.q99 ? 'var(--accent)' : 'var(--muted)', opacity: k <= r.q95 ? 0.95 : 0.55 });
+  }
+  const lines = [
+    { v: ramCap, label: 'Memory fits ' + (ramCap >= 100 ? '100+' : ramCap.toFixed(ramCap < 10 ? 1 : 0)), color: 'var(--bad)', dash: '4 3', y: 10 },
+    { v: cpuCap, label: 'CPU fits ' + (cpuCap >= 100 ? '100+' : cpuCap.toFixed(cpuCap < 10 ? 1 : 0)), color: 'var(--ink)', dash: '1.5 2.5', y: 20 }
+  ];
+  lines.forEach((L) => {
+    const x = xCap(L.v);
+    mk('line', { x1: x, x2: x, y1: L.y + 3, y2: yBase, stroke: L.color, 'stroke-width': 1.4, 'stroke-dasharray': L.dash });
+    const anchor = x > W * 0.62 ? 'end' : 'start';
+    mk('text', { x: anchor === 'end' ? x - 3 : x + 3, y: L.y, 'font-size': 9.5, 'text-anchor': anchor, fill: L.color, 'font-family': 'var(--font-mono)' }, L.label + (L.v > xMax ? ' →' : ''));
+  });
+  const ticks = new Set([0, xMax, r.q99]);
+  ticks.forEach((k) => {
+    mk('line', { x1: xc(k), x2: xc(k), y1: yBase, y2: yBase + 4, stroke: 'var(--muted)', 'stroke-width': 1 });
+    mk('text', { x: xc(k), y: yBase + 15, 'font-size': 9.5, 'text-anchor': 'middle', fill: k === r.q99 ? 'var(--accent)' : 'var(--muted)', 'font-family': 'var(--font-mono)' }, String(k));
+  });
+  mk('text', { x: xc(r.q99), y: yBase + 27, 'font-size': 9, 'text-anchor': 'middle', fill: 'var(--accent)', 'font-family': 'var(--font-body)' }, '99% of the time ≤ ' + r.q99);
+}
+
+function renderTable(ref) {
+  const tb = $('tbody'); tb.textContent = '';
+  const rows = PRESETS.map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; });
+  const sorter = (a, b) => a.r.lifePer - b.r.lifePer;
+  const groups = [['To buy', rows.filter((x) => !x.p.owned).sort(sorter)], ['Already yours · power only', rows.filter((x) => x.p.owned).sort(sorter)]];
+  groups.forEach(([title, list]) => {
+    const g = document.createElement('tr'); g.className = 'group';
+    const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
+    list.forEach(({ p, r, v }) => {
+      const tr = document.createElement('tr');
+      tr.setAttribute('aria-selected', String(p.id === presetId));
+      tr.tabIndex = 0;
+      const cells = [
+        [p.name, ''],
+        [p.owned ? 'owned' : fmt$(p.price), 'n'],
+        [String(r.n), 'n'],
+        [r.n === 0 ? '—' : r.limit === 'ram' ? 'Memory' : r.limit === 'cpu' ? 'CPU' : '—', ''],
+        [p.owned ? '$0' : fmt$(r.hwPer), 'n'],
+        [fmt$(r.lifePer), 'n']
+      ];
+      cells.forEach(([t, cls]) => { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = t; tr.appendChild(td); });
+      const vtd = document.createElement('td'); const pill = document.createElement('span'); pill.className = 'pill'; pill.dataset.state = v.key; pill.textContent = v.label; vtd.appendChild(pill); tr.appendChild(vtd);
+      const go = () => { loadPreset(p.id); render(); if (window.matchMedia('(max-width: 919px)').matches) $('h-machine').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      tr.addEventListener('click', go);
+      tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+      tb.appendChild(tr);
+    });
+  });
+}
+
+function init() {
+  // Preset select
+  const sel = $('preset');
+  const groups = {};
+  PRESETS.forEach((p) => { (groups[p.group] = groups[p.group] || []).push(p); });
+  Object.entries(groups).forEach(([g, list]) => {
+    const og = document.createElement('optgroup'); og.label = g;
+    list.forEach((p) => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; og.appendChild(o); });
+    sel.appendChild(og);
+  });
+  const oc = document.createElement('option'); oc.value = 'custom'; oc.textContent = 'Custom (edited)'; sel.appendChild(oc);
+
+  const markCustom = () => { if (presetId !== 'custom') { presetId = 'custom'; sel.value = 'custom'; } };
+  MACHINE_FIELDS.forEach((d) => buildField(d, $('machine-fields'), () => M, () => { markCustom(); render(); }));
+  WORK_FIELDS.forEach((d) => buildField(d, $('work-fields'), () => A, render));
+  ADV_FIELDS.forEach((d) => buildField(d, $('adv-fields'), () => A, render));
+
+  sel.addEventListener('change', () => { if (sel.value === 'custom') { presetId = 'custom'; render(); return; } loadPreset(sel.value); render(); });
+  $('mname').addEventListener('input', () => { M.name = $('mname').value; markCustom(); render(); });
+  $('owned').addEventListener('change', () => { M.owned = $('owned').checked; markCustom(); render(); });
+  $('os-seg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; M.reserve = Number(b.dataset.v); markCustom(); syncMachine(); render(); });
+  $('upgb').addEventListener('input', () => { M.upGB = Number($('upgb').value) || 0; render(); });
+  $('upcost').addEventListener('input', () => { M.upCost = Number($('upcost').value) || 0; render(); });
+  $('reset').addEventListener('click', () => { A = { ...DEFAULTS }; syncWork(); render(); });
+
+  if (!restore()) loadPreset('270k128');
+  syncMachine(); syncWork();
+  render();
+}
+init();
+</script>
+<style>
+#reset { font: 500 13px var(--font-body); color: var(--accent); background: transparent; border: 1px solid var(--line); border-radius: 7px; padding: 6px 12px; cursor: pointer; }
+#reset:hover { background: var(--accent-weak); }
+</style>

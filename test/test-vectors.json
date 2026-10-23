@@ -1,0 +1,1105 @@
+{
+  "generatedFrom": "prototype/agent-slot-calculator.html (MODEL block)",
+  "defaults": {
+    "p": 0.3,
+    "slotGB": 12,
+    "threads": 4,
+    "residentGB": 1,
+    "serial": 0.5,
+    "rate": 0.35,
+    "loadShare": 0.35,
+    "years": 3,
+    "target": 20,
+    "refPrice": 3000
+  },
+  "cases": [
+    {
+      "label": "preset m920q at defaults",
+      "machineId": "m920q",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 0,
+        "limit": "ram",
+        "pEff": 0.51,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": null,
+        "lifePer": null,
+        "powerYr": 95.66,
+        "verdictKey": "bad",
+        "verdictLabel": "Can't hold an agent",
+        "ratio": null
+      }
+    },
+    {
+      "label": "preset m720q at defaults",
+      "machineId": "m720q",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 1,
+        "limit": "cpu",
+        "pEff": 0.46,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": 363,
+        "lifePer": 644,
+        "powerYr": 93.67,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 2.11
+      }
+    },
+    {
+      "label": "preset t10500 at defaults",
+      "machineId": "t10500",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 0,
+        "limit": "ram",
+        "pEff": 0.46,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": null,
+        "lifePer": null,
+        "powerYr": 91.67,
+        "verdictKey": "bad",
+        "verdictLabel": "Can't hold an agent",
+        "ratio": null
+      }
+    },
+    {
+      "label": "preset t12500 at defaults",
+      "machineId": "t12500",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 0,
+        "limit": "ram",
+        "pEff": 0.36,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": null,
+        "lifePer": null,
+        "powerYr": 91.67,
+        "verdictKey": "bad",
+        "verdictLabel": "Can't hold an agent",
+        "ratio": null
+      }
+    },
+    {
+      "label": "preset ser8 at defaults",
+      "machineId": "ser8",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 5,
+        "limit": "ram",
+        "pEff": 0.34,
+        "q95": 3,
+        "q99": 4,
+        "hwPer": 350,
+        "lifePer": 410.98,
+        "powerYr": 101.64,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.35
+      }
+    },
+    {
+      "label": "preset ser9 at defaults",
+      "machineId": "ser9",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 2,
+        "limit": "ram",
+        "pEff": 0.33,
+        "q95": 2,
+        "q99": 2,
+        "hwPer": 537.5,
+        "lifePer": 685.36,
+        "powerYr": 98.57,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 2.25
+      }
+    },
+    {
+      "label": "preset evox2 at defaults",
+      "machineId": "evox2",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 11,
+        "limit": "cpu",
+        "pEff": 0.32,
+        "q95": 6,
+        "q99": 7,
+        "hwPer": 325,
+        "lifePer": 379.27,
+        "powerYr": 198.98,
+        "verdictKey": "warn",
+        "verdictLabel": "Close call",
+        "ratio": 1.24
+      }
+    },
+    {
+      "label": "preset 5950x at defaults",
+      "machineId": "5950x",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 8,
+        "limit": "cpu",
+        "pEff": 0.35,
+        "q95": 5,
+        "q99": 6,
+        "hwPer": 234.38,
+        "lifePer": 377.23,
+        "powerYr": 380.95,
+        "verdictKey": "warn",
+        "verdictLabel": "Close call",
+        "ratio": 1.24
+      }
+    },
+    {
+      "label": "preset 270k64 at defaults",
+      "machineId": "270k64",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 6,
+        "limit": "ram",
+        "pEff": 0.29,
+        "q95": 4,
+        "q99": 4,
+        "hwPer": 341.67,
+        "lifePer": 553.6,
+        "powerYr": 423.87,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.81
+      }
+    },
+    {
+      "label": "preset 270k128 at defaults",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.29,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 214.29,
+        "lifePer": 305.12,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "preset 9950x64 at defaults",
+      "machineId": "9950x64",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 5,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 3,
+        "q99": 4,
+        "hwPer": 480,
+        "lifePer": 768.82,
+        "powerYr": 481.36,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 2.52
+      }
+    },
+    {
+      "label": "preset 9950x128 at defaults",
+      "machineId": "9950x128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 242.86,
+        "lifePer": 346.01,
+        "powerYr": 481.36,
+        "verdictKey": "warn",
+        "verdictLabel": "Close call",
+        "ratio": 1.13
+      }
+    },
+    {
+      "label": "preset 9950x192 at defaults",
+      "machineId": "9950x192",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 17,
+        "limit": "cpu",
+        "pEff": 0.3,
+        "q95": 8,
+        "q99": 10,
+        "hwPer": 329.41,
+        "lifePer": 414.36,
+        "powerYr": 481.36,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.36
+      }
+    },
+    {
+      "label": "preset epyc at defaults",
+      "machineId": "epyc",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 16,
+        "limit": "cpu",
+        "pEff": 0.43,
+        "q95": 10,
+        "q99": 11,
+        "hwPer": 287.5,
+        "lifePer": 399.03,
+        "powerYr": 594.8,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.31
+      }
+    },
+    {
+      "label": "preset tr9970 at defaults",
+      "machineId": "tr9970",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.31,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 639.29,
+        "lifePer": 808.92,
+        "powerYr": 791.64,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 2.65
+      }
+    },
+    {
+      "label": "preset tr9980 at defaults",
+      "machineId": "tr9980",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.31,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 771.43,
+        "lifePer": 954.01,
+        "powerYr": 852.04,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 3.13
+      }
+    },
+    {
+      "label": "preset tr9980b at defaults",
+      "machineId": "tr9980b",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 35,
+        "limit": "ram",
+        "pEff": 0.31,
+        "q95": 15,
+        "q99": 17,
+        "hwPer": 417.14,
+        "lifePer": 490.17,
+        "powerYr": 852.04,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.61
+      }
+    },
+    {
+      "label": "preset m6 at defaults",
+      "machineId": "m6",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 1,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": 1299,
+        "lifePer": 1548.27,
+        "powerYr": 83.09,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 5.07
+      }
+    },
+    {
+      "label": "preset m5pro at defaults",
+      "machineId": "m5pro",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 5,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 3,
+        "q99": 4,
+        "hwPer": 579.8,
+        "lifePer": 680.33,
+        "powerYr": 167.56,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 2.23
+      }
+    },
+    {
+      "label": "preset m5max at defaults",
+      "machineId": "m5max",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 342.79,
+        "lifePer": 391.77,
+        "powerYr": 228.57,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.28
+      }
+    },
+    {
+      "label": "preset mbp at defaults",
+      "machineId": "mbp",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": true
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 1,
+        "limit": "ram",
+        "pEff": 0.34,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": 0,
+        "lifePer": 435.99,
+        "powerYr": 145.33,
+        "verdictKey": "bad",
+        "verdictLabel": "Not worth the power",
+        "ratio": 1.43
+      }
+    },
+    {
+      "label": "preset imac at defaults",
+      "machineId": "imac",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": true
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 0,
+        "limit": "ram",
+        "pEff": 0.3,
+        "q95": 1,
+        "q99": 1,
+        "hwPer": null,
+        "lifePer": null,
+        "powerYr": 193,
+        "verdictKey": "bad",
+        "verdictLabel": "Can't hold an agent",
+        "ratio": null
+      }
+    },
+    {
+      "label": "preset xeon at defaults",
+      "machineId": "xeon",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": true
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 3,
+        "limit": "cpu",
+        "pEff": 0.59,
+        "q95": 3,
+        "q99": 3,
+        "hwPer": 0,
+        "lifePer": 441.35,
+        "powerYr": 441.35,
+        "verdictKey": "bad",
+        "verdictLabel": "Not worth the power",
+        "ratio": 1.45
+      }
+    },
+    {
+      "label": "i5-12500T with 32 GB at $300",
+      "machineId": "t12500",
+      "overrides": {
+        "ramOverride": 32,
+        "priceOverride": 300,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 2,
+        "limit": "ram",
+        "pEff": 0.36,
+        "q95": 2,
+        "q99": 2,
+        "hwPer": 150,
+        "lifePer": 287.51,
+        "powerYr": 91.67,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 0.94
+      }
+    },
+    {
+      "label": "i5-12500T upgraded to 64 GB, $1050 total",
+      "machineId": "t12500",
+      "overrides": {
+        "ramOverride": 64,
+        "priceOverride": 1050,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 3,
+        "limit": "cpu",
+        "pEff": 0.36,
+        "q95": 2,
+        "q99": 3,
+        "hwPer": 350,
+        "lifePer": 441.67,
+        "powerYr": 91.67,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.45
+      }
+    },
+    {
+      "label": "270K Plus 128 GB, duty cycle 15%",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.15,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 26,
+        "limit": "ram",
+        "pEff": 0.14,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 115.38,
+        "lifePer": 164.29,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "270K Plus 128 GB, duty cycle 40%",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.4,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 13,
+        "limit": "ram",
+        "pEff": 0.39,
+        "q95": 8,
+        "q99": 9,
+        "hwPer": 230.77,
+        "lifePer": 328.59,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "270K Plus 128 GB, 16 GB builds",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 16,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 10,
+        "limit": "ram",
+        "pEff": 0.29,
+        "q95": 5,
+        "q99": 6,
+        "hwPer": 300,
+        "lifePer": 427.16,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "270K Plus 128 GB, 8 GB builds",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 8,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 18,
+        "limit": "cpu",
+        "pEff": 0.29,
+        "q95": 8,
+        "q99": 10,
+        "hwPer": 166.67,
+        "lifePer": 237.31,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "270K Plus 128 GB, $0.15/kWh, 5 years",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.15,
+        "loadShare": 0.35,
+        "years": 5,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.29,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 214.29,
+        "lifePer": 279.16,
+        "powerYr": 181.66,
+        "verdictKey": "ok",
+        "verdictLabel": "Worth it",
+        "ratio": 1
+      }
+    },
+    {
+      "label": "270K Plus 128 GB marked as owned",
+      "machineId": "270k128",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": true
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 4,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 14,
+        "limit": "ram",
+        "pEff": 0.29,
+        "q95": 7,
+        "q99": 8,
+        "hwPer": 0,
+        "lifePer": 90.83,
+        "powerYr": 423.87,
+        "verdictKey": "ok",
+        "verdictLabel": "Use it",
+        "ratio": 0.3
+      }
+    },
+    {
+      "label": "EPYC 7B13, 8 threads per build",
+      "machineId": "epyc",
+      "overrides": {
+        "ramOverride": null,
+        "priceOverride": null,
+        "owned": false
+      },
+      "assumptions": {
+        "p": 0.3,
+        "slotGB": 12,
+        "threads": 8,
+        "residentGB": 1,
+        "serial": 0.5,
+        "rate": 0.35,
+        "loadShare": 0.35,
+        "years": 3,
+        "target": 20,
+        "refPrice": 3000
+      },
+      "expected": {
+        "n": 7,
+        "limit": "cpu",
+        "pEff": 0.43,
+        "q95": 5,
+        "q99": 6,
+        "hwPer": 657.14,
+        "lifePer": 912.06,
+        "powerYr": 594.8,
+        "verdictKey": "bad",
+        "verdictLabel": "Skip",
+        "ratio": 1.49
+      }
+    }
+  ]
+}
