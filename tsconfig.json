@@ -9,6 +9,9 @@
     ".scaffold"
   ],
   "compilerOptions": {
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": [
+      "node"
+    ]
   }
 }
