@@ -86,7 +86,7 @@ function buildField<K extends string>(def: FieldDef<K>, container: HTMLElement, 
   container.appendChild(wrap);
   const scale = def.scale || 1;
   function set(uiVal: number, from?: 'n' | 'r') {
-    if (!isFinite(uiVal) || (def.k === 'slotGB' && uiVal <= 0)) return;
+    if (!isFinite(uiVal)) return;
     getObj()[def.k] = uiVal / scale;
     if (from !== 'n') ni.value = def.dec ? uiVal.toFixed(def.dec) : String(uiVal);
     if (from !== 'r') r.value = String(uiVal);

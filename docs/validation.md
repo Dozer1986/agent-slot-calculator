@@ -18,7 +18,7 @@ Local checks on macOS on 2026-10-23 passed against the static Astro build under 
 | Same-origin runtime assets | Four layout tests observe all requests and reject other origins. Fonts load from the site's bundled assets. |
 | Reduced motion | Four layout tests emulate reduced motion and verify the verdict band has no transition. |
 
-`npm run test:e2e` passes 14 tests. Additional behavior checks cover paired slider and number controls, number values above slider maxima, custom machine selection, OS reserve, ownership, upgrades, workload chips, advanced assumptions, reset, the phone summary, and the sticky desktop verdict.
+`npm run test:e2e` passes 13 tests. Additional behavior checks cover paired slider and number controls, number values above slider maxima, custom machine selection, OS reserve, ownership, upgrades, workload chips, advanced assumptions, reset, the phone summary, and the sticky desktop verdict.
 
 ## Visual comparison
 
@@ -37,11 +37,11 @@ Screenshots and interactive inspection used `chrome-devtools-axi`. These are aut
 
 Commit `9f48a98` adds only the default browser test. Against the scaffold it fails at `#agents`, expecting 14 and finding no element. After the port, the same test passes.
 
-Commit `642fca6` adds only the zero-memory test. Before the UI guard it fails with expected 14 and received 18. After the guard it passes. `src/lib/model.ts` and `src/data/presets.ts` remain byte-identical to the supplied seed files, as do `test/model.test.ts` and `test/test-vectors.json`.
+Commit `642fca6` added a zero-memory test for a UI guard. The guard and its test were later removed to restore prototype behavior, so [the validation log](validation/local-checks.txt), recorded before that removal, lists 14 browser tests. `src/lib/model.ts` and `src/data/presets.ts` remain byte-identical to the supplied seed files, as do `test/model.test.ts` and `test/test-vectors.json`.
 
 ## Known handoff edges
 
-- Memory per build of zero divides by zero in `ramFitBuilds`. The number input retains its supplied positive minimum and the controller rejects zero before passing it to the model. Model math remains unchanged.
+- Memory per build of zero is below the 4 GB slider minimum, but the number box accepts it and the prototype passes it to the model. `ramFitBuilds` divides by zero, so the chart shows "Memory fits 100+". It produces NaN only when usable memory exactly equals shown × residentGB. The port keeps prototype behavior and flags this edge for the user.
 - The capacity search stops at 400 agents. This is unchanged.
 - The prototype requests Archivo widths 62–125 while DESIGN.md describes 72–112. The self-hosted Archivo file supports 62–125 and the CSS uses its supplied 72% and 112% settings.
 

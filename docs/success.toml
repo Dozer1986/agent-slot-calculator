@@ -2,7 +2,7 @@ project = "Agent Slot Calculator"
 owner = "dbeihl"
 end_date = 2026-10-23
 non_goals = ["Model or preset changes", "URL state, theme toggle, CSV export", "Pages settings or deployment in the worker stage"]
-open_questions = []
+open_questions = ["Memory per build of zero is below the 4 GB slider minimum, but the number box accepts it and the prototype passes it to the model. `ramFitBuilds` divides by zero, so the chart shows \"Memory fits 100+\". It produces NaN only when usable memory exactly equals shown × residentGB. The port keeps prototype behavior and flags this edge for the user."]
 
 [customer]
 users = "Hardware buyers and operators running cloud-backed coding agents"
