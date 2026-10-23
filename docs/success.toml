@@ -1,0 +1,50 @@
+project = "Agent Slot Calculator"
+owner = "dbeihl"
+end_date = 2026-10-23
+non_goals = ["Model or preset changes", "URL state, theme toggle, CSV export", "Pages settings or deployment in the worker stage"]
+open_questions = []
+
+[customer]
+users = "Hardware buyers and operators running cloud-backed coding agents"
+outcome = "Compare concurrent agent capacity and lifetime cost against a 128 GB desktop"
+evidence = "Prototype parity vectors and handoff browser acceptance cases"
+platforms = ["Desktop browser at 1280px", "Phone browser at 400px", "Keyboard navigation"]
+
+[delivery]
+deploy = "GitHub Pages through .github/workflows/deploy.yml after merge to main"
+rollback = "Revert the implementation through a pull request and redeploy main"
+data_class = "Public hardware presets and browser-local user inputs"
+
+[[criterion]]
+name = "Model parity"
+kind = "gate"
+measure = "Failed supplied parity tests"
+threshold = "= 0"
+check = "npm test"
+
+[[criterion]]
+name = "Browser acceptance"
+kind = "gate"
+measure = "Failed browser acceptance tests"
+threshold = "= 0"
+check = "npm run test:e2e"
+
+[[criterion]]
+name = "Static build"
+kind = "gate"
+measure = "TypeScript errors and build failures"
+threshold = "= 0"
+check = "npm run build"
+
+[[criterion]]
+name = "Runtime network"
+kind = "gate"
+measure = "Requests to origins other than the site"
+threshold = "= 0"
+check = "npm run test:e2e"
+
+[[milestone]]
+name = "Committed port"
+date = 2026-10-23
+demonstrable = "Built static site passes parity and browser acceptance locally"
+audience = "Firstmate validation stage"
