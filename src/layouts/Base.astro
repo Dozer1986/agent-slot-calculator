@@ -6,6 +6,15 @@ import '@fontsource/ibm-plex-mono/latin-400.css';
 import '@fontsource/ibm-plex-mono/latin-500.css';
 import '@fontsource/ibm-plex-mono/latin-600.css';
 import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'Agent Slot Calculator',
+  description = 'How many concurrent coding agents a machine can carry, what each slot costs over its life, and whether it beats a 128 GB desktop.',
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -14,8 +23,8 @@ import '../styles/global.css';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href={import.meta.env.BASE_URL + 'favicon.svg'} />
-    <title>Agent Slot Calculator</title>
-    <meta name="description" content="How many concurrent coding agents a machine can carry, what each slot costs over its life, and whether it beats a 128 GB desktop." />
+    <title>{title}</title>
+    <meta name="description" content={description} />
   </head>
   <body><slot /></body>
 </html>

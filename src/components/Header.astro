@@ -1,5 +1,22 @@
+---
+interface Props {
+  current?: 'calculator' | 'costs';
+  title?: string;
+  intro?: string;
+}
+const {
+  current = 'calculator',
+  title = 'Agent Slot Calculator',
+  intro = "Enter a machine you're eyeing. It works out how many coding agents the box can carry at once, what each slot costs over its life, and how that compares with buying a 128 GB desktop.",
+} = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
   <header>
+    <nav class="site-nav" aria-label="Pages">
+      <a href={base} aria-current={current === 'calculator' ? 'page' : undefined}>Calculator</a>
+      <a href={base + 'costs/'} aria-current={current === 'costs' ? 'page' : undefined}>Cost chart</a>
+    </nav>
     <span class="eyebrow">Build &amp; test fleet · October 2026 prices</span>
-    <h1>Agent Slot Calculator</h1>
-    <p>Enter a machine you're eyeing. It works out how many coding agents the box can carry at once, what each slot costs over its life, and how that compares with buying a 128 GB desktop.</p>
+    <h1>{title}</h1>
+    <p>{intro}</p>
   </header>
