@@ -6,6 +6,8 @@ Runs cloud-backed coding agents and compares purchase candidates against the 128
 
 Journey: `e2e/calculator.spec.ts`. Confirm the default 14-agent, $214 hardware, $305 lifetime and Worth it result. Try the M920q and reduce duty cycle to 15%.
 
+Journey: `e2e/costs.spec.ts`. Compare every machine on the cost chart, read a dot's tooltip by pointer and keyboard, and open a machine in the calculator from its row.
+
 ## Fleet operator
 
 Models a measured workload and machines already owned. Changes workload chips, electricity and advanced assumptions, saves a custom machine through reload, and resets report defaults.

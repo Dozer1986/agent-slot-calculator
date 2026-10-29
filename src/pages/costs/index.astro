@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+---
+
+<Base title="Cost per Agent · Agent Slot Calculator" description="Every machine from the report on one chart: what one box costs over its life against what each agent slot on it costs.">
+  <div class="wrap">
+    <Header
+      current="costs"
+      title="Cost per agent vs. total cost"
+      intro="Every machine on one chart. Moving right costs more for the box; moving down costs less for each agent it carries. The best buys sit low on the chart at a total you can afford."
+    />
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-cost-chart">
+        <div class="panel-head">
+          <h2 id="h-cost-chart">Lifetime cost: per agent against per box</h2>
+          <span class="eyebrow" id="cost-assume"></span>
+        </div>
+        <div class="row cost-controls">
+          <label class="check"><input type="checkbox" id="show-owned" checked> Include machines you already own (power only)</label>
+          <a class="text-link" href={import.meta.env.BASE_URL}>Change settings in the calculator</a>
+        </div>
+        <ul class="legend" aria-label="Chart key">
+          <li><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="var(--accent)" /></svg>To buy</li>
+          <li><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="var(--panel)" stroke="var(--accent)" stroke-width="2" /></svg>Already yours</li>
+          <li><svg viewBox="0 0 22 14" aria-hidden="true"><line x1="1" x2="21" y1="7" y2="7" stroke="var(--accent)" stroke-width="2" opacity="0.55" /></svg>Lowest per-agent cost at each budget</li>
+          <li><svg viewBox="0 0 22 14" aria-hidden="true"><line x1="1" x2="21" y1="12" y2="2" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" /></svg>Same number of agents</li>
+          <li><span class="swatch" data-state="ok"></span>Beats the 128 GB desktop</li>
+          <li><span class="swatch" data-state="warn"></span>Within 25% of it</li>
+        </ul>
+        <div class="cost-chart" id="cost-chart-wrap">
+          <svg id="cost-chart" role="group" aria-labelledby="h-cost-chart"></svg>
+          <div class="tip" id="cost-tip" hidden></div>
+        </div>
+        <p class="hint">Each dot is one machine under your settings. A dashed diagonal joins every total and per-agent cost that comes from the same number of agents, because per-agent cost is the box's total divided by its agents. Both axes are logarithmic. Hover over or focus a dot for its numbers.</p>
+        <p class="note" id="cost-none"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="h-cost-table">
+        <div class="panel-head"><h2 id="h-cost-table">The numbers behind the chart</h2><span class="eyebrow">Cheapest box first</span></div>
+        <div class="table-scroll">
+          <table class="cost-table">
+            <thead><tr>
+              <th>Machine</th><th class="n" id="th-total">Total</th><th class="n">Agents</th><th class="n">Per agent</th><th class="n">vs. 128 GB desktop</th><th>Verdict</th>
+            </tr></thead>
+            <tbody id="cost-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script>
+    import '../../scripts/costs';
+  </script>
+</Base>

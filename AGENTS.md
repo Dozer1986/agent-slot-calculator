@@ -1,6 +1,6 @@
 # Agent Slot Calculator
 
-A static Astro site with one page. It works out how many concurrent AI coding agents a machine can carry, what each agent slot costs over its life, and whether it beats buying a 128 GB Core Ultra 7 270K Plus desktop. The defaults and presets come from `docs/research-report.md` (October 2026 prices).
+A static Astro site with two pages. The calculator works out how many concurrent AI coding agents a machine can carry, what each agent slot costs over its life, and whether it beats buying a 128 GB Core Ultra 7 270K Plus desktop. The defaults and presets come from `docs/research-report.md` (October 2026 prices).
 
 ## Commands
 
@@ -12,7 +12,8 @@ A static Astro site with one page. It works out how many concurrent AI coding ag
 
 - `src/lib/model.ts`: pure capacity and cost model, with no DOM. Binomial builds-at-once, memory sized to the 99th percentile, CPU to the 95th (5% overshoot allowed), and slow cores raise the effective duty cycle.
 - `src/data/presets.ts`: the preset machines, `DEFAULTS` and `REFERENCE_ID`.
-- `src/scripts/calculator.ts`: the DOM controller. It builds the slider fields, renders the verdict, chart and table, and saves to localStorage under `agent-slot-calc-v1`.
+- `src/scripts/calculator.ts`: the DOM controller. It builds the slider fields, renders the verdict, chart and table, and saves to localStorage through `src/lib/saved.ts` (key `agent-slot-calc-v1`). `?preset=<id>` loads a preset and keeps the saved workload.
+- `src/pages/costs/`, `src/scripts/costs.ts` and `src/lib/costs.ts`: the cost chart page. It plots each machine's lifetime total against its lifetime cost per agent on log axes, reading the calculator's saved settings.
 - `src/components/*.astro`: static markup. Element ids are used by the controller, so don't rename them.
 - `src/styles/global.css`: design tokens (light plus two dark blocks) and component styles. See `docs/source/DESIGN.md`.
 

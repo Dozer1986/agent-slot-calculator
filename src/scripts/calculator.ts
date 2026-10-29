@@ -1,9 +1,10 @@
 import { evaluate, evaluateReference, judge, type Assumptions, type Machine, type Result, type VerdictKey } from '../lib/model';
 import { DEFAULTS, PRESETS, REFERENCE_ID } from '../data/presets';
+import { readSaved, writeSaved, type EditableMachine } from '../lib/saved';
+import { fmt$ } from '../lib/format';
 
 
 type MachineField = 'price' | 'ram' | 'st' | 'mt' | 'idle' | 'load';
-type EditableMachine = Machine & { owned: boolean; upGB: number; upCost: number };
 type FieldDef<K extends string> = {
   k: K;
   label: string;
@@ -32,8 +33,6 @@ type ElementMap = {
   'work-fields' | 'adv-fields' | 'os-seg' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
 
 const $ = <K extends keyof ElementMap>(id: K): ElementMap[K] => document.getElementById(id) as ElementMap[K];
-const STORE_KEY = 'agent-slot-calc-v1';
-const fmt$ = (v: number) => !isFinite(v) ? '—' : '$' + Math.round(v).toLocaleString('en-US');
 
 let A: Assumptions = { ...DEFAULTS };
 let M: EditableMachine;
@@ -122,17 +121,12 @@ function syncMachine() {
 }
 function syncWork() { [...WORK_FIELDS, ...ADV_FIELDS].forEach((d) => d.sync?.()); }
 
-function save() {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify({ A, M, presetId })); } catch (e) { /* storage unavailable */ }
-}
+function save() { writeSaved({ A, M, presetId }); }
 function restore() {
-  try {
-    const raw = localStorage.getItem(STORE_KEY);
-    if (!raw) return false;
-    const s = JSON.parse(raw) as { A?: Partial<Assumptions>; M?: EditableMachine; presetId?: string };
-    if (s && s.A && s.M) { A = { ...DEFAULTS, ...s.A }; M = s.M; presetId = s.presetId || 'custom'; return true; }
-  } catch (e) { /* ignore */ }
-  return false;
+  const s = readSaved();
+  if (!s) return false;
+  A = s.A; M = s.M; presetId = s.presetId;
+  return true;
 }
 
 function refResult() {
@@ -308,7 +302,11 @@ function init() {
   $('upcost').addEventListener('input', () => { M.upCost = Number($('upcost').value) || 0; render(); });
   $('reset').addEventListener('click', () => { A = { ...DEFAULTS }; syncWork(); render(); });
 
-  if (!restore()) loadPreset('270k128');
+  const restored = restore();
+  // ?preset=<id> (links from the cost chart) loads that machine and keeps the saved workload.
+  const linked = new URLSearchParams(location.search).get('preset');
+  if (linked && PRESETS.some((p) => p.id === linked)) { loadPreset(linked); history.replaceState(null, '', location.pathname); }
+  else if (!restored) loadPreset('270k128');
   syncMachine(); syncWork();
   render();
 }
