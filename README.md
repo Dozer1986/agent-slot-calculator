@@ -24,7 +24,7 @@ Run the browser acceptance tests with `npm run test:e2e`. They start their own p
 1. Agents spend most of their time waiting on the model. The duty cycle is the share they spend building or running tests.
 2. With that share, the number of builds running at once follows a binomial distribution. Memory must hold the 99th-percentile count, because running out kills jobs. CPU must cover the 95th, because contention only slows things down.
 3. Each agent also holds a little memory all the time, and the system keeps some back.
-4. Slower single-thread scores stretch the serial part of every build, which raises that machine's effective duty cycle. Weak multi-thread scores stretch the parallel part.
+4. Slower single-thread scores stretch the serial part of every build, which raises that machine's effective duty cycle. Weak multi-thread scores stretch the parallel part. The multi-thread score is per CPU and is multiplied by the CPU count; single-thread speed is not.
 5. Lifetime per agent is (price + years × yearly power) ÷ agents. Machines you already own count power only. "Worth it" means it beats the 128 GB Core Ultra 7 270K Plus desktop under the same settings; "Close call" is within 25%.
 
 The 23 presets and defaults come from the [research report](docs/research-report.md). Prices are from October 2026. Mac scores, several power figures and some prices are estimates. Used prices vary by listing.
