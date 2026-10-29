@@ -221,3 +221,15 @@ test('an incomplete saved machine falls back to the reference box', async ({ pag
   await expect(page.locator('#mname')).not.toHaveValue('undefined');
   await expect(page.locator('#agents')).toHaveText('14');
 });
+
+test('a second CPU doubles the multi-thread score', async ({ page }) => {
+  await page.goto(site);
+  await page.getByRole('combobox', { name: 'Start from' }).selectOption('epyc');
+  await expect(page.locator('#agents')).toHaveText('16');
+  await expect(page.locator('#limit')).toHaveText('limited by CPU');
+  await page.getByRole('spinbutton', { name: 'CPUs', exact: true }).fill('2');
+  await expect(page.locator('#agents')).toHaveText('28');
+  await expect(page.locator('#limit')).toHaveText('limited by memory');
+  await expect(page.getByRole('slider', { name: 'CPUs', exact: true })).toHaveValue('2');
+  await expect(page.locator('#preset')).toHaveValue('custom');
+});

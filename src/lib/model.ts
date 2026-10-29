@@ -29,8 +29,10 @@ export interface Machine {
   ram: number;
   /** PassMark single-thread rating. */
   st: number;
-  /** PassMark CPU Mark (multi-thread). */
+  /** PassMark CPU Mark (multi-thread) of one CPU. */
   mt: number;
+  /** CPUs (sockets) in the system, all the same model. Default 1. */
+  cpus?: number;
   /** Wall watts at idle and at full load. */
   idle: number;
   load: number;
@@ -147,9 +149,10 @@ export function quantile(pmf: number[], q: number): number {
 export function evaluate(m: Machine, a: Assumptions, ramOverride?: number | null, priceOverride?: number | null): Result {
   const ram = ramOverride != null ? ramOverride : m.ram;
   const price = priceOverride != null ? priceOverride : m.price;
+  const mt = m.mt * (m.cpus || 1);
   const slotMT = (a.threads * REF.mt) / 32;
   const stStretch = REF.st / Math.max(1, m.st);
-  const mtStretch = Math.max(1, slotMT / Math.max(1, m.mt));
+  const mtStretch = Math.max(1, slotMT / Math.max(1, mt));
   const stretch = a.serial * stStretch + (1 - a.serial) * mtStretch;
   const pEff = Math.min(0.95, a.p * stretch);
   const usable = ram - m.reserve;
@@ -162,7 +165,7 @@ export function evaluate(m: Machine, a: Assumptions, ramOverride?: number | null
     const q95 = quantile(pmf, 0.95);
     const ramOk = k * a.residentGB + q99 * a.slotGB <= usable;
     // CPU contention only slows builds, so allow a 5% overshoot.
-    const cpuOk = q95 <= 1 || q95 * slotMT <= m.mt * 1.05;
+    const cpuOk = q95 <= 1 || q95 * slotMT <= mt * 1.05;
     if (!ramOk || !cpuOk) { limit = !ramOk ? 'ram' : 'cpu'; break; }
     n = k;
     if (k === 400) limit = 'cap';
@@ -178,9 +181,9 @@ export function evaluate(m: Machine, a: Assumptions, ramOverride?: number | null
   const hwPer = n ? cost / n : Infinity;
   const lifePer = n ? (cost + a.years * powerYr) / n : Infinity;
   const ramFitBuilds = Math.max(0, (usable - shown * a.residentGB) / a.slotGB);
-  const cpuFitBuilds = m.mt / slotMT;
+  const cpuFitBuilds = mt / slotMT;
   const ramUsedP99 = n ? (m.reserve + n * a.residentGB + q99 * a.slotGB) / ram : 0;
-  const cpuUsedP95 = n ? (q95 * slotMT) / m.mt : 0;
+  const cpuUsedP95 = n ? (q95 * slotMT) / mt : 0;
 
   return {
     n, limit, pEff, stretch, stStretch, mtStretch, slotMT, powerYr, watts, cost, price, ram, hwPer, lifePer,
