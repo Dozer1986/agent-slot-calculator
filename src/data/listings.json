@@ -520,7 +520,7 @@
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $229.99 (Gigabyte B550M DS3H AC R2, its 16 GB kit unused) + 2× Crucial Pro 2×32 GB DDR4-3200 at $488 (Best Buy) + 2 TB NVMe $210 (report) + an unsourced $250 for PSU, case and cooler. Scores are the Ryzen 5 5500's; PassMark has no 5500F page."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $229.99 (Gigabyte B550M DS3H AC R2, its 16 GB kit unused) + 2× Crucial Pro 64 GB kit (2×32 GB) DDR4-3200 at $488 (Best Buy, bestbuy.com/site/crucial-pro-64gb-kit-2x32gb-3200-mhz-ddr4-3200-udimm-desktop-memory-black/6543930.p, 2026-10) + 2 TB NVMe $210 (report) + an unsourced $250 for PSU, case and cooler. Scores are the Ryzen 5 5500's; PassMark has no 5500F page."
  },
  {
   "id": "mk-microcenter-7600x3d",
@@ -532,7 +532,7 @@
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $479.99 (Gigabyte B650 Gaming X AX V2; its 16 GB stick unused, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + an unsourced $250 for PSU, case and cooler."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $479.99 (Gigabyte B650 Gaming X AX V2; its 16 GB stick unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + an unsourced $250 for PSU, case and cooler."
  },
  {
   "id": "mk-microcenter-9700x",
