@@ -1,5 +1,15 @@
     <section class="panel area-table" aria-labelledby="h-table">
       <div class="panel-head"><h2 id="h-table">Every machine from the report, under your settings</h2><span class="eyebrow">Tap a row to load it</span></div>
+      <div class="seg table-filter" role="group" aria-label="Machines to show" id="source-seg">
+        <button type="button" data-v="report" aria-pressed="true">Report machines</button>
+        <button type="button" data-v="microcenter" aria-pressed="false">Micro Center bundles</button>
+      </div>
+      <div class="seg table-filter" role="group" aria-label="Filter by verdict" id="verdict-seg">
+        <button type="button" data-v="all" aria-pressed="true">All</button>
+        <button type="button" data-v="ok" aria-pressed="false">Worth it</button>
+        <button type="button" data-v="warn" aria-pressed="false">Close call</button>
+        <button type="button" data-v="bad" aria-pressed="false">Skip</button>
+      </div>
       <div class="table-scroll">
         <table>
           <thead><tr>

@@ -32,7 +32,7 @@ type ElementMap = {
 } & Record<'vband' | 'vpill' | 'bar-pill' | 'vname' | 'res-assume' | 'agents' | 'bar-agents' |
   'limit' | 'm-hw' | 'm-hw-s' | 'm-tco' | 'bar-tco' | 'm-tco-s' | 'm-pwr' | 'm-pwr-s' |
   'm-ref' | 'm-ref-s' | 'fleet' | 'flags' | 'chart-title' | 'tbody' | 'machine-fields' |
-  'work-fields' | 'adv-fields' | 'os-seg' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
+  'work-fields' | 'adv-fields' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
 
 const $ = <K extends keyof ElementMap>(id: K): ElementMap[K] => document.getElementById(id) as ElementMap[K];
 
@@ -268,12 +268,23 @@ function drawChart(r: Result) {
   mk('text', { x: xc(r.q99), y: yBase + 27, 'font-size': 9, 'text-anchor': 'middle', fill: 'var(--accent)', 'font-family': 'var(--font-body)' }, '99% of the time ≤ ' + r.q99);
 }
 
+let verdictFilter = 'all';
+let source: 'report' | 'microcenter' = 'report';
+const BUNDLES = CATALOG.filter((e) => e.machine.id?.startsWith('mk-microcenter-')).map((e) => e.machine);
+
 function renderTable(ref: Result) {
   const tb = $('tbody'); tb.textContent = '';
-  const rows = PRESETS.map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; });
+  $('h-table').textContent = source === 'report' ? 'Every machine from the report, under your settings' : 'Micro Center bundles as full builds, under your settings';
+  const rows = (source === 'report' ? PRESETS : BUNDLES).map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; })
+    .filter((x) => verdictFilter === 'all' || x.v.key === verdictFilter);
+  if (!rows.length) {
+    const tr = document.createElement('tr'); tr.className = 'group';
+    const td = document.createElement('td'); td.colSpan = 7; td.textContent = 'No machine gets this verdict under your settings.'; tr.appendChild(td); tb.appendChild(tr);
+  }
   const sorter = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.r.lifePer - b.r.lifePer;
   const groups: [string, typeof rows][] = [['To buy', rows.filter((x) => !x.p.owned).sort(sorter)], ['Already yours · power only', rows.filter((x) => x.p.owned).sort(sorter)]];
   groups.forEach(([title, list]) => {
+    if (!list.length) return;
     const g = document.createElement('tr'); g.className = 'group';
     const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
     list.forEach(({ p, r, v }) => {
@@ -327,6 +338,15 @@ function init() {
   sel.addEventListener('change', () => { if (sel.value === 'custom') { presetId = 'custom'; render(); return; } loadPreset(sel.value); render(); });
   $('mname').addEventListener('input', () => { M.name = $('mname').value; markCustom(); render(); });
   $('owned').addEventListener('change', () => { M.owned = $('owned').checked; markCustom(); render(); });
+  // Table filters: which machines, then which verdicts.
+  const onSeg = (id: 'verdict-seg' | 'source-seg', set: (v: string) => void) => $(id).addEventListener('click', (e) => {
+    const b = e.target instanceof Element ? e.target.closest('button') : null; if (!b) return;
+    set(b.dataset.v!);
+    $(id).querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    render();
+  });
+  onSeg('verdict-seg', (v) => { verdictFilter = v; });
+  onSeg('source-seg', (v) => { source = v as typeof source; });
   $('os-seg').addEventListener('click', (e) => { const b = e.target instanceof Element ? e.target.closest('button') : null; if (!b) return; M.reserve = Number(b.dataset.v); markCustom(); syncMachine(); render(); });
   $('upgb').addEventListener('input', () => { M.upGB = Number($('upgb').value) || 0; render(); });
   $('upcost').addEventListener('input', () => { M.upCost = Number($('upcost').value) || 0; render(); });

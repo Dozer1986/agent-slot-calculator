@@ -221,3 +221,30 @@ test('an incomplete saved machine falls back to the reference box', async ({ pag
   await expect(page.locator('#mname')).not.toHaveValue('undefined');
   await expect(page.locator('#agents')).toHaveText('14');
 });
+
+test('verdict filter narrows the comparison table', async ({ page }) => {
+  await page.goto(site);
+  const filter = page.getByRole('group', { name: 'Filter by verdict' });
+  await filter.getByRole('button', { name: 'Worth it' }).click();
+  await expect(filter.getByRole('button', { name: 'Worth it' })).toHaveAttribute('aria-pressed', 'true');
+  const pills = page.locator('#tbody .pill');
+  await expect(pills.first()).toBeVisible();
+  for (const text of await pills.allTextContents()) expect(['Worth it', 'Use it']).toContain(text);
+  await expect(page.getByRole('row').filter({ hasText: 'Core Ultra 7 270K Plus · 128 GB' })).toBeVisible();
+  await expect(page.getByRole('row').filter({ hasText: 'Lenovo M920q ·' })).toHaveCount(0);
+  await filter.getByRole('button', { name: 'Skip' }).click();
+  await expect(page.getByRole('row').filter({ hasText: 'Lenovo M920q ·' })).toBeVisible();
+  await filter.getByRole('button', { name: 'All', exact: true }).click();
+  await expect(page.locator('#tbody .pill')).toHaveCount(await page.locator('#tbody tr:not(.group)').count());
+});
+
+test('the table can show only the Micro Center bundles', async ({ page }) => {
+  await page.goto(site);
+  await page.getByRole('group', { name: 'Machines to show' }).getByRole('button', { name: 'Micro Center bundles' }).click();
+  await expect(page.locator('#h-table')).toContainText('Micro Center bundles');
+  const names = page.locator('#tbody tr:not(.group) td:first-child');
+  await expect(names.first()).toBeVisible();
+  for (const name of await names.allTextContents()) expect(name).toMatch(/^Micro Center bundle · /);
+  await page.getByRole('row').filter({ hasText: 'Micro Center bundle · Core Ultra 7 270K Plus · 128 GB' }).click();
+  await expect(page.locator('#mname')).toHaveValue('Micro Center bundle · Core Ultra 7 270K Plus · 128 GB');
+});
