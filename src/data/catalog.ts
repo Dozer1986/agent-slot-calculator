@@ -10,7 +10,7 @@
  * The presets in `presets.ts` stay exactly as the report gave them; the
  * catalog only adds metadata (condition, form, provenance) around them.
  */
-import type { Machine } from '../lib/model';
+import { EXTRA_CPU_SHARE, type Machine } from '../lib/model';
 import { PRESETS } from './presets';
 import cpuRows from './cpus.json' with { type: 'json' };
 import listingRows from './listings.json' with { type: 'json' };
@@ -157,8 +157,9 @@ export function resolveListing(l: Listing): CatalogEntry | null {
     price: market ? market.median : l.price,
     ram: l.ram,
     st: cpu.st,
-    // Without PassMark's own dual-socket figure, assume the second socket adds 80%.
-    mt: sockets === 2 ? Math.round(dualMt ?? cpu.mt * 1.8) : cpu.mt,
+    // Without PassMark's own dual-socket figure, assume the second socket adds EXTRA_CPU_SHARE.
+    mt: sockets === 2 ? Math.round((dualMt ?? cpu.mt * (1 + EXTRA_CPU_SHARE)) / (1 + EXTRA_CPU_SHARE)) : cpu.mt,
+    cpus: sockets,
     idle: measured ? l.idleW! : est.idle,
     load: measured ? l.loadW! : est.load,
     reserve: l.form === 'mac' ? 8 : 6,

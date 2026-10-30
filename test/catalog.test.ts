@@ -58,6 +58,16 @@ describe('catalog', () => {
     expect(measured.powerEstimated).toBe(false);
     expect(resolveListing({ ...base, cpu: 'no-such-cpu' })).toBeNull();
   });
+
+  it('resolves a dual-socket listing as 2 CPUs with the same combined multi-thread score', () => {
+    for (const l of LISTINGS.filter((x) => x.sockets === 2)) {
+      const cpu = findCpu(l.cpu)!;
+      const m = resolveListing(l)!.machine;
+      expect(m.cpus, l.id).toBe(2);
+      expect(Number.isInteger(m.mt), l.id).toBe(true);
+      expect(Math.abs(m.mt * 1.8 - (cpu.mtDual ?? cpu.mt * 1.8)), l.id).toBeLessThan(1);
+    }
+  });
 });
 
 describe('power estimate', () => {
