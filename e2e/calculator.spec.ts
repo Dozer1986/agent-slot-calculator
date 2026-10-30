@@ -274,4 +274,7 @@ test('a multi-CPU box compares RAM stick sizes', async ({ page }) => {
   await expect(page.locator('#sticks-out')).toHaveText('128 GB across 2 CPUs × 2 slots: 16 GB sticks need 4 slots per CPU · 4 × 32 GB = $1,000 (cheapest).');
   await page.getByRole('spinbutton', { name: 'CPUs', exact: true }).fill('1');
   await expect(page.locator('#sticks-box')).toBeHidden();
+  await page.getByRole('combobox', { name: 'Start from' }).selectOption('mk-dell-poweredge-r730-2x-e5-2680-v4-128-gb');
+  await expect(page.getByRole('spinbutton', { name: 'CPUs', exact: true })).toHaveValue('2');
+  await expect(page.locator('#sticks-box')).toBeVisible();
 });
