@@ -36,6 +36,10 @@ That kept 35 of 92 researched listings. Each kept row carries the researcher's c
 
 PassMark's terms of use could not be checked from the session. The rows hold individual published figures with a link to each page. Licensing PassMark's data is the alternative if that matters for a public site.
 
+### Micro Center bundles
+
+The `mk-microcenter-` rows are Micro Center's in-store CPU, board and memory bundles, read from the bundle pages on 2026-10-29. One row per CPU, using its cheapest board; a pricier board adds no agents. Each is priced as a complete machine so it compares with the report's 128 GB desktop. Desktop bundles swap their 16–32 GB kit for 2×64 GB DDR5 ($1,852, or $976 of DDR4 for AM4) and add the report's $210 2 TB NVMe plus an unsourced $250 for PSU, case and cooler. Workstation bundles already include 128 GB of registered memory and add the NVMe plus an unsourced $600. Each row's `notes` gives the breakdown. The Xeon 654 and Ryzen 5 5600X3D bundles are left out because PassMark has no CPU Mark for them yet.
+
 ## Power
 
 Few listings have measured wall power. Without it, `estimatePower` in `catalog.ts` uses idle by machine type and load = base + 1.3 × TDP (base 20 W for mini PCs, 90 W otherwise), with mobile chips run at 45 W or more and Ryzen AI Max boxes at 120 W. The table and tooltips label these "power estimated".
@@ -63,7 +67,7 @@ The script is tested against a stub of the API (`test/refresh-prices.test.ts`) a
 
 These processors have no scores yet, so listings using them were dropped. They are the next research batch.
 
-- **Intel:** i5-14500T, i5-14500, i7-14700, i9-14900K, Core Ultra 5 225, Ultra 5 245K, Ultra 7 265K, Ultra 9 285K, Ultra 5 125H, Ultra 7 155H, Ultra 9 185H, Ultra 7 255H, Ultra 9 285H, N100, i3-N305, i5-12450H, i7-12700H, i9-12900H, i9-13900H, i5-1240P, i7-1260P, i5-11500, i5-8350U, i7-8665U, i5-1135G7, i7-1165G7, i5-1145G7, i7-1185G7.
+- **Intel:** i5-14500T, i5-14500, i7-14700, i9-14900K, Core Ultra 5 225, Ultra 5 245K, Ultra 7 265K, Ultra 5 125H, Ultra 7 155H, Ultra 9 185H, Ultra 7 255H, Ultra 9 285H, N100, i3-N305, i5-12450H, i7-12700H, i9-12900H, i9-13900H, i5-1240P, i7-1260P, i5-11500, i5-8350U, i7-8665U, i5-1135G7, i7-1165G7, i5-1145G7, i7-1185G7.
 - **Xeon Scalable and W, common in used workstations and servers:** Silver 4114, 4210; Gold 5122, 6130, 6136, 6150, 6152, 6154, 6234, 6240, 6244, 6246; W-2133, W-2155, w7-2495X; E5-2699 v4; Core i7-7820X, i9-7900X.
 - **AMD:** Ryzen AI 9 365, Ryzen 7 8745HS, Ryzen 9 8945HS, Ryzen 9 9955HX, Ryzen AI Max+ PRO 495.
 - **Apple:** M2, M2 Pro, M2 Max, M2 Ultra, M3, M3 Pro, M3 Max, M3 Ultra, M4, M4 Pro, M4 Max, M5, M5 Pro (15-core), M5 Ultra.
