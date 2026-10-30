@@ -34,3 +34,12 @@ describe('model parity with the prototype', () => {
     });
   }
 });
+
+describe('multiple CPUs', () => {
+  it('add 80% of the multi-thread score for each CPU beyond the first', () => {
+    const base = PRESETS.find((p) => p.id === 'ser9')!;
+    const two = evaluate({ ...base, cpus: 2 }, DEFAULTS);
+    expect(two).toEqual(evaluate({ ...base, mt: base.mt * 1.8 }, DEFAULTS));
+    expect(two.cpuFitBuilds).toBeCloseTo(evaluate(base, DEFAULTS).cpuFitBuilds * 1.8);
+  });
+});

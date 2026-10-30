@@ -6,7 +6,7 @@ import { userEntries } from '../lib/listings';
 import { fmt$ } from '../lib/format';
 
 
-type MachineField = 'price' | 'ram' | 'st' | 'mt' | 'idle' | 'load';
+type MachineField = 'price' | 'ram' | 'st' | 'mt' | 'cpus' | 'idle' | 'load';
 type FieldDef<K extends string> = {
   k: K;
   label: string;
@@ -45,6 +45,7 @@ const MACHINE_FIELDS: FieldDef<MachineField>[] = [
   { k: 'ram', label: 'Memory', min: 8, max: 512, step: 4, unit: 'GB', hint: 'Installed RAM.' },
   { k: 'st', label: 'Single-thread', min: 800, max: 6000, step: 10, unit: 'pts', hint: 'PassMark single-thread rating. Ryzen 9 9950X = 4,726.' },
   { k: 'mt', label: 'Multi-thread', min: 2000, max: 160000, step: 100, unit: 'pts', hint: 'PassMark CPU Mark. Ryzen 9 9950X = 65,693.' },
+  { k: 'cpus', label: 'CPUs', min: 1, max: 8, step: 1, unit: '', hint: 'Sockets in the system, all the same CPU. Each extra CPU adds 80% of the multi-thread score; power is for the whole system.' },
   { k: 'idle', label: 'Idle power', min: 1, max: 250, step: 1, unit: 'W', hint: 'Watts at the wall when idle.' },
   { k: 'load', label: 'Full-load power', min: 10, max: 700, step: 5, unit: 'W', hint: 'Watts at the wall with every core busy.' }
 ];
@@ -112,7 +113,7 @@ function loadPreset(id: string) {
   const all = allMachines();
   const p = all.find((x) => x.id === id) || PRESETS.find((x) => x.id === REFERENCE_ID)!;
   presetId = p.id || 'custom';
-  M = { name: p.name, price: p.price, ram: p.ram, st: p.st, mt: p.mt, idle: p.idle, load: p.load, reserve: p.reserve, owned: !!p.owned, upGB: p.upGB || 0, upCost: p.upCost || 0, note: p.note };
+  M = { name: p.name, price: p.price, ram: p.ram, st: p.st, mt: p.mt, cpus: p.cpus || 1, idle: p.idle, load: p.load, reserve: p.reserve, owned: !!p.owned, upGB: p.upGB || 0, upCost: p.upCost || 0, note: p.note };
   syncMachine();
 }
 function syncMachine() {
@@ -142,7 +143,7 @@ function restore() {
   }
   // An edited machine, or one no longer in the catalog, is kept only if it is complete.
   if (MACHINE_NUMBERS.every((k) => typeof s.M[k] === 'number' && isFinite(s.M[k]))) {
-    M = { ...s.M, name: typeof s.M.name === 'string' ? s.M.name : 'Custom machine', owned: !!s.M.owned, upGB: Number(s.M.upGB) || 0, upCost: Number(s.M.upCost) || 0 };
+    M = { ...s.M, name: typeof s.M.name === 'string' ? s.M.name : 'Custom machine', owned: !!s.M.owned, upGB: Number(s.M.upGB) || 0, upCost: Number(s.M.upCost) || 0, cpus: Number(s.M.cpus) || 1 };
     presetId = 'custom';
   } else {
     loadPreset(REFERENCE_ID);

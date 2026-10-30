@@ -248,3 +248,15 @@ test('the table can show only the Micro Center bundles', async ({ page }) => {
   await page.getByRole('row').filter({ hasText: 'Micro Center bundle · Core Ultra 7 270K Plus · 128 GB' }).click();
   await expect(page.locator('#mname')).toHaveValue('Micro Center bundle · Core Ultra 7 270K Plus · 128 GB');
 });
+
+test('a second CPU adds 80% of the multi-thread score', async ({ page }) => {
+  await page.goto(site);
+  await page.getByRole('combobox', { name: 'Start from' }).selectOption('epyc');
+  await expect(page.locator('#agents')).toHaveText('16');
+  await expect(page.locator('#limit')).toHaveText('limited by CPU');
+  await page.getByRole('spinbutton', { name: 'CPUs', exact: true }).fill('2');
+  await expect(page.locator('#agents')).toHaveText('28');
+  await expect(page.locator('#limit')).toHaveText('limited by memory');
+  await expect(page.getByRole('slider', { name: 'CPUs', exact: true })).toHaveValue('2');
+  await expect(page.locator('#preset')).toHaveValue('custom');
+});

@@ -1,5 +1,5 @@
 /**
- * The machine catalog: the report's 23 presets plus market listings.
+ * The machine catalog: the report's 23 presets, Aaron's own machines (_AB) and market listings.
  *
  * Market data is split in two so a new machine is one short record:
  * - `cpus.json`: one row per processor with its PassMark scores and source.
@@ -7,10 +7,11 @@
  * `market-prices.json` is written by `scripts/refresh-prices.mjs` and, when it
  * has a fresh eBay median for a listing, replaces that listing's price.
  *
- * The presets in `presets.ts` stay exactly as the report gave them; the
+ * The report's presets in `presets.ts` stay exactly as the report gave them
+ * (the _AB entries are Aaron's own machines with PassMark sources); the
  * catalog only adds metadata (condition, form, provenance) around them.
  */
-import type { Machine } from '../lib/model';
+import { EXTRA_CPU_SHARE, type Machine } from '../lib/model';
 import { PRESETS } from './presets';
 import cpuRows from './cpus.json' with { type: 'json' };
 import listingRows from './listings.json' with { type: 'json' };
@@ -95,8 +96,8 @@ const MARKET = (marketPrices as { prices: Record<string, MarketPrice> }).prices;
 const cpuById = new Map(CPUS.map((c) => [c.id, c]));
 export const findCpu = (id: string) => cpuById.get(id);
 
-/** Report presets: condition and form from the report's scorecard; power marked estimated where the report says so. */
-const REPORT_META: Record<string, { condition: Condition; form: Form; powerEstimated?: boolean }> = {
+/** Report presets: condition and form from the report's scorecard; power marked estimated where the report says so. The _AB entries are Aaron's own machines, sourced per entry through `source`. */
+const REPORT_META: Record<string, { condition: Condition; form: Form; powerEstimated?: boolean; source?: string }> = {
   m920q: { condition: 'used', form: 'mini', powerEstimated: true },
   m720q: { condition: 'used', form: 'mini', powerEstimated: true },
   t10500: { condition: 'used', form: 'mini' },
@@ -120,6 +121,14 @@ const REPORT_META: Record<string, { condition: Condition; form: Form; powerEstim
   mbp: { condition: 'owned', form: 'mac', powerEstimated: true },
   imac: { condition: 'owned', form: 'mac' },
   xeon: { condition: 'owned', form: 'server', powerEstimated: true },
+  // Aaron's own machines (_AB): specs from his fleet roster, scores from PassMark, power from estimatePower.
+  'ab-pve': { condition: 'owned', form: 'tower', powerEstimated: true, source: 'https://www.cpubenchmark.net/cpu.php?id=6296' },
+  'ab-base-desk': { condition: 'owned', form: 'tower', powerEstimated: true, source: 'https://www.cpubenchmark.net/cpu.php?id=3869' },
+  'ab-pve-shop': { condition: 'owned', form: 'tower', powerEstimated: true, source: 'https://www.cpubenchmark.net/cpu.php?id=4325' },
+  'ab-shop-desk': { condition: 'owned', form: 'mini', powerEstimated: true, source: 'https://www.cpubenchmark.net/compare/3995vs3922/Intel-Core-i3-1125G4-vs-Intel-Core-i5-1145G7' },
+  'ab-hp640': { condition: 'owned', form: 'mini', powerEstimated: true, source: 'https://cpubenchmark.net/compare/5825vs4794/Intel-Core-Ultra-7-165U-vs-Intel-Core-i7-1255U' },
+  'ab-yoga9': { condition: 'owned', form: 'mini', powerEstimated: true, source: 'https://www.cpubenchmark.net/compare/Intel-i7-7500U-vs-Intel-i7-8550U/2863vs3064' },
+  'ab-pve-tiny': { condition: 'owned', form: 'mini', powerEstimated: true, source: 'https://www.cpubenchmark.net/cpu.php?id=2041' },
 };
 
 /**
@@ -157,8 +166,9 @@ export function resolveListing(l: Listing): CatalogEntry | null {
     price: market ? market.median : l.price,
     ram: l.ram,
     st: cpu.st,
-    // Without PassMark's own dual-socket figure, assume the second socket adds 80%.
-    mt: sockets === 2 ? Math.round(dualMt ?? cpu.mt * 1.8) : cpu.mt,
+    // Without PassMark's own dual-socket figure, assume the second socket adds EXTRA_CPU_SHARE.
+    mt: sockets === 2 ? Math.round((dualMt ?? cpu.mt * (1 + EXTRA_CPU_SHARE)) / (1 + EXTRA_CPU_SHARE)) : cpu.mt,
+    cpus: sockets,
     idle: measured ? l.idleW! : est.idle,
     load: measured ? l.loadW! : est.load,
     reserve: l.form === 'mac' ? 8 : 6,
@@ -189,7 +199,7 @@ const reportEntries: CatalogEntry[] = PRESETS.map((p) => {
     priceKind: p.owned ? 'owned' : 'report',
     powerEstimated: !!meta.powerEstimated,
     scoreEstimated: meta.form === 'mac',
-    source: 'docs/research-report.md',
+    source: meta.source ?? 'docs/research-report.md',
     seen: '2026-10',
   };
 });

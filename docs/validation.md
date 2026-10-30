@@ -18,7 +18,7 @@ Local checks on macOS on 2026-10-23 passed against the static Astro build under 
 | Same-origin runtime assets | Four layout tests observe all requests and reject other origins. Fonts load from the site's bundled assets. |
 | Reduced motion | Four layout tests emulate reduced motion and verify the verdict band has no transition. |
 
-`npm run test:e2e` passes 13 tests. Additional behavior checks cover paired slider and number controls, number values above slider maxima, custom machine selection, OS reserve, ownership, upgrades, workload chips, advanced assumptions, reset, the phone summary, and the sticky desktop verdict.
+`npm run test:e2e` passes 14 tests. Additional behavior checks cover paired slider and number controls, number values above slider maxima, custom machine selection, OS reserve, ownership, upgrades, workload chips, advanced assumptions, reset, the phone summary, and the sticky desktop verdict.
 
 ## Visual comparison
 
