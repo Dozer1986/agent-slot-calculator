@@ -136,6 +136,7 @@ function syncMachine() {
 function syncWork() { [...WORK_FIELDS, ...ADV_FIELDS].forEach((d) => d.sync?.()); }
 
 function save() { writeSaved({ A, M, presetId }); }
+const savedSticks = (stick?: Record<number, number>) => Object.fromEntries(STICK_GB.map((g) => [g, Number(stick?.[g]) || 0]));
 const MACHINE_NUMBERS = ['price', 'ram', 'st', 'mt', 'idle', 'load', 'reserve'] as const;
 function restore() {
   const s = readSaved();
@@ -146,12 +147,12 @@ function restore() {
   if (s.presetId !== 'custom' && allMachines().some((x) => x.id === s.presetId)) {
     loadPreset(s.presetId);
     M.upGB = Number(s.M.upGB) || 0; M.upCost = Number(s.M.upCost) || 0;
-    M.slots = Number(s.M.slots) || 0; M.stick = s.M.stick || {};
+    M.slots = Number(s.M.slots) || 0; M.stick = savedSticks(s.M.stick);
     return true;
   }
   // An edited machine, or one no longer in the catalog, is kept only if it is complete.
   if (MACHINE_NUMBERS.every((k) => typeof s.M[k] === 'number' && isFinite(s.M[k]))) {
-    M = { ...s.M, name: typeof s.M.name === 'string' ? s.M.name : 'Custom machine', owned: !!s.M.owned, upGB: Number(s.M.upGB) || 0, upCost: Number(s.M.upCost) || 0, cpus: Number(s.M.cpus) || 1, slots: Number(s.M.slots) || 0, stick: s.M.stick || {} };
+    M = { ...s.M, name: typeof s.M.name === 'string' ? s.M.name : 'Custom machine', owned: !!s.M.owned, upGB: Number(s.M.upGB) || 0, upCost: Number(s.M.upCost) || 0, cpus: Number(s.M.cpus) || 1, slots: Number(s.M.slots) || 0, stick: savedSticks(s.M.stick) };
     presetId = 'custom';
   } else {
     loadPreset(REFERENCE_ID);

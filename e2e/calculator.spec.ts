@@ -278,3 +278,17 @@ test('a multi-CPU box compares RAM stick sizes', async ({ page }) => {
   await expect(page.getByRole('spinbutton', { name: 'CPUs', exact: true })).toHaveValue('2');
   await expect(page.locator('#sticks-box')).toBeVisible();
 });
+
+test('a corrupted saved stick price list does not break the RAM stick inputs', async ({ page }) => {
+  await page.goto(site);
+  await page.getByRole('combobox', { name: 'Start from' }).selectOption('xeon');
+  await page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('agent-slot-calc-v1')!);
+    saved.M.stick = 'garbage';
+    localStorage.setItem('agent-slot-calc-v1', JSON.stringify(saved));
+  });
+  await page.reload();
+  await page.getByRole('spinbutton', { name: 'Slots per CPU' }).fill('4');
+  await page.getByRole('spinbutton', { name: '16 GB stick' }).fill('100');
+  await expect(page.locator('#sticks-out')).toHaveText('128 GB across 2 CPUs × 4 slots: 8 × 16 GB = $800 (cheapest).');
+});
