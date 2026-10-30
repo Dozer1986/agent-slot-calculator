@@ -45,7 +45,7 @@ const MACHINE_FIELDS: FieldDef<MachineField>[] = [
   { k: 'ram', label: 'Memory', min: 8, max: 512, step: 4, unit: 'GB', hint: 'Installed RAM.' },
   { k: 'st', label: 'Single-thread', min: 800, max: 6000, step: 10, unit: 'pts', hint: 'PassMark single-thread rating. Ryzen 9 9950X = 4,726.' },
   { k: 'mt', label: 'Multi-thread', min: 2000, max: 160000, step: 100, unit: 'pts', hint: 'PassMark CPU Mark. Ryzen 9 9950X = 65,693.' },
-  { k: 'cpus', label: 'CPUs', min: 1, max: 8, step: 1, unit: '', hint: 'Sockets in the system, all the same CPU. Multiplies the multi-thread score; power is for the whole system.' },
+  { k: 'cpus', label: 'CPUs', min: 1, max: 8, step: 1, unit: '', hint: 'Sockets in the system, all the same CPU. Each extra CPU adds 80% of the multi-thread score; power is for the whole system.' },
   { k: 'idle', label: 'Idle power', min: 1, max: 250, step: 1, unit: 'W', hint: 'Watts at the wall when idle.' },
   { k: 'load', label: 'Full-load power', min: 10, max: 700, step: 5, unit: 'W', hint: 'Watts at the wall with every core busy.' }
 ];

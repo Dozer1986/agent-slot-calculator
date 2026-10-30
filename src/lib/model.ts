@@ -15,6 +15,8 @@
 
 /** Ryzen 9 9950X PassMark scores: the yardstick every machine is measured against. */
 export const REF = { st: 4726, mt: 65693 } as const;
+/** Share of one CPU's multi-thread score that each CPU beyond the first adds. */
+export const EXTRA_CPU_SHARE = 0.8;
 
 export type Limit = 'ram' | 'cpu' | 'cap';
 export type VerdictKey = 'ok' | 'warn' | 'bad';
@@ -31,7 +33,7 @@ export interface Machine {
   st: number;
   /** PassMark CPU Mark (multi-thread) of one CPU. */
   mt: number;
-  /** CPUs (sockets) in the system, all the same model. Default 1. */
+  /** CPUs (sockets) in the system, all the same model. Default 1. Each one beyond the first adds EXTRA_CPU_SHARE of mt. */
   cpus?: number;
   /** Wall watts at idle and at full load. */
   idle: number;
@@ -149,7 +151,7 @@ export function quantile(pmf: number[], q: number): number {
 export function evaluate(m: Machine, a: Assumptions, ramOverride?: number | null, priceOverride?: number | null): Result {
   const ram = ramOverride != null ? ramOverride : m.ram;
   const price = priceOverride != null ? priceOverride : m.price;
-  const mt = m.mt * (m.cpus || 1);
+  const mt = m.mt * (1 + EXTRA_CPU_SHARE * ((m.cpus || 1) - 1));
   const slotMT = (a.threads * REF.mt) / 32;
   const stStretch = REF.st / Math.max(1, m.st);
   const mtStretch = Math.max(1, slotMT / Math.max(1, mt));

@@ -222,7 +222,7 @@ test('an incomplete saved machine falls back to the reference box', async ({ pag
   await expect(page.locator('#agents')).toHaveText('14');
 });
 
-test('a second CPU doubles the multi-thread score', async ({ page }) => {
+test('a second CPU adds 80% of the multi-thread score', async ({ page }) => {
   await page.goto(site);
   await page.getByRole('combobox', { name: 'Start from' }).selectOption('epyc');
   await expect(page.locator('#agents')).toHaveText('16');
