@@ -71,4 +71,4 @@ These processors have no scores yet, so listings using them were dropped. They a
 - **Xeon Scalable and W, common in used workstations and servers:** Silver 4114, 4210; Gold 5122, 6130, 6136, 6150, 6152, 6154, 6234, 6240, 6244, 6246; W-2133, W-2155, w7-2495X; E5-2699 v4; Core i7-7820X, i9-7900X.
 - **AMD:** Ryzen AI 9 365, Ryzen 7 8745HS, Ryzen 9 8945HS, Ryzen 9 9955HX, Ryzen AI Max+ PRO 495.
 - **Apple:** M2, M2 Pro, M2 Max, M2 Ultra, M3, M3 Pro, M3 Max, M3 Ultra, M4, M4 Pro, M4 Max, M5, M5 Pro (15-core), M5 Ultra.
-- **Price classes not yet covered:** new towers and workstations (Dell Pro Max, HP Z2/Z4, ThinkStation P3/P5/P8, System76, Puget), used Ryzen and Core desktop builds, and EPYC boards sold with memory.
+- **Price classes not yet covered:** new towers and workstations (Dell Pro Max, HP Z2/Z4, ThinkStation P3/P5/P8, System76, Puget) and used Ryzen and Core desktop builds.
