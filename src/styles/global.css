@@ -78,9 +78,9 @@ h2 {
 .area-how { grid-area: how; }
 @media (min-width: 920px) {
   .grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    grid-template-areas: "machine result" "workload result" "table table" "how how"; }
-  /* Sticky inside its own column, so it stops where the workload panel ends instead of riding over the table. */
-  .result-panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+    grid-template-areas: "machine result" "workload result" "table result" "how how"; }
+  /* Sticky inside its own column, so it rides beside the table and stops above how-it-works. */
+  .result-panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; }
 }
 
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; min-width: 0; }

@@ -33,7 +33,7 @@ type ElementMap = {
 } & Record<'vband' | 'vpill' | 'bar-pill' | 'vname' | 'res-assume' | 'agents' | 'bar-agents' |
   'limit' | 'm-hw' | 'm-hw-s' | 'm-tco' | 'bar-tco' | 'm-tco-s' | 'm-pwr' | 'm-pwr-s' |
   'm-ref' | 'm-ref-s' | 'fleet' | 'flags' | 'chart-title' | 'tbody' | 'machine-fields' |
-  'work-fields' | 'adv-fields' | 'ram-plans' | 'ram-plans-body' | 'ram-plans-hint' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
+  'work-fields' | 'adv-fields' | 'ram-plans' | 'ram-plans-body' | 'ram-plans-hint' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'th-machine' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
 
 const $ = <K extends keyof ElementMap>(id: K): ElementMap[K] => document.getElementById(id) as ElementMap[K];
 
@@ -312,10 +312,14 @@ function renderTable(ref: Result) {
   }
   const sorter = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.r.lifePer - b.r.lifePer;
   const groups: [string, typeof rows][] = [['To buy', rows.filter((x) => !x.p.owned).sort(sorter)], ['Already yours · power only', rows.filter((x) => x.p.owned).sort(sorter)]];
-  groups.forEach(([title, list]) => {
-    if (!list.length) return;
-    const g = document.createElement('tr'); g.className = 'group';
-    const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
+  // The first group's title rides in the Machine header instead of taking its own row.
+  const shown = groups.filter(([, list]) => list.length);
+  $('th-machine').textContent = shown.length ? 'Machine · ' + shown[0][0] : 'Machine';
+  shown.forEach(([title, list], i) => {
+    if (i > 0) {
+      const g = document.createElement('tr'); g.className = 'group';
+      const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
+    }
     list.forEach(({ p, r, v }) => {
       const tr = document.createElement('tr');
       tr.setAttribute('aria-selected', String(p.id === presetId));
