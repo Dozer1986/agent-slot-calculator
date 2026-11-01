@@ -45,7 +45,7 @@ Eyebrow labels are 11px, weight 600, uppercase, letter-spacing 0.08em, in `--mut
 - **Wrapper:** full width, with no max-width (owner request 2026-11-01). Side gutters use `max(16px, env(safe-area-inset-left/right))`, vertical padding is `padding-block: 28px 40px`.
 - **Grid areas:** `machine`, `result`, `workload`, `table`, `how`.
   - **Below 920px:** one column in the order machine, result, workload, table, how, plus the fixed phone bar. The wrapper's bottom padding grows by `96px + safe-area-inset-bottom` so the bar never covers content.
-  - **920px and up:** two columns (`1.08fr` / `0.92fr`). The result panel spans the machine, workload and table rows and is `position: sticky` at `top: safe-area-inset-top + 16px`, so it stays beside the table. The table sits in the left column; how-it-works spans both columns.
+  - **920px and up:** two columns (`1.08fr` / `0.92fr`). The result panel spans the machine, workload and table rows and is `position: sticky` at `top: safe-area-inset-top + 16px`, so it stays beside the table. It is capped at the viewport height (`100dvh` less the top inset and 32px) and scrolls inside itself when taller. The table sits in the left column; how-it-works spans both columns.
 - **Field pairs:** two columns from 560px up, one column below.
 - **Panels:** 1px `--line` border, 10px radius, 18px padding, internal `gap: 16px`. There are no shadows except a soft one on the phone bar.
 
@@ -60,7 +60,7 @@ Eyebrow labels are 11px, weight 600, uppercase, letter-spacing 0.08em, in `--mut
 - **Table:** `min-width: 620px` inside an `overflow-x: auto` container.
   - The header is sticky, uppercase 11px, on `--panel-2`.
   - Number columns are right-aligned mono.
-  - Group rows are uppercase 11px on `--panel-2` and aren't clickable.
+  - The first group's title (usually "To buy") joins the Machine header as `Machine · <title>`; later groups get group rows, uppercase 11px on `--panel-2`, which aren't clickable.
   - The selected row gets `--accent-weak` plus a 3px inset accent bar on its first cell.
 
 ## Chart (verdict panel)
