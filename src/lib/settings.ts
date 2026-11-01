@@ -22,11 +22,18 @@ export const PARTS = [
 export type PartKey = (typeof PARTS)[number]['key'];
 
 export const RAM_TYPES = [
+  { key: 'ddr3', label: 'DDR3' },
   { key: 'ddr4', label: 'DDR4' },
   { key: 'ddr5', label: 'DDR5' },
+  { key: 'sodimm4', label: 'DDR4 SO-DIMM' },
+  { key: 'sodimm5', label: 'DDR5 SO-DIMM' },
+  { key: 'rdimm3', label: 'DDR3 ECC RDIMM (server)' },
+  { key: 'rdimm4', label: 'DDR4 ECC RDIMM (server)' },
+  { key: 'rdimm5', label: 'DDR5 ECC RDIMM (server)' },
 ] as const;
 export type RamType = (typeof RAM_TYPES)[number]['key'];
-export const RAM_SIZES = [8, 16, 32, 64] as const;
+/** Owner-requested: every type at 4–128 GB, so prices can be entered before anything uses them. */
+export const RAM_SIZES = [4, 8, 16, 32, 64, 128] as const;
 
 /**
  * Price of one stick: half of a sourced 2-stick kit, to the nearest dollar or cent. Only sourced prices have defaults.
