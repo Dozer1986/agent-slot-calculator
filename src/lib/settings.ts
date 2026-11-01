@@ -3,7 +3,8 @@
  * kept in localStorage. Machines with a `build` breakdown (the Micro Center
  * bundles) are priced from the parts, and RAM prices set the cost of their
  * upgrade past the stock memory, so a change here reprices them everywhere.
- * Defaults are the prices in docs/market-data.md. Every access is wrapped in try/catch.
+ * Part defaults are the prices in docs/market-data.md; RAM defaults are sourced at RAM_DEFAULTS.
+ * Every access is wrapped in try/catch.
  */
 export const SETTINGS_KEY = 'agent-slot-calc-settings-v1';
 

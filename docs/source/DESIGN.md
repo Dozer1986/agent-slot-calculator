@@ -42,7 +42,7 @@ Eyebrow labels are 11px, weight 600, uppercase, letter-spacing 0.08em, in `--mut
 
 ## Layout
 
-- **Wrapper:** max-width 1180px, centered. Side gutters use `max(16px, env(safe-area-inset-left/right))`, vertical padding is `padding-block: 28px 40px`.
+- **Wrapper:** full width, with no max-width (owner request 2026-11-01). Side gutters use `max(16px, env(safe-area-inset-left/right))`, vertical padding is `padding-block: 28px 40px`.
 - **Grid areas:** `machine`, `result`, `workload`, `table`, `how`.
   - **Below 920px:** one column in the order machine, result, workload, table, how, plus the fixed phone bar. The wrapper's bottom padding grows by `96px + safe-area-inset-bottom` so the bar never covers content.
   - **920px and up:** two columns (`1.08fr` / `0.92fr`). The result panel spans the machine and workload rows and is `position: sticky` at `top: safe-area-inset-top + 16px`. The table and how-it-works span both columns.
