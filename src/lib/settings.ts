@@ -22,17 +22,11 @@ export const PARTS = [
 export type PartKey = (typeof PARTS)[number]['key'];
 
 export const RAM_TYPES = [
-  { key: 'ddr3', label: 'DDR3' },
   { key: 'ddr4', label: 'DDR4' },
   { key: 'ddr5', label: 'DDR5' },
-  { key: 'sodimm4', label: 'DDR4 SO-DIMM' },
-  { key: 'sodimm5', label: 'DDR5 SO-DIMM' },
-  { key: 'rdimm3', label: 'DDR3 ECC RDIMM (server)' },
-  { key: 'rdimm4', label: 'DDR4 ECC RDIMM (server)' },
-  { key: 'rdimm5', label: 'DDR5 ECC RDIMM (server)' },
 ] as const;
 export type RamType = (typeof RAM_TYPES)[number]['key'];
-export const RAM_SIZES = [4, 8, 16, 32, 64, 128] as const;
+export const RAM_SIZES = [8, 16, 32, 64] as const;
 
 /**
  * Price of one stick: half of a sourced 2-stick kit, to the nearest dollar or cent. Only sourced prices have defaults.
@@ -84,14 +78,17 @@ export function defaultSettings(): Settings {
   return mergeSettings({});
 }
 
-/** Fills anything missing or invalid in a saved object from the defaults. */
+/** Fills anything missing or invalid in a saved object from the defaults; a saved null RAM price stays unpriced. */
 export function mergeSettings(s: { parts?: Record<string, unknown>; ram?: Record<string, Record<string, unknown>>; resale?: unknown }): Settings {
   const parts = {} as Settings['parts'];
   for (const p of PARTS) parts[p.key] = price(s.parts?.[p.key], p.price)!;
   const ram = {} as Settings['ram'];
   for (const t of RAM_TYPES) {
     ram[t.key] = {};
-    for (const size of RAM_SIZES) ram[t.key][size] = price(s.ram?.[t.key]?.[size], RAM_DEFAULTS[t.key]?.[size] ?? null);
+    for (const size of RAM_SIZES) {
+      const v = s.ram?.[t.key]?.[size];
+      ram[t.key][size] = v === null ? null : price(v, RAM_DEFAULTS[t.key]?.[size] ?? null);
+    }
   }
   const resale = price(s.resale, RESALE_DEFAULT)!;
   return { parts, ram, resale: resale <= 1 ? resale : RESALE_DEFAULT };

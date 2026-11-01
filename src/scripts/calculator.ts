@@ -136,10 +136,11 @@ function restore() {
   if (!s) return false;
   A = s.A;
   // A machine still in the catalog reloads from current data, so price and spec updates reach returning
-  // visitors; only the upgrade inputs, which don't mark the machine as edited, carry over.
+  // visitors; only the upgrade inputs, which don't mark the machine as edited, carry over, except on
+  // machines priced from parts, whose upgrade follows the RAM prices in Settings.
   if (s.presetId !== 'custom' && allMachines().some((x) => x.id === s.presetId)) {
     loadPreset(s.presetId);
-    M.upGB = Number(s.M.upGB) || 0; M.upCost = Number(s.M.upCost) || 0;
+    if (!LISTINGS.some((l) => l.id === s.presetId && l.build)) { M.upGB = Number(s.M.upGB) || 0; M.upCost = Number(s.M.upCost) || 0; }
     return true;
   }
   // An edited machine, or one no longer in the catalog, is kept only if it is complete.

@@ -6,7 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG, CPUS, LISTINGS, estimatePower, findCpu, resolveListing, type Cpu, type Form } from '../src/data/catalog';
 import { PRESETS } from '../src/data/presets';
-import { buildPrice, changedOnly, defaultSettings, mergeSettings, ramPlans } from '../src/lib/settings';
+import { buildPrice, changedOnly, defaultSettings, mergeSettings, ramPlans, upgradeCost } from '../src/lib/settings';
 
 describe('processor data', () => {
   it('has unique ids and both PassMark scores with a source for every row', () => {
@@ -130,13 +130,21 @@ describe('priced from settings', () => {
   it('saves only changed values, so new defaults still apply', () => {
     const s = defaultSettings();
     s.parts.coolerEpyc = 150;
-    s.ram.ddr3[8] = 12;
+    s.ram.ddr4[16] = 12;
     const saved = changedOnly(s);
     expect(saved.parts).toEqual({ coolerEpyc: 150 });
-    expect(saved.ram.ddr3).toEqual({ 8: 12 });
+    expect(saved.ram.ddr4).toEqual({ 16: 12 });
     expect(saved.ram.ddr5).toEqual({});
     expect(saved).not.toHaveProperty('resale');
     expect(mergeSettings(JSON.parse(JSON.stringify(saved)))).toEqual(s);
+  });
+
+  it('keeps a cleared RAM price that has a default unpriced after saving', () => {
+    const s = defaultSettings();
+    s.ram.ddr5[64] = null;
+    const back = mergeSettings(JSON.parse(JSON.stringify(changedOnly(s))));
+    expect(back.ram.ddr5[64]).toBeNull();
+    expect(upgradeCost(LISTINGS.find((l) => l.id === 'mk-microcenter-270k-plus')!.build!, back)).toBeNull();
   });
 });
 

@@ -11,7 +11,7 @@ test('part and RAM prices on the settings page reprice the bundles and persist',
   const ddr5 = page.getByRole('spinbutton', { name: 'DDR5 64 GB stick price', exact: true });
   await expect(chassis).toHaveValue('200');
   await expect(ddr5).toHaveValue('926');
-  await expect(page.getByRole('spinbutton', { name: 'DDR3 4 GB stick price', exact: true })).toHaveValue('');
+  await expect(page.getByRole('spinbutton', { name: 'DDR4 16 GB stick price', exact: true })).toHaveValue('');
 
   await chassis.fill('300');
   await ddr5.fill('500');
@@ -30,6 +30,7 @@ test('part and RAM prices on the settings page reprice the bundles and persist',
   await page.getByRole('button', { name: 'Reset to defaults' }).click();
   await expect(chassis).toHaveValue('200');
   await page.goto(site);
+  await expect(page.locator('#flags')).toContainText('With 128 GB (+$1,852)');
   await page.getByRole('group', { name: 'Machines to show' }).getByRole('button', { name: 'Micro Center bundles' }).click();
   await expect(priceCell(page)).toHaveText('$1,255');
 });
