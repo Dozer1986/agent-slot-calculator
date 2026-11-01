@@ -188,6 +188,11 @@ for (const width of [400, 1280]) {
         await expect(page.locator('#h-machine')).toBeInViewport();
       } else {
         expect(await page.locator('.result-panel').evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
+        await page.getByRole('group', { name: 'Machines to show' }).getByRole('button', { name: 'Micro Center bundles' }).click();
+        await page.getByRole('row').filter({ hasText: 'Micro Center bundle · Core Ultra 7 270K Plus · 32 GB' }).click();
+        await expect(page.locator('#ram-plans')).toBeVisible();
+        await page.locator('.area-table').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+        expect(await page.locator('.result-panel').evaluate((element) => element.getBoundingClientRect().bottom <= innerHeight)).toBe(true);
       }
       const origin = new URL(page.url()).origin;
       expect(requests.filter((url) => new URL(url).origin !== origin)).toEqual([]);
