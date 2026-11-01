@@ -1,6 +1,6 @@
 ---
 interface Props {
-  current?: 'calculator' | 'costs' | 'strategy';
+  current?: 'calculator' | 'costs' | 'strategy' | 'settings';
   title?: string;
   intro?: string;
 }
@@ -16,6 +16,7 @@ const base = import.meta.env.BASE_URL;
       <a href={base} aria-current={current === 'calculator' ? 'page' : undefined}>Calculator</a>
       <a href={base + 'costs/'} aria-current={current === 'costs' ? 'page' : undefined}>Cost chart</a>
       <a href={base + 'strategy/'} aria-current={current === 'strategy' ? 'page' : undefined}>Strategy</a>
+      <a href={base + 'settings/'} aria-current={current === 'settings' ? 'page' : undefined}>Settings</a>
     </nav>
     <span class="eyebrow">Build &amp; test fleet · October 2026 prices</span>
     <h1>{title}</h1>

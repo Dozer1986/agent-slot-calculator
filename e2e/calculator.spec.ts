@@ -181,13 +181,13 @@ for (const width of [400, 1280]) {
       expect(await page.locator('body').evaluate((element) => getComputedStyle(element).backgroundColor))
         .toBe(colorScheme === 'dark' ? 'rgb(13, 18, 25)' : 'rgb(241, 243, 247)');
       if (width === 400) {
-        expect(await page.locator('.table-scroll').evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+        expect(await page.locator('.area-table .table-scroll').evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
         await page.getByRole('row').filter({ hasText: 'Lenovo M920q ·' }).click();
         await expect(page.locator('#bar-agents')).toHaveText('0');
         await expect(page.locator('#bar-pill')).toHaveText("Can't hold an agent");
         await expect(page.locator('#h-machine')).toBeInViewport();
       } else {
-        expect(await page.locator('.area-result').evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
+        expect(await page.locator('.result-panel').evaluate((element) => getComputedStyle(element).position)).toBe('sticky');
       }
       const origin = new URL(page.url()).origin;
       expect(requests.filter((url) => new URL(url).origin !== origin)).toEqual([]);
@@ -245,8 +245,8 @@ test('the table can show only the Micro Center bundles', async ({ page }) => {
   const names = page.locator('#tbody tr:not(.group) td:first-child');
   await expect(names.first()).toBeVisible();
   for (const name of await names.allTextContents()) expect(name).toMatch(/^Micro Center bundle · /);
-  await page.getByRole('row').filter({ hasText: 'Micro Center bundle · Core Ultra 7 270K Plus · 128 GB' }).click();
-  await expect(page.locator('#mname')).toHaveValue('Micro Center bundle · Core Ultra 7 270K Plus · 128 GB');
+  await page.getByRole('row').filter({ hasText: 'Micro Center bundle · Core Ultra 7 270K Plus · 32 GB' }).click();
+  await expect(page.locator('#mname')).toHaveValue('Micro Center bundle · Core Ultra 7 270K Plus · 32 GB');
 });
 
 test('a second CPU adds 80% of the multi-thread score', async ({ page }) => {

@@ -1,4 +1,5 @@
-    <section class="panel area-result" aria-labelledby="h-result" aria-live="polite">
+    <div class="area-result">
+    <section class="panel result-panel" aria-labelledby="h-result" aria-live="polite">
       <div class="panel-head"><h2 id="h-result">Verdict</h2><span class="eyebrow" id="res-assume"></span></div>
       <div class="verdict-band" id="vband">
         <span class="pill" id="vpill">—</span>
@@ -16,9 +17,20 @@
       </div>
       <p class="fleet" id="fleet"></p>
       <ul class="flags" id="flags"></ul>
+      <div class="ram-plans" id="ram-plans" hidden>
+        <span class="eyebrow">Getting past the stock memory</span>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Plan</th><th class="n">RAM</th><th class="n">Cost</th><th class="n">Agents</th><th class="n">Per agent</th></tr></thead>
+            <tbody id="ram-plans-body"></tbody>
+          </table>
+        </div>
+        <p class="hint" id="ram-plans-hint"></p>
+      </div>
       <div class="chart-wrap">
         <span class="eyebrow" id="chart-title">Builds running at once</span>
         <svg id="chart" viewBox="0 0 320 132" role="img" aria-label="Chance of each number of builds running at once"></svg>
         <p class="hint">Bars: the chance that this many builds run at the same moment. Lines: how many builds fit in memory and in CPU. Memory has to cover the 99% case, because running out kills jobs.</p>
       </div>
     </section>
+    </div>

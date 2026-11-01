@@ -48,7 +48,7 @@ img { max-width: 100%; }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-body); }
 .wrap {
-  max-width: 1180px; margin: 0 auto;
+  margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 28px 40px;
@@ -72,14 +72,15 @@ h2 {
 .grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "machine" "result" "workload" "table" "how"; }
 .area-machine { grid-area: machine; }
-.area-result { grid-area: result; }
+.area-result { grid-area: result; min-width: 0; }
 .area-workload { grid-area: workload; }
 .area-table { grid-area: table; }
 .area-how { grid-area: how; }
 @media (min-width: 920px) {
   .grid { grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
     grid-template-areas: "machine result" "workload result" "table table" "how how"; }
-  .area-result { align-self: start; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+  /* Sticky inside its own column, so it stops where the workload panel ends instead of riding over the table. */
+  .result-panel { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
 }
 
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; gap: 16px; min-width: 0; }
@@ -163,8 +164,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 2px 0; }
 .flags li[data-state="ok"]::before { background: var(--ok); }
 .flags:empty { display: none; }
 
+.ram-plans:not([hidden]) { display: grid; gap: 6px; }
+.ram-plans table { min-width: 0; font-size: 12.5px; }
+.ram-plans th, .ram-plans td { padding: 7px 8px; }
 .chart-wrap { display: grid; gap: 6px; }
-.chart-wrap svg { width: 100%; height: auto; display: block; }
+.chart-wrap svg { width: 100%; max-width: 640px; height: auto; display: block; }
 .chart-wrap .hint { font-size: 12px; }
 
 /* Table */

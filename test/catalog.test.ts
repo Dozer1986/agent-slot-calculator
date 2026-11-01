@@ -6,6 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG, CPUS, LISTINGS, estimatePower, findCpu, resolveListing, type Cpu, type Form } from '../src/data/catalog';
 import { PRESETS } from '../src/data/presets';
+import { buildPrice, changedOnly, defaultSettings, mergeSettings, ramPlans } from '../src/lib/settings';
 
 describe('processor data', () => {
   it('has unique ids and both PassMark scores with a source for every row', () => {
@@ -87,4 +88,104 @@ describe('power estimate', () => {
       expect(Math.abs(estimatePower(cpu, form).load - load) / load).toBeLessThan(0.15);
     });
   }
+});
+
+describe('priced from settings', () => {
+  const built = LISTINGS.filter((l) => l.build);
+  const desk = built.find((l) => l.build!.upgrade?.type === 'ddr5')!;
+  const ws = built.find((l) => l.form === 'workstation')!;
+
+  it('reproduces every listed bundle price at the default settings', () => {
+    expect(built.length).toBe(24);
+    for (const l of built) expect(buildPrice(l.build!, defaultSettings()), l.id).toBe(l.price);
+  });
+
+  it('prices desktop bundles with their stock memory and makes 128 GB an upgrade', () => {
+    const m = resolveListing(desk, defaultSettings())!.machine;
+    expect(m.ram).toBe(32);
+    expect([m.upGB, m.upCost]).toEqual([128, 1852]);
+    expect(resolveListing(ws, defaultSettings())!.machine.upGB).toBe(0);
+  });
+
+  it('RAM prices change only the upgrade, part prices change the bundle', () => {
+    const s = defaultSettings();
+    s.parts.chassis += 100;
+    s.ram.ddr5[64] = 500;
+    const m = resolveListing(desk, s)!.machine;
+    expect([m.price, m.upCost]).toEqual([desk.price + 100, 1000]);
+    expect(resolveListing(ws, s)!.machine.price).toBe(ws.price + 100);
+    s.ram.ddr5[64] = null;
+    expect(resolveListing(desk, s)!.machine).toMatchObject({ price: desk.price + 100, upGB: 0, upCost: 0 });
+  });
+
+  it('ignores saved values that are not prices', () => {
+    const s = mergeSettings({ parts: { chassis: -5, fans: 'x' }, ram: { ddr4: { 32: 100, 16: Infinity } }, resale: 5 });
+    expect(s.parts.chassis).toBe(200);
+    expect(s.parts.fans).toBe(20);
+    expect(s.ram.ddr4[32]).toBe(100);
+    expect(s.ram.ddr4[16]).toBeNull();
+    expect(s.resale).toBe(0.5);
+  });
+
+  it('saves only changed values, so new defaults still apply', () => {
+    const s = defaultSettings();
+    s.parts.coolerEpyc = 150;
+    s.ram.ddr3[8] = 12;
+    const saved = changedOnly(s);
+    expect(saved.parts).toEqual({ coolerEpyc: 150 });
+    expect(saved.ram.ddr3).toEqual({ 8: 12 });
+    expect(saved.ram.ddr5).toEqual({});
+    expect(saved).not.toHaveProperty('resale');
+    expect(mergeSettings(JSON.parse(JSON.stringify(saved)))).toEqual(s);
+  });
+});
+
+describe('RAM plans past the stock memory', () => {
+  const plans = (id: string, s = defaultSettings()) =>
+    ramPlans(LISTINGS.find((l) => l.id === id)!.build!, s).map((p) => [p.label, p.ram, p.cost]);
+
+  it('prices every path for a 2×16 GB DDR5 bundle', () => {
+    // Stock kit new = 2 × $275 = $550; sold at 50% = $275 back.
+    expect(plans('mk-microcenter-270k-plus')).toEqual([
+      ['As shipped, 2×16 GB', 32, 0],
+      ['2×64 GB · kit unused', 128, 1852],
+      ['2×64 GB · kit sold', 128, 1577],
+      ['2×64 GB · kit to 2nd box', 128, 1302],
+      ['4×32 GB · kit unused', 128, 2060],
+      ['4×32 GB · kit sold', 128, 1785],
+      ['4×32 GB · kit to 2nd box', 128, 1510],
+      ['Keep 2×16 GB + 2×64 GB', 160, 1852],
+    ]);
+  });
+
+  it('handles a single stock stick and DDR4 with unpriced sticks', () => {
+    expect(plans('mk-microcenter-7600x3d').at(-1)).toEqual(['Keep 1×16 GB + 2×64 GB', 144, 1852]);
+    const ddr4 = plans('mk-microcenter-5500f');
+    expect(ddr4.find((p) => p[0] === '2×64 GB · kit sold')![2]).toBeNull(); // no DDR4 64 GB price
+    expect(ddr4.find((p) => p[0] === '4×32 GB · kit sold')![2]).toBe(899); // 976 − 0.5 × 153.98
+    expect(ddr4.find((p) => p[0] === '4×32 GB · kit to 2nd box')![2]).toBe(822);
+  });
+
+  it('follows the resale setting and has no plans for workstation bundles', () => {
+    const s = defaultSettings();
+    s.resale = 0;
+    expect(plans('mk-microcenter-270k-plus', s)[2][2]).toBe(1852);
+    expect(ramPlans(LISTINGS.find((l) => l.build && !l.build.stock)!.build!, s)).toEqual([]);
+  });
+
+  it('prices the 160 GB build with its added sticks', () => {
+    const l = LISTINGS.find((x) => x.id === 'mk-microcenter-270k-plus-160')!;
+    const s = defaultSettings();
+    s.ram.ddr5[64] = 500;
+    expect(resolveListing(l, s)!.machine).toMatchObject({ ram: 160, price: 3107 - 2 * 426, upGB: 0 });
+  });
+
+  it('gives each workstation socket its own cooler price', () => {
+    const s = defaultSettings();
+    s.parts.coolerTr += 1; s.parts.coolerEpyc += 10; s.parts.coolerXeon += 100;
+    for (const [id, add] of [['mk-microcenter-tr-9970x', 1], ['mk-microcenter-epyc-9175f', 10], ['mk-microcenter-xeon-658x', 100]] as const) {
+      const l = LISTINGS.find((x) => x.id === id)!;
+      expect(buildPrice(l.build!, s), id).toBe(l.price + add);
+    }
+  });
 });

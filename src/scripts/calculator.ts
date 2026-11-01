@@ -1,7 +1,8 @@
 import { evaluate, evaluateReference, judge, type Assumptions, type Machine, type Result, type VerdictKey } from '../lib/model';
 import { DEFAULTS, PRESETS, REFERENCE_ID } from '../data/presets';
 import { readSaved, writeSaved, type EditableMachine } from '../lib/saved';
-import { CATALOG, FORM_LABEL } from '../data/catalog';
+import { CATALOG, FORM_LABEL, LISTINGS } from '../data/catalog';
+import { ramPlans, readSettings } from '../lib/settings';
 import { userEntries } from '../lib/listings';
 import { fmt$ } from '../lib/format';
 
@@ -32,7 +33,7 @@ type ElementMap = {
 } & Record<'vband' | 'vpill' | 'bar-pill' | 'vname' | 'res-assume' | 'agents' | 'bar-agents' |
   'limit' | 'm-hw' | 'm-hw-s' | 'm-tco' | 'bar-tco' | 'm-tco-s' | 'm-pwr' | 'm-pwr-s' |
   'm-ref' | 'm-ref-s' | 'fleet' | 'flags' | 'chart-title' | 'tbody' | 'machine-fields' |
-  'work-fields' | 'adv-fields' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
+  'work-fields' | 'adv-fields' | 'ram-plans' | 'ram-plans-body' | 'ram-plans-hint' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'mnote' | 'h-machine' | 'reset', HTMLElement>;
 
 const $ = <K extends keyof ElementMap>(id: K): ElementMap[K] => document.getElementById(id) as ElementMap[K];
 
@@ -225,9 +226,34 @@ function render() {
   const ul = $('flags'); ul.textContent = '';
   flags.forEach(([s, t]) => { const li = document.createElement('li'); li.dataset.state = s; li.textContent = t; ul.appendChild(li); });
 
+  renderRamPlans();
   drawChart(r);
   renderTable(ref);
   save();
+}
+
+const SETTINGS = readSettings();
+/** RAM paths for a Micro Center bundle loaded as is; hidden for any other machine. */
+function renderRamPlans() {
+  const build = LISTINGS.find((l) => l.id === presetId)?.build;
+  const plans = build ? ramPlans(build, SETTINGS) : [];
+  $('ram-plans').hidden = plans.length === 0;
+  const tb = $('ram-plans-body'); tb.textContent = '';
+  if (!plans.length) return;
+  const rows = plans.map((p) => ({ p, r: p.cost == null ? null : evaluate(M, A, p.ram, M.price + p.cost) }));
+  const best = Math.min(...rows.map(({ r }) => (r && r.n ? r.lifePer : Infinity)));
+  for (const { p, r } of rows) {
+    const tr = document.createElement('tr');
+    const cells = [p.label, p.ram + ' GB', p.cost == null ? 'no price' : fmt$(p.cost), r ? String(r.n) : '—', r ? fmt$(r.lifePer) : '—'];
+    cells.forEach((t, i) => {
+      const td = document.createElement('td');
+      if (i) td.className = 'n';
+      if (i === 4 && r && r.lifePer === best) { const b = document.createElement('strong'); b.textContent = t; td.appendChild(b); } else td.textContent = t;
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  }
+  $('ram-plans-hint').textContent = 'Cost is the RAM bought, net of the stock kit: "sold" gets ' + Math.round(SETTINGS.resale * 100) + '% of its new price back, "to 2nd box" counts its full new price, the RAM that box no longer buys (a second bundle going to 64 GB, say). Per agent is the lifetime cost over ' + A.years + ' years; the lowest is in bold. Four DDR5 sticks usually run slower than two, and mixing stick sizes may not run at rated speed, or at all: check the board’s memory support list (QVL) first. Stick prices and resale are on the Settings page.';
 }
 
 function drawChart(r: Result) {
@@ -272,11 +298,12 @@ function drawChart(r: Result) {
 let verdictFilter = 'all';
 let source: 'report' | 'microcenter' = 'report';
 const BUNDLES = CATALOG.filter((e) => e.machine.id?.startsWith('mk-microcenter-')).map((e) => e.machine);
+const REPORT_ROWS = [...PRESETS, ...BUNDLES.filter((m) => LISTINGS.some((l) => l.id === m.id && l.reportTable))];
 
 function renderTable(ref: Result) {
   const tb = $('tbody'); tb.textContent = '';
   $('h-table').textContent = source === 'report' ? 'Every machine from the report, under your settings' : 'Micro Center bundles as full builds, under your settings';
-  const rows = (source === 'report' ? PRESETS : BUNDLES).map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; })
+  const rows = (source === 'report' ? REPORT_ROWS : BUNDLES).map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; })
     .filter((x) => verdictFilter === 'all' || x.v.key === verdictFilter);
   if (!rows.length) {
     const tr = document.createElement('tr'); tr.className = 'group';

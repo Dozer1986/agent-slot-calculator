@@ -464,278 +464,551 @@
  },
  {
   "id": "mk-microcenter-250k-plus",
-  "name": "Micro Center bundle · Core Ultra 5 250K Plus · 128 GB",
+  "name": "Micro Center bundle · Core Ultra 5 250K Plus · 32 GB",
   "cpu": "intel-core-ultra-5-250k-plus",
-  "ram": 128,
-  "price": 3007,
+  "ram": 32,
+  "price": 1155,
+  "build": {
+   "bundle": 529.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $529.99 (Gigabyte B860 DS3H WiFi6E, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $529.99 (Gigabyte B860 DS3H WiFi6E, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-250kf-plus",
-  "name": "Micro Center bundle · Core Ultra 5 250KF Plus · 128 GB",
+  "name": "Micro Center bundle · Core Ultra 5 250KF Plus · 32 GB",
   "cpu": "intel-core-ultra-5-250k-plus",
-  "ram": 128,
-  "price": 2977,
+  "ram": 32,
+  "price": 1125,
+  "build": {
+   "bundle": 499.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $499.99 (ASUS B860M-A Prime WiFi CSM; scored as the 250K Plus, same cores without graphics, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $499.99 (ASUS B860M-A Prime WiFi CSM; scored as the 250K Plus, same cores without graphics, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-270k-plus",
-  "name": "Micro Center bundle · Core Ultra 7 270K Plus · 128 GB",
+  "name": "Micro Center bundle · Core Ultra 7 270K Plus · 32 GB",
   "cpu": "intel-core-ultra-7-270k-plus",
-  "ram": 128,
-  "price": 3107,
+  "ram": 32,
+  "price": 1255,
+  "build": {
+   "bundle": 629.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $629.99 (Gigabyte Z890 Eagle WiFi7 Plus, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $629.99 (Gigabyte Z890 Eagle WiFi7 Plus, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
+ },
+ {
+  "id": "mk-microcenter-270k-plus-160",
+  "name": "Micro Center bundle · Core Ultra 7 270K Plus · 160 GB (2×16 + 2×64)",
+  "cpu": "intel-core-ultra-7-270k-plus",
+  "ram": 160,
+  "price": 3107,
+  "build": {
+   "bundle": 629.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "added": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750
+  },
+  "reportTable": true,
+  "condition": "new",
+  "form": "tower",
+  "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
+  "seen": "2026-10",
+  "notes": "The Core Ultra 7 270K Plus bundle with its 32 GB kit kept and 2×64 GB DDR5 added in the free slots, 160 GB in all. Bundle $629.99 (Gigabyte Z890 Eagle WiFi7 Plus, bundle page 2026-10-29) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts (as on the 32 GB bundle). Mixed stick sizes may not run at rated speed; check the board's memory support list. Part and RAM prices follow the Settings page."
  },
  {
   "id": "mk-microcenter-285k",
-  "name": "Micro Center bundle · Core Ultra 9 285K · 128 GB",
+  "name": "Micro Center bundle · Core Ultra 9 285K · 32 GB",
   "cpu": "intel-core-ultra-9-285k",
-  "ram": 128,
-  "price": 3377,
+  "ram": 32,
+  "price": 1525,
+  "build": {
+   "bundle": 899.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $899.99 (Gigabyte Z890 Aorus Pro Ice, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $899.99 (Gigabyte Z890 Aorus Pro Ice, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~253 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-5500f",
-  "name": "Micro Center bundle · Ryzen 5 5500F · 128 GB DDR4",
+  "name": "Micro Center bundle · Ryzen 5 5500F · 16 GB DDR4",
   "cpu": "amd-ryzen-5-5500",
-  "ram": 128,
-  "price": 1831,
+  "ram": 16,
+  "price": 855,
+  "build": {
+   "bundle": 229.99,
+   "stock": {
+    "type": "ddr4",
+    "size": 8,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr4",
+    "size": 32,
+    "count": 4
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $229.99 (Gigabyte B550M DS3H AC R2, its 16 GB kit unused) + 2× Crucial Pro 64 GB kit (2×32 GB) DDR4-3200 at $488 (Best Buy, bestbuy.com/site/crucial-pro-64gb-kit-2x32gb-3200-mhz-ddr4-3200-udimm-desktop-memory-black/6543930.p, 2026-10) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%). Scores are the Ryzen 5 5500's; PassMark has no 5500F page."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $229.99 (Gigabyte B550M DS3H AC R2, with its 16 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%). Scores are the Ryzen 5 5500's; PassMark has no 5500F page. Upgrade to 128 GB: 2× Crucial Pro 64 GB kit (2×32 GB) DDR4-3200 at $488 (Best Buy, bestbuy.com/site/crucial-pro-64gb-kit-2x32gb-3200-mhz-ddr4-3200-udimm-desktop-memory-black/6543930.p, 2026-10), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-7600x3d",
-  "name": "Micro Center bundle · Ryzen 5 7600X3D · 128 GB",
+  "name": "Micro Center bundle · Ryzen 5 7600X3D · 16 GB",
   "cpu": "amd-ryzen-5-7600x3d",
-  "ram": 128,
-  "price": 2957,
+  "ram": 16,
+  "price": 1105,
+  "build": {
+   "bundle": 479.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 1
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $479.99 (Gigabyte B650 Gaming X AX V2; its 16 GB stick unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $479.99 (Gigabyte B650 Gaming X AX V2; with its 16 GB stick) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9700x",
-  "name": "Micro Center bundle · Ryzen 7 9700X · 128 GB",
+  "name": "Micro Center bundle · Ryzen 7 9700X · 32 GB",
   "cpu": "amd-ryzen-7-9700x",
-  "ram": 128,
-  "price": 3177,
+  "ram": 32,
+  "price": 1325,
+  "build": {
+   "bundle": 699.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $699.99 (Gigabyte B650 Gaming X AX V2, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $699.99 (Gigabyte B650 Gaming X AX V2, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~175 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-7800x3d",
-  "name": "Micro Center bundle · Ryzen 7 7800X3D · 128 GB",
+  "name": "Micro Center bundle · Ryzen 7 7800X3D · 32 GB",
   "cpu": "amd-ryzen-7-7800x3d",
-  "ram": 128,
-  "price": 3227,
+  "ram": 32,
+  "price": 1375,
+  "build": {
+   "bundle": 749.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $749.99 (ASUS B650E MAX Gaming WiFi, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $749.99 (ASUS B650E MAX Gaming WiFi, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9800x3d",
-  "name": "Micro Center bundle · Ryzen 7 9800X3D · 128 GB",
+  "name": "Micro Center bundle · Ryzen 7 9800X3D · 32 GB",
   "cpu": "amd-ryzen-7-9800x3d",
-  "ram": 128,
-  "price": 3277,
+  "ram": 32,
+  "price": 1425,
+  "build": {
+   "bundle": 799.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $799.99 (MSI B850 Gaming Pro WiFi6E, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $799.99 (MSI B850 Gaming Pro WiFi6E, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9850x3d",
-  "name": "Micro Center bundle · Ryzen 7 9850X3D · 128 GB",
+  "name": "Micro Center bundle · Ryzen 7 9850X3D · 32 GB",
   "cpu": "amd-ryzen-7-9850x3d",
-  "ram": 128,
-  "price": 3307,
+  "ram": 32,
+  "price": 1455,
+  "build": {
+   "bundle": 829.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $829.99 (ASUS B850-E TUF Gaming WiFi, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $829.99 (ASUS B850-E TUF Gaming WiFi, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~246 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9950x",
-  "name": "Micro Center bundle · Ryzen 9 9950X · 128 GB",
+  "name": "Micro Center bundle · Ryzen 9 9950X · 32 GB",
   "cpu": "amd-ryzen-9-9950x",
-  "ram": 128,
-  "price": 3377,
+  "ram": 32,
+  "price": 1525,
+  "build": {
+   "bundle": 899.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $899.99 (ASUS X870E Creator ProArt WiFi, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~311 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $899.99 (ASUS X870E Creator ProArt WiFi, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~311 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9950x3d",
-  "name": "Micro Center bundle · Ryzen 9 9950X3D · 128 GB",
+  "name": "Micro Center bundle · Ryzen 9 9950X3D · 32 GB",
   "cpu": "amd-ryzen-9-9950x3d",
-  "ram": 128,
-  "price": 3577,
+  "ram": 32,
+  "price": 1725,
+  "build": {
+   "bundle": 1099.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $1,099.99 (Gigabyte X870 Gaming WiFi6, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~311 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $1,099.99 (Gigabyte X870 Gaming WiFi6, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~311 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-9950x3d2",
-  "name": "Micro Center bundle · Ryzen 9 9950X3D2 · 128 GB",
+  "name": "Micro Center bundle · Ryzen 9 9950X3D2 · 32 GB",
   "cpu": "amd-ryzen-9-9950x3d2",
-  "ram": 128,
-  "price": 3777,
+  "ram": 32,
+  "price": 1925,
+  "build": {
+   "bundle": 1299.99,
+   "stock": {
+    "type": "ddr5",
+    "size": 16,
+    "count": 2
+   },
+   "cooler": "aio",
+   "psu": 750,
+   "upgrade": {
+    "type": "ddr5",
+    "size": 64,
+    "count": 2
+   }
+  },
   "condition": "new",
   "form": "tower",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $1,299.99 (MSI X870E-P Pro WiFi, its 32 GB kit unused) + 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~350 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as shipped: bundle $1,299.99 (MSI X870E-P Pro WiFi, with its 32 GB kit) + 2 TB NVMe $210 (report) + $415 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer III Pro 360 $70 (parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-750 Gold 750 W $90 (slickdeals.net, 2026-04; full load ~350 W, sized to stay under 55%). Upgrade to 128 GB: 2×64 GB DDR5 $1,852 (Crucial Pro DDR5-5600, datacenterdisk.com/ram/ddr5/128gb, 2026-09-22), replacing the stock memory; the cost follows the RAM prices on the Settings page."
  },
  {
   "id": "mk-microcenter-xeon-658x",
   "name": "Micro Center bundle · Xeon 658X · 128 GB",
   "cpu": "intel-xeon-658x",
   "ram": 128,
-  "price": 7065,
+  "price": 7110,
+  "build": {
+   "bundle": 6399.99,
+   "cooler": "lga4710",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,399.99 (ASUS Pro WS W890-E Sage SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~415 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,399.99 (ASUS Pro WS W890-E Sage SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $500 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-4710 $115 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~415 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-xeon-676x",
   "name": "Micro Center bundle · Xeon 676X · 128 GB",
   "cpu": "intel-xeon-676x",
   "ram": 128,
-  "price": 8065,
+  "price": 8110,
+  "build": {
+   "bundle": 7399.99,
+   "cooler": "lga4710",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=intel",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $7,399.99 (ASUS Pro WS W890-E Sage SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~448 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $7,399.99 (ASUS Pro WS W890-E Sage SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $500 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-4710 $115 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~448 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-tr-9960x",
   "name": "Micro Center bundle · Threadripper 9960X · 128 GB",
   "cpu": "amd-ryzen-threadripper-9960x",
   "ram": 128,
-  "price": 6165,
+  "price": 6254,
+  "build": {
+   "bundle": 5499.99,
+   "cooler": "str5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $5,499.99 (Gigabyte TRX50 Aero D, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $5,499.99 (Gigabyte TRX50 Aero D, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $544 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-SP6 (SP6/sTR5) $159 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-tr-9960x-256",
   "name": "Micro Center bundle · Threadripper 9960X · 256 GB",
   "cpu": "amd-ryzen-threadripper-9960x",
   "ram": 256,
-  "price": 10665,
+  "price": 10754,
+  "build": {
+   "bundle": 9999.99,
+   "cooler": "str5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $9,999.99 (Gigabyte TRX50 Aero D, 4× G.Skill 64 GB, 256 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $9,999.99 (Gigabyte TRX50 Aero D, 4× G.Skill 64 GB, 256 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $544 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-SP6 (SP6/sTR5) $159 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-tr-9970x",
   "name": "Micro Center bundle · Threadripper 9970X · 128 GB",
   "cpu": "amd-ryzen-threadripper-9970x",
   "ram": 128,
-  "price": 7165,
+  "price": 7254,
+  "build": {
+   "bundle": 6499.99,
+   "cooler": "str5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,499.99 (ASUS TRX50-Sage Pro WS WiFi A, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,499.99 (ASUS TRX50-Sage Pro WS WiFi A, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $544 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-SP6 (SP6/sTR5) $159 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-tr-pro-9965wx",
   "name": "Micro Center bundle · Threadripper PRO 9965WX · 128 GB",
   "cpu": "amd-ryzen-threadripper-pro-9965wx",
   "ram": 128,
-  "price": 7665,
+  "price": 7754,
+  "build": {
+   "bundle": 6999.99,
+   "cooler": "str5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,999.99 (ASUS WRX90E Sage Pro WS SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,999.99 (ASUS WRX90E Sage Pro WS SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $544 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-SP6 (SP6/sTR5) $159 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-tr-pro-9975wx",
   "name": "Micro Center bundle · Threadripper PRO 9975WX · 128 GB",
   "cpu": "amd-ryzen-threadripper-pro-9975wx",
   "ram": 128,
-  "price": 8665,
+  "price": 8754,
+  "build": {
+   "bundle": 7999.99,
+   "cooler": "str5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $7,999.99 (ASUS WRX90E Sage Pro WS SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $455 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, a socket cooler (unpriced; the AIO's $70 stands in; parts prices: Aaron's parts list, 2026-10-29), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $7,999.99 (ASUS WRX90E Sage Pro WS SE, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $544 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35, ARCTIC Liquid Freezer WS360-SP6 (SP6/sTR5) $159 (parts prices: Aaron's parts list, 2026-10-29; cooler price owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~545 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-epyc-9175f",
   "name": "Micro Center bundle · EPYC 9175F · 128 GB",
   "cpu": "amd-epyc-9175f",
   "ram": 128,
-  "price": 6650,
+  "price": 6769,
+  "build": {
+   "bundle": 5999.99,
+   "cooler": "sp5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $5,999.99 (ASRock Rack TURIND8X-2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $440 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Freezer 4U-SP5 $55 (Amazon US via phoronix.com), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $5,999.99 (ASRock Rack TURIND8X-2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $559 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Liquid Freezer WS360-SP5 $174 (owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-epyc-9275f",
   "name": "Micro Center bundle · EPYC 9275F · 128 GB",
   "cpu": "amd-epyc-9275f",
   "ram": 128,
-  "price": 7050,
+  "price": 7169,
+  "build": {
+   "bundle": 6399.99,
+   "cooler": "sp5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,399.99 (ASRock Rack TURIND8-2L2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $440 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Freezer 4U-SP5 $55 (Amazon US via phoronix.com), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,399.99 (ASRock Rack TURIND8-2L2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $559 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Liquid Freezer WS360-SP5 $174 (owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
  },
  {
   "id": "mk-microcenter-epyc-9375f",
   "name": "Micro Center bundle · EPYC 9375F · 128 GB",
   "cpu": "amd-epyc-9375f",
   "ram": 128,
-  "price": 7650,
+  "price": 7769,
+  "build": {
+   "bundle": 6999.99,
+   "cooler": "sp5",
+   "psu": 1000
+  },
   "condition": "new",
   "form": "workstation",
   "source": "https://www.microcenter.com/site/content/bundle-and-save.aspx?bundle=amd",
   "seen": "2026-10",
-  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,999.99 (ASRock Rack TURIND8-2L2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $440 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Freezer 4U-SP5 $55 (Amazon US via phoronix.com), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
+  "notes": "Micro Center 3-in-1 bundle (in store only, one per customer), price from the bundle page on 2026-10-29. Priced as a full build: bundle $6,999.99 (ASRock Rack TURIND8-2L2T, 128 GB DDR5-5600 registered memory included) + 2 TB NVMe $210 (report) + $559 of parts: Rosewill RSV-L4620 4U chassis $200, ARCTIC P12 Pro PST 5-pack $20, 2× Noctua NF-S12B redux-1200 $35 (parts prices: Aaron's parts list, 2026-10-29), ARCTIC Liquid Freezer WS360-SP5 $174 (owner-supplied, 2026-11-01), Seasonic Focus GX-1000 Gold 1000 W $130 (slickdeals.net, 2026; full load ~506 W, sized to stay under 55%)."
  }
 ]
