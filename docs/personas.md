@@ -10,6 +10,8 @@ Journey: `e2e/costs.spec.ts`. Compare every machine on the cost chart, read a do
 
 Journey: `e2e/strategy.spec.ts`. Enter cash on hand and an agent target, compare the four buying strategies, turn on financing to see the loan's cost, and open a recommended machine in the calculator.
 
+Journey: `e2e/settings.spec.ts`. Change part and RAM prices, reload to confirm they persist, see a Micro Center bundle repriced in the calculator, reset to defaults, and compare the ways to get past its stock memory.
+
 ## Fleet operator
 
 Models a measured workload and machines already owned. Changes workload chips, electricity and advanced assumptions, saves a custom machine through reload, and resets report defaults.
