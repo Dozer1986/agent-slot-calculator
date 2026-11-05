@@ -16,6 +16,7 @@ import { PRESETS } from './presets';
 import cpuRows from './cpus.json' with { type: 'json' };
 import listingRows from './listings.json' with { type: 'json' };
 import marketPrices from './market-prices.json' with { type: 'json' };
+import { buildPrice, upgradeCost, readSettings, type Build, type Settings } from '../lib/settings';
 
 export type Condition = 'new' | 'used' | 'refurbished' | 'owned';
 export type Form = 'mini' | 'sff' | 'tower' | 'workstation' | 'server' | 'mac';
@@ -53,6 +54,10 @@ export interface Listing {
   maxRam?: number | null;
   ramSoldered?: boolean;
   price: number;
+  /** Parts breakdown; when present the price comes from the Settings page (`price` is the as-shipped total at default settings). */
+  build?: Build;
+  /** Also list it with the report's machines in the calculator's comparison table. */
+  reportTable?: boolean;
   condition: Exclude<Condition, 'owned'>;
   form: Form;
   /** Measured wall watts, when a cited review measured them. */
@@ -151,7 +156,7 @@ export function estimatePower(cpu: Cpu, form: Form, sockets: 1 | 2 = 1): { idle:
   return { idle: Math.round(idle), load: Math.round(base + 1.3 * tdp) };
 }
 
-export function resolveListing(l: Listing): CatalogEntry | null {
+export function resolveListing(l: Listing, settings: Settings = readSettings()): CatalogEntry | null {
   const cpu = findCpu(l.cpu);
   if (!cpu) return null;
   const sockets = l.sockets ?? 1;
@@ -159,11 +164,12 @@ export function resolveListing(l: Listing): CatalogEntry | null {
   const est = estimatePower(cpu, l.form, sockets);
   const dualMt = sockets === 2 ? (cpu.mtDual ?? null) : null;
   const market = MARKET[l.id];
+  const up = l.build ? upgradeCost(l.build, settings) : null;
   const machine: Machine = {
     id: l.id,
     group: 'Market',
     name: l.name,
-    price: market ? market.median : l.price,
+    price: market ? market.median : (l.build && buildPrice(l.build, settings)) ?? l.price,
     ram: l.ram,
     st: cpu.st,
     // Without PassMark's own dual-socket figure, assume the second socket adds EXTRA_CPU_SHARE.
@@ -172,8 +178,8 @@ export function resolveListing(l: Listing): CatalogEntry | null {
     idle: measured ? l.idleW! : est.idle,
     load: measured ? l.loadW! : est.load,
     reserve: l.form === 'mac' ? 8 : 6,
-    upGB: 0,
-    upCost: 0,
+    upGB: up == null ? 0 : l.build!.upgrade!.size * l.build!.upgrade!.count,
+    upCost: up ?? 0,
     note: l.notes,
   };
   return {
@@ -204,10 +210,12 @@ const reportEntries: CatalogEntry[] = PRESETS.map((p) => {
   };
 });
 
+const SETTINGS = readSettings();
+
 /** Every built-in machine: the report's presets first, then market listings. */
 export const CATALOG: CatalogEntry[] = [
   ...reportEntries,
-  ...LISTINGS.map(resolveListing).filter((e): e is CatalogEntry => e != null),
+  ...LISTINGS.map((l) => resolveListing(l, SETTINGS)).filter((e): e is CatalogEntry => e != null),
 ];
 
 export const findEntry = (id: string, extra: CatalogEntry[] = []) => [...CATALOG, ...extra].find((e) => e.machine.id === id);

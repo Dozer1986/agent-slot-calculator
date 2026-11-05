@@ -1,7 +1,8 @@
 import { evaluate, evaluateReference, judge, stickOptions, type Assumptions, type Machine, type Result, type VerdictKey } from '../lib/model';
 import { DEFAULTS, PRESETS, REFERENCE_ID } from '../data/presets';
 import { readSaved, writeSaved, type EditableMachine } from '../lib/saved';
-import { CATALOG, FORM_LABEL } from '../data/catalog';
+import { CATALOG, FORM_LABEL, LISTINGS } from '../data/catalog';
+import { ramPlans, readSettings } from '../lib/settings';
 import { userEntries } from '../lib/listings';
 import { fmt$ } from '../lib/format';
 
@@ -37,7 +38,7 @@ type ElementMap = {
 } & Record<'vband' | 'vpill' | 'bar-pill' | 'vname' | 'res-assume' | 'agents' | 'bar-agents' |
   'limit' | 'm-hw' | 'm-hw-s' | 'm-tco' | 'bar-tco' | 'm-tco-s' | 'm-pwr' | 'm-pwr-s' |
   'm-ref' | 'm-ref-s' | 'fleet' | 'flags' | 'chart-title' | 'tbody' | 'machine-fields' |
-  'work-fields' | 'adv-fields' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'mnote' | 'sticks-box' | 'sticks-out' | 'h-machine' | 'reset', HTMLElement>;
+  'work-fields' | 'adv-fields' | 'ram-plans' | 'ram-plans-body' | 'ram-plans-hint' | 'os-seg' | 'verdict-seg' | 'source-seg' | 'h-table' | 'th-machine' | 'mnote' | 'sticks-box' | 'sticks-out' | 'h-machine' | 'reset', HTMLElement>;
 
 const $ = <K extends keyof ElementMap>(id: K): ElementMap[K] => document.getElementById(id) as ElementMap[K];
 
@@ -143,10 +144,11 @@ function restore() {
   if (!s) return false;
   A = s.A;
   // A machine still in the catalog reloads from current data, so price and spec updates reach returning
-  // visitors; only the upgrade and RAM stick inputs, which don't mark the machine as edited, carry over.
+  // visitors; only the upgrade and RAM stick inputs, which don't mark the machine as edited, carry over,
+  // except the upgrade on machines priced from parts, which follows the RAM prices in Settings.
   if (s.presetId !== 'custom' && allMachines().some((x) => x.id === s.presetId)) {
     loadPreset(s.presetId);
-    M.upGB = Number(s.M.upGB) || 0; M.upCost = Number(s.M.upCost) || 0;
+    if (!LISTINGS.some((l) => l.id === s.presetId && l.build)) { M.upGB = Number(s.M.upGB) || 0; M.upCost = Number(s.M.upCost) || 0; }
     M.slots = Number(s.M.slots) || 0; M.stick = savedSticks(s.M.stick);
     return true;
   }
@@ -235,9 +237,34 @@ function render() {
   const ul = $('flags'); ul.textContent = '';
   flags.forEach(([s, t]) => { const li = document.createElement('li'); li.dataset.state = s; li.textContent = t; ul.appendChild(li); });
 
+  renderRamPlans();
   drawChart(r);
   renderTable(ref);
   save();
+}
+
+const SETTINGS = readSettings();
+/** RAM paths for a Micro Center bundle loaded as is; hidden for any other machine. */
+function renderRamPlans() {
+  const build = LISTINGS.find((l) => l.id === presetId)?.build;
+  const plans = build ? ramPlans(build, SETTINGS) : [];
+  $('ram-plans').hidden = plans.length === 0;
+  const tb = $('ram-plans-body'); tb.textContent = '';
+  if (!plans.length) return;
+  const rows = plans.map((p) => ({ p, r: p.cost == null ? null : evaluate(M, A, p.ram, M.price + p.cost) }));
+  const best = Math.min(...rows.map(({ r }) => (r && r.n ? r.lifePer : Infinity)));
+  for (const { p, r } of rows) {
+    const tr = document.createElement('tr');
+    const cells = [p.label, p.ram + ' GB', p.cost == null ? 'no price' : fmt$(p.cost), r ? String(r.n) : '—', r ? fmt$(r.lifePer) : '—'];
+    cells.forEach((t, i) => {
+      const td = document.createElement('td');
+      if (i) td.className = 'n';
+      if (i === 4 && r && r.lifePer === best) { const b = document.createElement('strong'); b.textContent = t; td.appendChild(b); } else td.textContent = t;
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  }
+  $('ram-plans-hint').textContent = 'Cost is the RAM bought, net of the stock kit: "sold" gets ' + Math.round(SETTINGS.resale * 100) + '% of its new price back, "to 2nd box" counts its full new price, the RAM that box no longer buys (a second bundle going to 64 GB, say). Per agent is the lifetime cost over ' + A.years + ' years; the lowest is in bold. Four DDR5 sticks usually run slower than two, and mixing stick sizes may not run at rated speed, or at all: check the board’s memory support list (QVL) first. Stick prices and resale are on the Settings page.';
 }
 
 function renderSticks() {
@@ -294,11 +321,12 @@ function drawChart(r: Result) {
 let verdictFilter = 'all';
 let source: 'report' | 'microcenter' = 'report';
 const BUNDLES = CATALOG.filter((e) => e.machine.id?.startsWith('mk-microcenter-')).map((e) => e.machine);
+const REPORT_ROWS = [...PRESETS, ...BUNDLES.filter((m) => LISTINGS.some((l) => l.id === m.id && l.reportTable))];
 
 function renderTable(ref: Result) {
   const tb = $('tbody'); tb.textContent = '';
   $('h-table').textContent = source === 'report' ? 'Every machine from the report, under your settings' : 'Micro Center bundles as full builds, under your settings';
-  const rows = (source === 'report' ? PRESETS : BUNDLES).map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; })
+  const rows = (source === 'report' ? REPORT_ROWS : BUNDLES).map((p) => { const m = { ...p, owned: !!p.owned }; const r = evaluate(m, A); return { p, r, v: judge(r, ref, m) }; })
     .filter((x) => verdictFilter === 'all' || x.v.key === verdictFilter);
   if (!rows.length) {
     const tr = document.createElement('tr'); tr.className = 'group';
@@ -306,10 +334,14 @@ function renderTable(ref: Result) {
   }
   const sorter = (a: (typeof rows)[number], b: (typeof rows)[number]) => a.r.lifePer - b.r.lifePer;
   const groups: [string, typeof rows][] = [['To buy', rows.filter((x) => !x.p.owned).sort(sorter)], ['Already yours · power only', rows.filter((x) => x.p.owned).sort(sorter)]];
-  groups.forEach(([title, list]) => {
-    if (!list.length) return;
-    const g = document.createElement('tr'); g.className = 'group';
-    const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
+  // The first group's title rides in the Machine header instead of taking its own row.
+  const shown = groups.filter(([, list]) => list.length);
+  $('th-machine').textContent = shown.length ? 'Machine · ' + shown[0][0] : 'Machine';
+  shown.forEach(([title, list], i) => {
+    if (i > 0) {
+      const g = document.createElement('tr'); g.className = 'group';
+      const gtd = document.createElement('td'); gtd.colSpan = 7; gtd.textContent = title; g.appendChild(gtd); tb.appendChild(g);
+    }
     list.forEach(({ p, r, v }) => {
       const tr = document.createElement('tr');
       tr.setAttribute('aria-selected', String(p.id === presetId));

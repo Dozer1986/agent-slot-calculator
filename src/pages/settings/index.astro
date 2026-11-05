@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import { PARTS, RAM_TYPES, RAM_SIZES } from '../../lib/settings';
+---
+
+<Base title="Settings · Agent Slot Calculator" description="Default prices for build parts and RAM sticks.">
+  <div class="wrap">
+    <Header
+      current="settings"
+      title="Settings"
+      intro="Default prices for the parts and memory a build needs. Machines priced from parts, like the Micro Center bundles, use these on every page. Changes save in this browser."
+    />
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-parts">
+        <div class="panel-head"><h2 id="h-parts">Build parts</h2><span class="eyebrow">Price each</span></div>
+        <div class="fields three">
+          {PARTS.map((p) => (
+            <div class="field">
+              <label for={'part-' + p.key}>{p.label}</label>
+              <span class="num"><span class="pre">$</span><input type="number" id={'part-' + p.key} data-part={p.key} min="0" step="1" inputmode="decimal"></span>
+              <p class="hint">{p.hint}</p>
+            </div>
+          ))}
+        </div>
+        <p class="hint">Only machines priced from parts, like the Micro Center bundles, use these. Prebuilt machines already include their cooler, PSU and case.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="h-ram">
+        <div class="panel-head"><h2 id="h-ram">RAM prices</h2><span class="eyebrow">Price per stick</span></div>
+        <div class="field">
+          <label for="ram-resale">Used RAM resale</label>
+          <span class="num"><input type="number" id="ram-resale" min="0" max="100" step="5" inputmode="decimal"><span class="unit">% of new</span></span>
+          <p class="hint">What a pulled stock kit sells for, used in the calculator's RAM comparison.</p>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Type</th>{RAM_SIZES.map((g) => <th class="n">{g} GB</th>)}</tr></thead>
+            <tbody>
+              {RAM_TYPES.map((t) => (
+                <tr>
+                  <th scope="row">{t.label}</th>
+                  {RAM_SIZES.map((g) => (
+                    <td class="n"><span class="num"><span class="pre">$</span><input type="number" data-ram={t.key} data-size={g} min="0" step="1" inputmode="decimal" placeholder="—" aria-label={`${t.label} ${g} GB stick price`}></span></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="hint">Leave a cell empty if you have no price for it. A bundle whose upgrade memory has no price shows no RAM upgrade.</p>
+      </section>
+
+      <div class="row"><button type="button" class="btn" id="settings-reset">Reset to defaults</button></div>
+    </div>
+  </div>
+  <script>
+    import '../../scripts/settings';
+  </script>
+</Base>
