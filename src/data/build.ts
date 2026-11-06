@@ -331,7 +331,7 @@ export const SLOTS: Slot[] = [
       name: '2 × ARCTIC P8 PWM PST',
       spec: 'On the Rosewill’s rear vents, exhausting',
       size: '80 × 80 × 25 each',
-      source: 'https://shop.wearesync.co.uk/acfan00150a.html',
+      source: 'https://www.arctic.de/us/P8-PWM-PST/ACFAN00150A',
       url: 'https://aaawave.com/arctic-cooling-acfan00150a-p8-pwm-pst-80mm-pressure-optimised-case-fan-with-pwm-pst',
       price: 16.9,
       priceNote: '$8.45 each at AAAWave, search result 2026-11-06.',
