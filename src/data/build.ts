@@ -278,10 +278,9 @@ export const SLOTS: Slot[] = [
       source: 'https://noctua.at/en/nf-a4x10-flx/specification',
       note: 'Shroud size scaled off two photos of the printed part, using the 79 mm low-profile bracket, so it can be 10 mm out. The 18 mm thickness is the roughest of the three. Printables blocked a direct read, so check the model’s own dimensions.',
       url: 'https://www.printables.com/model/1715543-mellanox-connectx-4-lx-shroud',
-      price: 20.95,
-      priceUrl: 'https://reach.dog/shop/coolerguys/products/noctua-40x40x10mm-premium-fan-nf-a4x10-flx',
-      priceNote: 'The fan only, from a Coolerguys listing in a search result, 2026-11-06. The filament isn’t priced.',
-      estimated: true,
+      price: 17.95,
+      priceUrl: 'https://www.amazon.com/s?k=Noctua+NF-A4x10+FLX',
+      priceNote: '$2 for the printed shroud and $15.95 for the fan at Amazon, 2026-11-06.',
     }],
   },
   {
