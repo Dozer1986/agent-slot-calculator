@@ -396,5 +396,6 @@ const BY_PREFIX: [string, Builder][] = [
 
 export function buildPart(id: string, size: Size): THREE.Object3D {
   const b = BY_ID[id] ?? BY_PREFIX.find(([p]) => id.startsWith(p))?.[1];
-  return b ? b(size, id) : box(size[0], size[1], size[2], std(0x888888));
+  if (!b) throw new Error(`No builder for part ${id}`);
+  return b(size, id);
 }

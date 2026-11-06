@@ -5,7 +5,7 @@
  *  model spins about its centre. `checkFit` is the clearance check; `test/build.test.ts` runs it.
  */
 
-export type Kind = 'solid' | 'shell' | 'hollow';
+export type Kind = 'solid' | 'shell';
 
 export interface Box {
   id: string;
@@ -94,7 +94,7 @@ export function layout(): Box[] {
   for (const k of [GPU_SLOT, 2, NIC_SLOT, 6]) b.push(box(`pcie-${k}`, 'board', 'solid', [slotX(k) - 3.75, BY, bz(39)], [slotX(k) + 3.75, BY + 11.4, bz(125)]));
   const dimmZ = [169, 179, 189, 199].map(bz);
   dimmZ.forEach((z, i) => b.push(box(`dimm-${i}`, 'board', 'solid', [bx(167), BY, z - 3.5], [bx(31), BY + 9, z + 3.5])));
-  b.push(box('m2a-heatsink', 'board', 'hollow', [bx(179), BY, bz(27)], [bx(153), 22, bz(152)], up(90)));
+  b.push(box('m2a-heatsink', 'board', 'shell', [bx(179), BY, bz(27)], [bx(153), 22, bz(152)], up(90)));
   b.push(box('m2-shroud', 'board', 'solid', [bx(257), BY, bz(27)], [bx(194), 17, bz(152)]));
   b.push(box('m2-plate', 'board', 'solid', [bx(260), BY, bz(152)], [bx(194), 15, bz(224)]));
   b.push(box('atx24', 'board', 'solid', [bx(100), BY, bz(227)], [bx(51), 21, bz(240)]));

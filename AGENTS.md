@@ -1,6 +1,6 @@
 # Agent Slot Calculator
 
-A static Astro site with four pages. The calculator works out how many concurrent AI coding agents a machine can carry, what each agent slot costs over its life, and whether it beats buying a 128 GB Core Ultra 7 270K Plus desktop. The defaults and presets come from `docs/research-report.md` (October 2026 prices).
+A static Astro site with five pages. The calculator works out how many concurrent AI coding agents a machine can carry, what each agent slot costs over its life, and whether it beats buying a 128 GB Core Ultra 7 270K Plus desktop. The defaults and presets come from `docs/research-report.md` (October 2026 prices).
 
 ## Commands
 
@@ -17,6 +17,7 @@ A static Astro site with four pages. The calculator works out how many concurren
 - `src/pages/costs/`, `src/scripts/costs.ts` and `src/lib/costs.ts`: the cost chart page. It plots each machine's lifetime total against its lifetime cost per agent on log axes, with filters and bands relative to the cheapest machine shown. `src/lib/listings.ts` holds machines the user adds (localStorage, exportable).
 - `src/pages/strategy/`, `src/scripts/strategy.ts` and `src/lib/strategy.ts`: the buying-strategy page. It searches small fleets of catalog machines under the user's cash, financing, monthly and tolerance limits and compares four strategies; the search and recommendation rules are documented in `src/lib/strategy.ts`.
 - `src/pages/settings/`, `src/scripts/settings.ts` and `src/lib/settings.ts`: default build-part and RAM stick prices (localStorage). Listings with a `build` breakdown (the Micro Center bundles) are priced from them in `catalog.ts`; RAM prices set the cost of their upgrade past the stock memory and the calculator's "Getting past the stock memory" table (`ramPlans`); `price` stays the as-shipped total at default settings, which `test/catalog.test.ts` checks.
+- `src/pages/build/`, `src/scripts/build.ts`, `src/lib/build/` and `src/data/build.ts`: the Build page. It draws the Proxmox node parts with Three.js from the mm boxes in `src/lib/build/layout.ts`, whose `checkFit` is the clearance check that `test/build.test.ts` and the page's fit check both run.
 - `src/components/*.astro`: static markup. Element ids are used by the controller, so don't rename them.
 - `src/styles/global.css`: design tokens (light plus two dark blocks) and component styles. See `docs/source/DESIGN.md`.
 
