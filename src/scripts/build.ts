@@ -151,6 +151,9 @@ new ResizeObserver(resize).observe(view);
 resize();
 setView('iso');
 
+// Test hook: e2e/build.spec.ts reads the camera state instead of comparing slow software-WebGL frames.
+Object.assign(window, { __build: { camera, controls } });
+
 renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);

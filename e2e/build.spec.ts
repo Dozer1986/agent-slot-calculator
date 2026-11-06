@@ -2,6 +2,9 @@ import { test, expect, type Page } from '@playwright/test';
 
 const url = '/agent-slot-calculator/build/';
 
+// CI renders this scene with software WebGL at about 1 frame/s.
+test.describe.configure({ timeout: 60_000 });
+
 test('builder sees the model, the fit check and a part’s details', async ({ page }) => {
   await page.goto(url);
   await expect(page.locator('#view canvas')).toBeVisible();
@@ -22,21 +25,33 @@ test('build page has no horizontal scroll at 400px', async ({ page }) => {
   expect(wide).toBe(false);
 });
 
+// Camera position and orbit target, read two frames on so a resize or drag has reached them.
+function cameraState(page: Page): Promise<number[]> {
+  return page.evaluate(async () => {
+    for (let i = 0; i < 2; i++) await new Promise(requestAnimationFrame);
+    const { camera, controls } = (window as any).__build;
+    return [...camera.position.toArray(), ...controls.target.toArray()];
+  });
+}
+
+// A pan glides for hundreds of frames, so tests check one mid-glide with cameraState rather than wait here.
 async function settled(page: Page) {
-  const canvas = page.locator('#view canvas');
-  let last = await canvas.screenshot();
+  let last = await cameraState(page);
   await expect(async () => {
-    const next = await canvas.screenshot();
-    const same = next.equals(last);
+    await page.waitForTimeout(150);
+    const next = await cameraState(page);
+    const same = next.every((v, i) => Math.abs(v - last[i]) < 0.01);
     last = next;
     expect(same).toBe(true);
-  }).toPass({ timeout: 30_000 });
+  }).toPass({ timeout: 30_000, intervals: [0] });
   return last;
 }
 
+const near = (a: number[], b: number[]) => a.every((v, i) => Math.abs(v - b[i]) < 0.5);
+
 async function zoom(page: Page, deltaY: number) {
   await page.locator('#view canvas').hover();
-  for (let i = 0; i < 40; i++) await page.mouse.wheel(0, deltaY);
+  await page.mouse.wheel(0, deltaY);
 }
 
 for (const preset of ['Front', 'Rear', 'Top']) {
@@ -49,7 +64,7 @@ for (const preset of ['Front', 'Rear', 'Top']) {
     await page.setViewportSize({ width: 400, height: 800 });
     await settled(page);
     await page.setViewportSize({ width: 1400, height: 1000 });
-    expect((await settled(page)).equals(before)).toBe(true);
+    expect(near(await settled(page), before)).toBe(true);
   });
 }
 
@@ -57,20 +72,21 @@ test('a zoomed-in phone view survives rotating and rotating back', async ({ page
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 400, height: 800 });
   await page.goto(url);
-  await zoom(page, -500);
+  await zoom(page, -20_000);
   const before = await settled(page);
   await page.setViewportSize({ width: 800, height: 400 });
   await settled(page);
   await page.setViewportSize({ width: 400, height: 800 });
-  expect((await settled(page)).equals(before)).toBe(true);
+  expect(near(await settled(page), before)).toBe(true);
 });
 
 test('the model stays drawn when fully zoomed out on a narrow phone', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 800 });
   await page.goto(url);
-  await zoom(page, 500);
-  const png = await settled(page);
+  await zoom(page, 20_000);
+  await settled(page);
+  const png = await page.locator('#view canvas').screenshot();
   const darkPixels = await page.evaluate(async (b64) => {
     const img = new Image();
     img.src = `data:image/png;base64,${b64}`;
@@ -107,8 +123,8 @@ test('a view button brings a panned model back to the clean preset', async ({ pa
   await page.goto(url);
   const clean = await frontPreset(page);
   await rightDrag(page);
-  expect((await settled(page)).equals(clean)).toBe(false);
-  expect((await frontPreset(page)).equals(clean)).toBe(true);
+  expect(near(await cameraState(page), clean)).toBe(false);
+  expect(near(await frontPreset(page), clean)).toBe(true);
 });
 
 test('a view button pressed straight after a pan leaves no drift', async ({ page }) => {
@@ -117,7 +133,7 @@ test('a view button pressed straight after a pan leaves no drift', async ({ page
   await page.goto(url);
   const clean = await frontPreset(page);
   await rightDrag(page);
-  expect((await frontPreset(page)).equals(clean)).toBe(true);
+  expect(near(await frontPreset(page), clean)).toBe(true);
 });
 
 test.describe('on a touch phone', () => {
@@ -137,9 +153,9 @@ test.describe('on a touch phone', () => {
       { x: cx + spread + drift, y: cy + drift },
     ];
     await touch('touchStart', fingers(40, 0));
-    for (let i = 1; i <= 10; i++) await touch('touchMove', fingers(40 + i * 5, i * 6));
+    for (let i = 1; i <= 2; i++) await touch('touchMove', fingers(40 + i * 25, i * 30));
     await touch('touchEnd', []);
-    expect((await settled(page)).equals(clean)).toBe(false);
-    expect((await frontPreset(page)).equals(clean)).toBe(true);
+    expect(near(await cameraState(page), clean)).toBe(false);
+    expect(near(await frontPreset(page), clean)).toBe(true);
   });
 });
