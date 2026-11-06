@@ -1,6 +1,7 @@
 /** Turns the layout boxes into detailed meshes, one group per box, placed at the box centre. */
 import * as THREE from 'three';
-import { layout } from './layout';
+import { chassisOf, layout } from './layout';
+import type { Config } from '../../data/build';
 import { buildPart } from './parts';
 
 export interface Built {
@@ -10,9 +11,12 @@ export interface Built {
   /** Moves every box toward its exploded place; t from 0 to 1. */
   setExplode(t: number): void;
   setLid(on: boolean): void;
+  /** Frees the GPU memory; call before dropping the model for a rebuilt one. */
+  dispose(): void;
 }
 
-export function buildModel(): Built {
+export function buildModel(config: Config): Built {
+  const C = chassisOf(config);
   const group = new THREE.Group();
   const byPart = new Map<string, THREE.Object3D[]>();
   const movers: { obj: THREE.Object3D; base: THREE.Vector3; explode: THREE.Vector3 }[] = [];
@@ -20,10 +24,10 @@ export function buildModel(): Built {
   let pump: THREE.Object3D | undefined;
   let radiator: THREE.Object3D | undefined;
 
-  for (const b of layout()) {
+  for (const b of layout(config)) {
     const size: [number, number, number] = [b.max[0] - b.min[0], b.max[1] - b.min[1], b.max[2] - b.min[2]];
     const centre = new THREE.Vector3(b.min[0] + size[0] / 2, b.min[1] + size[1] / 2, b.min[2] + size[2] / 2);
-    const obj = buildPart(b.id, size);
+    const obj = buildPart(b.id, size, C);
     obj.position.copy(centre);
     obj.traverse((o) => (o.userData.part = b.part));
     group.add(obj);
@@ -74,6 +78,16 @@ export function buildModel(): Built {
     },
     setLid(on) {
       if (lid) lid.visible = on;
+    },
+    dispose() {
+      group.traverse((o) => {
+        const m = o as THREE.Mesh;
+        m.geometry?.dispose();
+        const mat = m.material as THREE.MeshStandardMaterial | undefined;
+        mat?.map?.dispose();
+        mat?.alphaMap?.dispose();
+        mat?.dispose();
+      });
     },
   };
 }

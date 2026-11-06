@@ -1,14 +1,15 @@
 /** Detailed geometry for each layout box. A builder gets the box size (w, h, d in mm) and returns a group
  *  centred on the box, in world axes (x right, y up, z toward the front). */
 import * as THREE from 'three';
-import { slotX } from './layout';
+import { slotX, type Chassis } from './layout';
 
 type Size = [number, number, number];
-type Builder = (s: Size, id: string) => THREE.Object3D;
+type Builder = (s: Size, id: string, C: Chassis) => THREE.Object3D;
 
 const std = (color: number, roughness = 0.6, metalness = 0, extra: Partial<THREE.MeshStandardMaterialParameters> = {}) =>
   new THREE.MeshStandardMaterial({ color, roughness, metalness, ...extra });
 const STEEL = () => std(0x1c1f23, 0.45, 0.7);
+const BODY = (C: Chassis) => std(C.body, 0.45, 0.7);
 const ALU = () => std(0x9ea4ad, 0.35, 0.85);
 const BLACK_PLASTIC = () => std(0x15171a, 0.7);
 const PCB = () => std(0x14181c, 0.8);
@@ -204,13 +205,28 @@ function gpu([w, h, d]: Size): THREE.Group {
 function nic([w, h, d]: Size): THREE.Group {
   const g = new THREE.Group();
   g.add(box(1.6, h, d, GREEN_PCB(), w / 2 - 0.8, 0, 0));
-  const hs = heatsinkFins(12, 24, 24, 'z', 2);
+  const hs = heatsinkFins(12, 14, 24, 'z', 2);
   hs.rotation.z = Math.PI / 2;
-  hs.position.set(w / 2 - 1.6 - 12, h * 0.05, d * 0.15);
+  hs.position.set(w / 2 - 1.6 - 7, h * 0.05, d * 0.15);
   g.add(hs);
   // Two SFP28 cages at the bracket end.
   const cage = std(0x8d9299, 0.4, 0.8);
   for (const dy of [-h * 0.25, h * 0.12]) g.add(box(14, 12, 48, cage, w / 2 - 1.6 - 7, dy, -d / 2 + 20));
+  return g;
+}
+
+/** Grey printed shroud over the card's -x face: a fan in a through-hole near the far end, as in the photos. */
+function nicShroud([w, h, d]: Size): THREE.Group {
+  const g = new THREE.Group();
+  const fanZ = d / 2 - 33; // 157 mm from the bracket
+  const fanY = -7.5;
+  const body = plate(d, h, w, std(0x8d9096, 0.85), [{ circle: [-fanZ, fanY, 20] }]);
+  body.rotation.y = Math.PI / 2;
+  g.add(body);
+  const f = fan(40, 10, 0xb9a27c, 0x6a2a28);
+  f.rotation.y = -Math.PI / 2;
+  f.position.set(-w / 2 + 5.5, fanY, fanZ);
+  g.add(f);
   return g;
 }
 
@@ -219,11 +235,12 @@ function psu([w, h, d]: Size): THREE.Group {
   const body = std(0x121416, 0.5, 0.5);
   g.add(box(w, h, d, body));
   // 92 mm fan behind a grille, on the face toward the board.
-  const f = fan(92, 10, 0x121416, 0x2a2d31);
+  const fanSize = Math.min(h, d) - 8;
+  const f = fan(fanSize, 10, 0x121416, 0x2a2d31);
   f.rotation.y = -Math.PI / 2;
   f.position.x = -w / 2 - 1;
   g.add(f);
-  const grille = perforated(96, 96, 4, 0x1e2124, false);
+  const grille = perforated(fanSize + 4, fanSize + 4, 4, 0x1e2124, false);
   grille.rotation.y = Math.PI / 2;
   grille.position.x = -w / 2 - 6.5;
   g.add(grille);
@@ -239,9 +256,10 @@ function psu([w, h, d]: Size): THREE.Group {
   return g;
 }
 
-function ram([w, h, d]: Size): THREE.Group {
+function ram([w, h, d]: Size, id: string): THREE.Group {
   const g = new THREE.Group();
-  const spreader = std(0x121314, 0.55, 0.4);
+  // The 128 GB kit is lighter, so a swap shows in the model; its heatsink shape is not modelled.
+  const spreader = id.startsWith('kit-') ? std(0x6b7078, 0.5, 0.7) : std(0x121314, 0.55, 0.4);
   g.add(box(w, 4, 1.6, GREEN_PCB(), 0, -h / 2 + 2, 0));
   g.add(box(w, h - 4, d, spreader, 0, 2, 0));
   g.add(box(w * 0.7, 3, d + 0.6, std(0x3a3d42, 0.5, 0.5), 0, h / 2 - 6, 0));
@@ -319,22 +337,19 @@ function atx24([w, h, d]: Size): THREE.Group {
   return g;
 }
 
-/** Rear sheet with the I/O opening, the eight slot openings, the PSU opening and the two 60 mm vent holes. */
-function rear([w, h, d]: Size): THREE.Mesh {
+/** Rear sheet with the chassis's openings and its eight slot openings. */
+function rear([w, h, d]: Size, _id: string, C: Chassis): THREE.Mesh {
   const y = (mm: number) => mm - h / 2;
-  const holes: Parameters<typeof plate>[4] = [
-    { rect: [-46, y(9), 113, y(60)] },
-    { rect: [134, y(3), 198, y(120)] },
-    { circle: [2, y(94), 29] },
-    { circle: [68, y(94), 29] },
-  ];
-  for (let k = 0; k < 8; k++) holes.push({ rect: [slotX(k) - 9.5, y(9), slotX(k) + 9.5, y(127)] });
-  return plate(w, h, d, STEEL(), holes);
+  const holes: Parameters<typeof plate>[4] = C.rearHoles.map((o) =>
+    o.rect ? { rect: [o.rect[0], y(o.rect[1]), o.rect[2], y(o.rect[3])] } : { circle: [o.circle![0], y(o.circle![1]), o.circle![2]] });
+  for (let k = 0; k < 8; k++) holes.push({ rect: [slotX(C, k) - 9.5, y(C.slotY[0]), slotX(C, k) + 9.5, y(C.slotY[1])] });
+  return plate(w, h, d, BODY(C), holes);
 }
 
 /** Builders by box id, then by id prefix. */
 const BY_ID: Record<string, Builder> = {
   radiator, pump, gpu, nic, psu, cpu, socket, ssd, atx24,
+  'nic-shroud': nicShroud,
   'io-shroud': ioShroud,
   eps: atx24,
   'vrm-top': ([w, h, d]) => heatsinkFins(w, h, d, 'x'),
@@ -345,10 +360,12 @@ const BY_ID: Record<string, Builder> = {
   pcb: ([w, h, d]) => box(w, h, d, PCB()),
   'front-io': ([w, h, d]) => box(w, h, d, GREEN_PCB()),
   front: ([w, h]) => perforated(w, h, 6, 0x1c1f23),
-  lid: ([w, h, d]) => box(w, h, d, STEEL()),
-  floor: ([w, h, d]) => box(w, h, d, STEEL()),
-  'wall-l': ([w, h, d]) => box(w, h, d, STEEL()),
-  'wall-r': ([w, h, d]) => box(w, h, d, STEEL()),
+  lid: ([w, h, d], _, C) => box(w, h, d, BODY(C)),
+  floor: ([w, h, d], _, C) => box(w, h, d, BODY(C)),
+  'wall-l': ([w, h, d], _, C) => box(w, h, d, BODY(C)),
+  'wall-r': ([w, h, d], _, C) => box(w, h, d, BODY(C)),
+  'bar-mid': ([w, h, d], _, C) => box(w, h, d, BODY(C)),
+  'bar-wall': ([w, h, d], _, C) => box(w, h, d, BODY(C)),
   rear,
   ears: ([w, h, d]) => {
     const g = new THREE.Group();
@@ -362,7 +379,10 @@ const BY_PREFIX: [string, Builder][] = [
   ['push-', ([w, , d]) => fan(w, d, 0x141618, 0x232629)],
   ['pull-', ([w, , d]) => fan(w, d, 0x141618, 0x232629)],
   ['rear-fan-', ([w, , d]) => fan(w, d, 0x5f4537, 0xc9b79a)],
+  ['rear-p8-', ([w, , d]) => fan(w, d, 0x141618, 0x232629)],
+  ['rear-r8-', ([w, , d]) => fan(w, d, 0x3a3d42, 0x7c8087)],
   ['ram-', ram],
+  ['kit-', ram],
   ['dimm-', dimmSlot],
   ['pcie-', pcieSlot],
   ['handle', ([w, h, d]) => {
@@ -394,8 +414,8 @@ const BY_PREFIX: [string, Builder][] = [
   }],
 ];
 
-export function buildPart(id: string, size: Size): THREE.Object3D {
+export function buildPart(id: string, size: Size, C: Chassis): THREE.Object3D {
   const b = BY_ID[id] ?? BY_PREFIX.find(([p]) => id.startsWith(p))?.[1];
   if (!b) throw new Error(`No builder for part ${id}`);
-  return b(size, id);
+  return b(size, id, C);
 }
