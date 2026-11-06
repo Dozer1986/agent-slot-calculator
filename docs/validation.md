@@ -52,3 +52,7 @@ Astro 7.4.2's checker requires TypeScript 6. The checker dependency also needs `
 GitHub Actions is known to be billing-blocked on the dbeihl account. Hosted checks have not run in this worker stage. No workflow workaround, repository-setting change, push, merge or deployment was performed. Local command output is in [the validation log](validation/local-checks.txt). A deployed URL and a real Pages smoke check remain for the release stage.
 
 The multi-model plan review is deferred under the worker contract in [the plan review record](interrogate-report.md). Mutation testing has not run. The installed mutation workflow excludes personal repositories such as this one.
+
+## Build page
+
+The Build page draws the Proxmox node parts with Three.js from box positions in `src/lib/build/layout.ts`. `test/build.test.ts` checks that every listed part is drawn, that no solid part overlaps another or leaves the chassis, and that the GPU clears the pull fans; the page's fit check prints the same numbers. `e2e/build.spec.ts` covers the render, a part pick and the 400px no-horizontal-scroll rule. Screenshots: [1400 light](validation/build-1400-light.png), [1400 dark](validation/build-1400-dark.png), [400](validation/build-400.png). Chassis interior positions come from listing photos and the board's from a review photo; the parts table notes which sizes are estimates.
