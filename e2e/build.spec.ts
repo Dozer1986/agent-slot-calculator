@@ -97,6 +97,21 @@ test('a chosen part stays selected across a swap of another part, and clears whe
   await expect(page.locator('#part-info')).toContainText('Click a part');
 });
 
+test('going back to the page shows the default parts in the dropdowns as well as the table', async ({ page }) => {
+  await page.goto(url);
+  const total = page.locator('#build-total');
+  const before = await total.textContent();
+  await page.getByLabel('Chassis').selectOption('rosewill');
+  await page.getByLabel('GPU').selectOption('');
+  await page.getByRole('link', { name: 'Settings' }).click();
+  await page.waitForURL(/settings/);
+  await page.goBack();
+  await expect(total).toHaveText(before!);
+  await expect(page.getByLabel('Chassis')).toHaveValue('rackchoice');
+  await expect(page.getByLabel('GPU')).toHaveValue('a6000');
+  await expect(page.getByLabel('Power supply')).toHaveValue('sf1000');
+});
+
 test('without WebGL the parts table still shows and the swaps are hidden', async ({ page }) => {
   await page.addInitScript(() => { HTMLCanvasElement.prototype.getContext = () => null; });
   await page.goto(url);

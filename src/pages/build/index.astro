@@ -18,7 +18,8 @@ import { SLOTS } from '../../data/build';
           {SLOTS.filter((s) => s.optional || s.parts.filter((p) => !p.chassis).length > 1).map((s) => (
             <div class="field">
               <label for={`swap-${s.id}`}>{s.label}</label>
-              <select id={`swap-${s.id}`} data-slot={s.id}>
+              {/* The choice isn't saved, so the browser mustn't restore it after the script has set the defaults. */}
+              <select id={`swap-${s.id}`} data-slot={s.id} autocomplete="off">
                 {s.parts.map((p) => <option value={p.id}>{p.name}</option>)}
                 {s.optional && <option value="">None</option>}
               </select>
