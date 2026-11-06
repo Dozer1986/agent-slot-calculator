@@ -4,11 +4,13 @@ Compare how many cloud-backed coding agents a machine can carry at once, what ea
 
 **Live site:** [dbeihl.github.io/agent-slot-calculator](https://dbeihl.github.io/agent-slot-calculator/) · [cost chart](https://dbeihl.github.io/agent-slot-calculator/costs/)
 
-The site has four pages. The calculator evaluates one machine in detail. The cost chart (`/costs/`) plots every machine's lifetime cost per agent against what one box costs over its life, under the settings last used in the calculator. It covers the report's presets, sourced market listings and machines you add, filters by condition, type, memory and budget, marks the cheapest per-agent option at each budget, and links each machine back to the calculator. [Market data](docs/market-data.md) explains the sources and the weekly eBay price refresh.
+The site has five pages. The calculator evaluates one machine in detail. The cost chart (`/costs/`) plots every machine's lifetime cost per agent against what one box costs over its life, under the settings last used in the calculator. It covers the report's presets, sourced market listings and machines you add, filters by condition, type, memory and budget, marks the cheapest per-agent option at each budget, and links each machine back to the calculator. [Market data](docs/market-data.md) explains the sources and the weekly eBay price refresh.
 
 The strategy page (`/strategy/`) starts from your situation instead: cash on hand, the agents you want, whether you would finance and at what rate, a monthly limit, and whether used machines or rack servers are acceptable. It searches fleets of catalog machines and compares four strategies side by side (cash only, finance the rest, grow in stages, lowest monthly bill) with up-front, monthly and lifetime costs, then recommends one.
 
 The settings page (`/settings/`) holds the default prices for build parts and RAM sticks, saved in your browser. Machines priced from parts, like the Micro Center bundles, use them on every page, and the RAM prices set what it costs to take a bundle past its stock memory.
+
+The build page (`/build/`) draws the parts of the Proxmox node build at true size inside their 3U chassis, with a fit check computed from the same boxes the model draws.
 
 ## Run locally
 

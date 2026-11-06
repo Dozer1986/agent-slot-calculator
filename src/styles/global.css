@@ -330,3 +330,22 @@ label.btn:has(:focus-visible) { outline: 2px solid var(--accent); outline-offset
 .seg-power { background: var(--muted); }
 .seg-interest { background: var(--warn); }
 .legend .swatch.seg-buy, .legend .swatch.seg-later, .legend .swatch.seg-power, .legend .swatch.seg-interest { border: 0; }
+
+/* Build page */
+.build-layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) 260px; }
+.build-view { position: relative; min-height: 420px; height: min(70vh, 640px); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.build-view canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+.build-view #no-webgl { position: absolute; inset: 16px; }
+.build-side { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.build-side input[type="range"] { width: 100%; accent-color: var(--accent); }
+.build-parts { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.build-parts .btn { width: 100%; text-align: left; color: var(--ink); overflow-wrap: anywhere; }
+.build-parts .btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.build-info { display: grid; gap: 4px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; min-height: 48px; }
+.build-info strong { color: var(--ink); }
+.build-info .mono { font-family: var(--font-mono); }
+.build-info a { color: var(--accent); }
+@media (max-width: 760px) {
+  .build-layout { grid-template-columns: minmax(0, 1fr); }
+  .build-view { height: 60vh; min-height: 300px; }
+}

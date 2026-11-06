@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import { BUILD_PARTS } from '../../data/build';
+import { checkFit, layout } from '../../lib/build/layout';
+
+const fit = checkFit(layout());
+const problems = fit.overlaps.length + fit.outside.length;
+---
+
+<Base title="Build · Agent Slot Calculator" description="A 3D model of the Proxmox node build, at true size, that spins so every part can be checked for fit.">
+  <div class="wrap">
+    <Header
+      current="build"
+      title="Proxmox node build"
+      intro="The parts for the new Proxmox nodes, drawn at true size inside the 3U chassis. It spins on its own; drag to look around, scroll to zoom, and pull the explode slider to see what sits under what."
+    />
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-model">
+        <div class="panel-head"><h2 id="h-model">Model</h2><span class="eyebrow">Sizes in mm</span></div>
+        <div class="build-layout">
+          <div class="build-view" id="view">
+            <p class="hint" id="no-webgl" hidden>This browser can't draw 3D. The parts table below has every size.</p>
+          </div>
+          <div class="build-side">
+            <div class="row">
+              <label class="check"><input type="checkbox" id="spin" checked> Spin</label>
+              <label class="check"><input type="checkbox" id="lid"> Lid on</label>
+            </div>
+            <div class="field">
+              <label for="explode">Explode</label>
+              <input type="range" id="explode" min="0" max="100" value="0">
+            </div>
+            <div class="seg" role="group" aria-label="View">
+              <button type="button" data-view="iso">Front 3/4</button>
+              <button type="button" data-view="rear-iso">Rear 3/4</button>
+              <button type="button" data-view="front">Front</button>
+              <button type="button" data-view="rear">Rear</button>
+              <button type="button" data-view="top">Top</button>
+            </div>
+            <ul class="build-parts" role="list">
+              {BUILD_PARTS.map((p) => (
+                <li><button type="button" class="btn" data-part={p.id} aria-pressed="false">{p.name}</button></li>
+              ))}
+            </ul>
+            <div class="build-info" id="part-info" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-fit">
+        <div class="panel-head"><h2 id="h-fit">Fit check</h2><span class="pill" data-state={problems ? 'bad' : 'ok'}>{problems ? `${problems} problem${problems > 1 ? 's' : ''}` : 'Nothing overlaps'}</span></div>
+        <ul class="flags">
+          {fit.overlaps.map(([a, b]) => <li data-state="bad">{a} overlaps {b}</li>)}
+          {fit.outside.map((id) => <li data-state="bad">{id} pokes outside the chassis</li>)}
+          {fit.gaps.map((g) => <li data-state={g.mm < 15 ? 'warn' : 'ok'}>{g.label}: {g.mm} mm</li>)}
+        </ul>
+        <p class="hint">Computed from the same boxes the model draws. Chassis positions came from listing photos and the board's from a review photo, so treat anything under 15 mm as "measure it".</p>
+      </section>
+
+      <section class="panel" aria-labelledby="h-parts">
+        <div class="panel-head"><h2 id="h-parts">Parts</h2><span class="eyebrow">{BUILD_PARTS.length} parts</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Part</th><th>What</th><th class="n">Size (mm)</th><th>Notes</th></tr></thead>
+            <tbody>
+              {BUILD_PARTS.map((p) => (
+                <tr>
+                  <td>{p.source ? <a href={p.source} rel="noopener" target="_blank">{p.name}</a> : p.name}</td>
+                  <td>{p.spec}</td>
+                  <td class="n">{p.size}</td>
+                  <td>{p.note ?? ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script>
+    import '../../scripts/build';
+  </script>
+</Base>

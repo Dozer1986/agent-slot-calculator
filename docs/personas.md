@@ -24,6 +24,12 @@ Uses a 400px phone or keyboard navigation to compare and load machines. Needs a 
 
 Journey: `e2e/calculator.spec.ts`. Exercise both themes, reduced motion, keyboard controls and phone row scrolling.
 
+## Builder
+
+Assembles the Proxmox node and wants to see that the parts fit the chassis before ordering. Spins the model, pulls the explode slider, picks a part to read its size and where the size came from, and reads the fit check.
+
+Journey: `e2e/build.spec.ts`. See the model and a clean fit check, pick the PSU from the parts list, switch to the rear view with the pick kept, and confirm no horizontal scroll at 400px.
+
 ## Test boundaries
 
 Unit and integration tests call the public model API against fixed prototype vectors. UX tests drive the built static site in Playwright. The site has no database or server API. Each pull request runs the e2e workflow; repository required-check settings are managed by the owner. Account billing currently prevents hosted jobs, so the local output must accompany the delivery.
