@@ -87,3 +87,59 @@ test('the model stays drawn when fully zoomed out on a narrow phone', async ({ p
   }, png.toString('base64'));
   expect(darkPixels).toBeGreaterThan(100);
 });
+
+async function frontPreset(page: Page) {
+  await page.getByRole('button', { name: 'Front', exact: true }).click();
+  return settled(page);
+}
+
+async function rightDrag(page: Page) {
+  const box = (await page.locator('#view canvas').boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down({ button: 'right' });
+  await page.mouse.move(box.x + box.width / 2 + 200, box.y + box.height / 2 + 150);
+  await page.mouse.up({ button: 'right' });
+}
+
+test('a view button brings a panned model back to the clean preset', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1400, height: 1000 });
+  await page.goto(url);
+  const clean = await frontPreset(page);
+  await rightDrag(page);
+  expect((await settled(page)).equals(clean)).toBe(false);
+  expect((await frontPreset(page)).equals(clean)).toBe(true);
+});
+
+test('a view button pressed straight after a pan leaves no drift', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 1400, height: 1000 });
+  await page.goto(url);
+  const clean = await frontPreset(page);
+  await rightDrag(page);
+  expect((await frontPreset(page)).equals(clean)).toBe(true);
+});
+
+test.describe('on a touch phone', () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 400, height: 800 } });
+
+  test('a view button brings the model back after a pinch whose fingers drift', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(url);
+    const clean = await frontPreset(page);
+    const box = (await page.locator('#view canvas').boundingBox())!;
+    const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
+    const cdp = await page.context().newCDPSession(page);
+    const touch = (type: string, points: { x: number; y: number }[]) =>
+      cdp.send('Input.dispatchTouchEvent', { type: type as 'touchStart', touchPoints: points });
+    const fingers = (spread: number, drift: number) => [
+      { x: cx - spread + drift, y: cy + drift },
+      { x: cx + spread + drift, y: cy + drift },
+    ];
+    await touch('touchStart', fingers(40, 0));
+    for (let i = 1; i <= 10; i++) await touch('touchMove', fingers(40 + i * 5, i * 6));
+    await touch('touchEnd', []);
+    expect((await settled(page)).equals(clean)).toBe(false);
+    expect((await frontPreset(page)).equals(clean)).toBe(true);
+  });
+});

@@ -36,7 +36,6 @@ scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnviron
 scene.environmentIntensity = 0.9;
 const camera = new THREE.PerspectiveCamera(32, 1, 10);
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 60, 0);
 controls.maxPolarAngle = Math.PI * 0.62;
 controls.enableDamping = true;
 controls.autoRotateSpeed = 1.2;
@@ -75,6 +74,11 @@ const VIEW_ASPECT = 1.5;
 const fit = () => Math.max(1, VIEW_ASPECT / camera.aspect);
 function setView(name: string) {
   const p = VIEWS[name] ?? VIEWS.iso;
+  // An undamped update clears any glide left from the last drag, which would otherwise carry on past the preset.
+  controls.enableDamping = false;
+  controls.update();
+  controls.enableDamping = true;
+  controls.target.set(0, 60, 0);
   camera.position.set(p[0], p[1], p[2]).sub(controls.target).multiplyScalar(fit()).add(controls.target);
   controls.update();
 }
