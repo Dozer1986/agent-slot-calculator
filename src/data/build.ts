@@ -332,9 +332,9 @@ export const SLOTS: Slot[] = [
       spec: 'On the Rosewill’s rear vents, exhausting',
       size: '80 × 80 × 25 each',
       source: 'https://www.arctic.de/us/P8-PWM-PST/ACFAN00150A',
-      url: 'https://aaawave.com/arctic-cooling-acfan00150a-p8-pwm-pst-80mm-pressure-optimised-case-fan-with-pwm-pst',
-      price: 16.9,
-      priceNote: '$8.45 each at AAAWave, search result 2026-11-06.',
+      url: 'https://aaawave.com/products/arctic-p8-pwm-pst-80mm-case-fan-cable-splitter-black',
+      price: 19.98,
+      priceNote: '$9.99 each at AAAWave, 2026-11-06.',
       chassis: 'rosewill',
     }, {
       id: 'nf-r8',
