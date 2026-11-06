@@ -53,7 +53,7 @@ const problems = fit.overlaps.length + fit.outside.length;
         <ul class="flags">
           {fit.overlaps.map(([a, b]) => <li data-state="bad">{a} overlaps {b}</li>)}
           {fit.outside.map((id) => <li data-state="bad">{id} pokes outside the chassis</li>)}
-          {fit.gaps.map((g) => <li data-state={g.mm < 5 ? 'warn' : 'ok'}>{g.label}: {g.mm} mm</li>)}
+          {fit.gaps.map((g) => <li data-state={g.mm < 15 ? 'warn' : 'ok'}>{g.label}: {g.mm} mm</li>)}
         </ul>
         <p class="hint">Computed from the same boxes the model draws. Chassis positions came from listing photos and the board's from a review photo, so treat anything under 15 mm as "measure it".</p>
       </section>
