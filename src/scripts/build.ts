@@ -34,11 +34,9 @@ view.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
 scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.9;
-const camera = new THREE.PerspectiveCamera(32, 1, 10, 6000);
+const camera = new THREE.PerspectiveCamera(32, 1, 10);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 60, 0);
-controls.minDistance = 250;
-controls.maxDistance = 2500;
 controls.maxPolarAngle = Math.PI * 0.62;
 controls.enableDamping = true;
 controls.autoRotateSpeed = 1.2;
@@ -138,6 +136,10 @@ function resize() {
   const before = fit();
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
+  // Limits and the far plane scale with the distance, so a clamp can't lose zoom across a resize.
+  controls.minDistance = 250 * fit();
+  controls.maxDistance = 2500 * fit();
+  camera.far = 6000 * fit();
   camera.updateProjectionMatrix();
   camera.position.sub(controls.target).multiplyScalar(fit() / before).add(controls.target);
 }
