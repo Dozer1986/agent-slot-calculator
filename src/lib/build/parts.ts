@@ -1,5 +1,5 @@
 /** Detailed geometry for each layout box. A builder gets the box size (w, h, d in mm) and returns a group
- *  centred on the box, in world axes (x right, y up, z toward the front). Anything without a builder is a box. */
+ *  centred on the box, in world axes (x right, y up, z toward the front). */
 import * as THREE from 'three';
 import { slotX } from './layout';
 

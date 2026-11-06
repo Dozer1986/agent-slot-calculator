@@ -22,6 +22,7 @@ try {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 } catch {
   noWebgl.hidden = false;
+  document.querySelector<HTMLElement>('.build-side')!.hidden = true;
   throw new Error('WebGL unavailable');
 }
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -72,12 +73,15 @@ const VIEWS: Record<string, [number, number, number]> = {
   rear: [0, 200, -1200],
   top: [0, 1300, 1],
 };
+const VIEW_ASPECT = 1.5;
+let viewName = 'iso';
 function setView(name: string) {
+  viewName = name;
   const p = VIEWS[name] ?? VIEWS.iso;
-  camera.position.set(p[0], p[1], p[2]);
+  const scale = Math.max(1, VIEW_ASPECT / camera.aspect);
+  camera.position.set(p[0], p[1], p[2]).sub(controls.target).multiplyScalar(scale).add(controls.target);
   controls.update();
 }
-setView('iso');
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 spin.checked = !reduceMotion;
@@ -89,6 +93,7 @@ controls.addEventListener('start', () => {
 });
 
 explode.addEventListener('input', () => model.setExplode(Number(explode.value) / 100));
+model.setExplode(Number(explode.value) / 100);
 lidBox.addEventListener('change', () => model.setLid(lidBox.checked));
 model.setLid(lidBox.checked);
 document.querySelectorAll<HTMLButtonElement>('button[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view!)));
@@ -135,6 +140,7 @@ function resize() {
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
+  setView(viewName);
 }
 new ResizeObserver(resize).observe(view);
 resize();

@@ -50,8 +50,8 @@ export function buildModel(): Built {
     tubes.forEach((t, i) => {
       const dy = i ? 14 : -14;
       const dx = i ? 11 : -11;
-      const start = new THREE.Vector3(rb.max.x - 12, (rb.min.y + rb.max.y) / 2 + dy, rb.min.z - 11);
-      const end = new THREE.Vector3((pb.min.x + pb.max.x) / 2 + dx, pb.max.y - 22, pb.max.z + 8);
+      const start = new THREE.Vector3(rb.max.x - 12, (rb.min.y + rb.max.y) / 2 + dy, rb.min.z);
+      const end = new THREE.Vector3((pb.min.x + pb.max.x) / 2 + dx, pb.max.y - 22, pb.max.z);
       const curve = new THREE.CatmullRomCurve3([
         start,
         start.clone().add(new THREE.Vector3(0, 0, -45)),

@@ -91,9 +91,10 @@ export function layout(): Box[] {
   b.push(box('vrm-top', 'board', 'solid', [bx(155), BY, bz(14)], [bx(36), 41, bz(65)]));
   b.push(box('vrm-right', 'board', 'solid', [bx(36), BY, bz(65)], [bx(2), 44, bz(160)]));
   b.push(centred('socket', 'board', 'solid', [bx(97), BY + 3.5, bz(121)], [52, 7, 45]));
-  for (const k of [GPU_SLOT, 2, NIC_SLOT, 6]) b.push(box(`pcie-${k}`, 'board', 'solid', [slotX(k) - 3.75, BY, bz(39)], [slotX(k) + 3.75, BY + 11.4, bz(125)]));
+  for (const k of [GPU_SLOT, NIC_SLOT, 6]) b.push(box(`pcie-${k}`, 'board', 'solid', [slotX(k) - 3.75, BY, bz(39)], [slotX(k) + 3.75, BY + 11.4, bz(125)]));
   const dimmZ = [169, 179, 189, 199].map(bz);
   dimmZ.forEach((z, i) => b.push(box(`dimm-${i}`, 'board', 'solid', [bx(167), BY, z - 3.5], [bx(31), BY + 9, z + 3.5])));
+  // The Gen5 heatsink is a shell because the SSD sits inside it.
   b.push(box('m2a-heatsink', 'board', 'shell', [bx(179), BY, bz(27)], [bx(153), 22, bz(152)], up(90)));
   b.push(box('m2-shroud', 'board', 'solid', [bx(257), BY, bz(27)], [bx(194), 17, bz(152)]));
   b.push(box('m2-plate', 'board', 'solid', [bx(260), BY, bz(152)], [bx(194), 15, bz(224)]));
@@ -115,10 +116,10 @@ export function layout(): Box[] {
   const cardY = BY + 11.4;
   const gx = slotX(GPU_SLOT);
   b.push(box('gpu', 'gpu', 'solid', [gx - 38, cardY, bz(0)], [gx + 1, cardY + 111.76 - 9.4, bz(267)], up(90)));
-  b.push(box('gpu-bracket', 'gpu', 'shell', [gx - 1, 9, -D / 2], [gx + 1, 129, -D / 2 + T], up(90)));
+  for (const k of [GPU_SLOT, GPU_SLOT + 1]) b.push(box(`gpu-bracket-${k}`, 'gpu', 'shell', [slotX(k) - 9, 9, -D / 2], [slotX(k) + 9, 129, -D / 2 + T], up(90)));
   const nx = slotX(NIC_SLOT);
   b.push(box('nic', 'nic', 'solid', [nx - 8, cardY, bz(0)], [nx + 1, cardY + 68.9 - 9.4, bz(142)], up(90)));
-  b.push(box('nic-bracket', 'nic', 'shell', [nx - 1, 9, -D / 2], [nx + 1, 129, -D / 2 + T], up(90)));
+  b.push(box('nic-bracket', 'nic', 'shell', [nx - 9, 9, -D / 2], [nx + 9, 129, -D / 2 + T], up(90)));
 
   // PSU on end in the rear-right corner, modular face toward the front.
   b.push(box('psu', 'psu', 'solid', [X(348), T, ZR(T)], [X(348 + 63.5), T + 125, ZR(T + 100)], [60, 0, -90]));

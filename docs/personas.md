@@ -28,7 +28,7 @@ Journey: `e2e/calculator.spec.ts`. Exercise both themes, reduced motion, keyboar
 
 Assembles the Proxmox node and wants to see that the parts fit the chassis before ordering. Spins the model, pulls the explode slider, picks a part to read its size and where the size came from, and reads the fit check.
 
-Journey: `e2e/build.spec.ts`. See the model and a clean fit check, pick the PSU from the parts table, switch to the rear view with the pick kept, and confirm no horizontal scroll at 400px.
+Journey: `e2e/build.spec.ts`. See the model and a clean fit check, pick the PSU from the parts list, switch to the rear view with the pick kept, and confirm no horizontal scroll at 400px.
 
 ## Test boundaries
 
