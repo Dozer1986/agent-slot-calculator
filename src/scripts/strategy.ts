@@ -157,6 +157,7 @@ function card(s: Strategy, recommended: boolean, maxLife: number) {
 let queued = false;
 function update() {
   readInputs();
+  saveSituation(S);
   syncFinance();
   if (queued) return;
   queued = true;
