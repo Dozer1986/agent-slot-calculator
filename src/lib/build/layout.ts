@@ -116,10 +116,10 @@ export function layout(): Box[] {
   const cardY = BY + 11.4;
   const gx = slotX(GPU_SLOT);
   b.push(box('gpu', 'gpu', 'solid', [gx - 38, cardY, bz(0)], [gx + 1, cardY + 111.76 - 9.4, bz(267)], up(90)));
-  for (const k of [GPU_SLOT, GPU_SLOT + 1]) b.push(box(`gpu-bracket-${k}`, 'gpu', 'shell', [slotX(k) - 9, 9, -D / 2], [slotX(k) + 9, 129, -D / 2 + T], up(90)));
+  for (const k of [GPU_SLOT, GPU_SLOT + 1]) b.push(box(`gpu-bracket-${k}`, 'gpu', 'shell', [slotX(k) - 9, 9, -D / 2], [slotX(k) + 9, 127, -D / 2 + T], up(90)));
   const nx = slotX(NIC_SLOT);
   b.push(box('nic', 'nic', 'solid', [nx - 8, cardY, bz(0)], [nx + 1, cardY + 68.9 - 9.4, bz(142)], up(90)));
-  b.push(box('nic-bracket', 'nic', 'shell', [nx - 9, 9, -D / 2], [nx + 9, 129, -D / 2 + T], up(90)));
+  b.push(box('nic-bracket', 'nic', 'shell', [nx - 9, 9, -D / 2], [nx + 9, 127, -D / 2 + T], up(90)));
 
   // PSU on end in the rear-right corner, modular face toward the front.
   b.push(box('psu', 'psu', 'solid', [X(348), T, ZR(T)], [X(348 + 63.5), T + 125, ZR(T + 100)], [60, 0, -90]));

@@ -74,12 +74,10 @@ const VIEWS: Record<string, [number, number, number]> = {
   top: [0, 1300, 1],
 };
 const VIEW_ASPECT = 1.5;
-let viewName = 'iso';
+const fit = () => Math.max(1, VIEW_ASPECT / camera.aspect);
 function setView(name: string) {
-  viewName = name;
   const p = VIEWS[name] ?? VIEWS.iso;
-  const scale = Math.max(1, VIEW_ASPECT / camera.aspect);
-  camera.position.set(p[0], p[1], p[2]).sub(controls.target).multiplyScalar(scale).add(controls.target);
+  camera.position.set(p[0], p[1], p[2]).sub(controls.target).multiplyScalar(fit()).add(controls.target);
   controls.update();
 }
 
@@ -137,13 +135,15 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 
 function resize() {
   const w = view.clientWidth, h = view.clientHeight;
+  const before = fit();
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  setView(viewName);
+  camera.position.sub(controls.target).multiplyScalar(fit() / before).add(controls.target);
 }
 new ResizeObserver(resize).observe(view);
 resize();
+setView('iso');
 
 renderer.setAnimationLoop(() => {
   controls.update();
