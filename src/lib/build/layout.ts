@@ -135,8 +135,8 @@ export function layout(config: Config): Box[] {
     b.push(box('front-io', 'chassis', 'solid', [X(388), 95, ZF(14)], [X(418), 128, ZF(2)], fwd(120)));
   } else {
     // The crossbar over the board and the bracket's bar. Shells, so a guess at their height can't fail the check.
-    b.push(box('bar-mid', 'chassis', 'shell', [-W / 2, H - 14, ZR(205)], [W / 2, H - T, ZR(225)], up(110)));
-    b.push(box('bar-wall', 'chassis', 'shell', [-W / 2, H - 22, ZF(BRACKET)], [W / 2, H - T, ZF(BRACKET - 20)], up(110)));
+    b.push(box('bar-mid', 'chassis', 'shell', [-W / 2 + T, H - 14, ZR(205)], [W / 2 - T, H - T, ZR(225)], up(110)));
+    b.push(box('bar-wall', 'chassis', 'shell', [-W / 2 + T, H - 22, ZF(BRACKET)], [W / 2 - T, H - T, ZF(BRACKET - 20)], up(110)));
   }
   // Blank covers on every slot no card uses.
   const used = [...(config.gpu ? [GPU_SLOT, GPU_SLOT + 1] : []), ...(config.nic ? [NIC_SLOT] : [])];

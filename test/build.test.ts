@@ -51,6 +51,16 @@ describe('build layout', () => {
     }
   });
 
+  it('Rosewill runs its crossbars between the walls, so their ends stay off the outer face', () => {
+    const boxes = layout(rosewill);
+    const byId = (id: string) => boxes.find((b) => b.id === id)!;
+    for (const id of ['bar-mid', 'bar-wall']) {
+      const bar = byId(id);
+      expect(bar.min[0], id).toBe(byId('wall-l').max[0]);
+      expect(bar.max[0], id).toBe(byId('wall-r').min[0]);
+    }
+  });
+
   it('Rosewill stacks fans, radiator and fans at the front, then the bracket fans, then the board', () => {
     const boxes = layout(rosewill);
     const z = (id: string) => boxes.find((b) => b.id === id)!;
