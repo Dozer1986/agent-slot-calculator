@@ -332,6 +332,8 @@ label.btn:has(:focus-visible) { outline: 2px solid var(--accent); outline-offset
 .legend .swatch.seg-buy, .legend .swatch.seg-later, .legend .swatch.seg-power, .legend .swatch.seg-interest { border: 0; }
 
 /* Build page */
+.build-swaps { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); margin-bottom: 16px; }
+.build-warnings:not(:empty) { margin: 0 0 16px; }
 .build-layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) 260px; }
 .build-view { position: relative; min-height: 420px; height: min(70vh, 640px); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .build-view canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }

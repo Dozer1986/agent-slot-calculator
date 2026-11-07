@@ -1,11 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
-import { BUILD_PARTS } from '../../data/build';
-import { checkFit, layout } from '../../lib/build/layout';
-
-const fit = checkFit(layout());
-const problems = fit.overlaps.length + fit.outside.length;
+import { SLOTS } from '../../data/build';
 ---
 
 <Base title="Build · Agent Slot Calculator" description="A 3D model of the Proxmox node build, at true size, that spins so every part can be checked for fit.">
@@ -13,11 +9,24 @@ const problems = fit.overlaps.length + fit.outside.length;
     <Header
       current="build"
       title="Proxmox node build"
-      intro="The parts for the new Proxmox nodes, drawn at true size inside the 3U chassis. It spins on its own; drag to look around, scroll to zoom, and pull the explode slider to see what sits under what."
+      intro="The parts for the new Proxmox nodes, drawn at true size inside the chassis you pick. It spins on its own; drag to look around, scroll to zoom, and pull the explode slider to see what sits under what."
     />
     <div class="stack">
       <section class="panel" aria-labelledby="h-model">
         <div class="panel-head"><h2 id="h-model">Model</h2><span class="eyebrow">Sizes in mm</span></div>
+        <div class="build-swaps" id="swaps">
+          {SLOTS.filter((s) => s.optional || s.parts.filter((p) => !p.chassis).length > 1).map((s) => (
+            <div class="field">
+              <label for={`swap-${s.id}`}>{s.label}</label>
+              {/* The choice isn't saved, so the browser mustn't restore it after the script has set the defaults. */}
+              <select id={`swap-${s.id}`} data-slot={s.id} autocomplete="off">
+                {s.parts.map((p) => <option value={p.id}>{p.name}</option>)}
+                {s.optional && <option value="">None</option>}
+              </select>
+            </div>
+          ))}
+        </div>
+        <ul class="flags build-warnings" id="swap-warnings" role="status"></ul>
         <div class="build-layout">
           <div class="build-view" id="view">
             <p class="hint" id="no-webgl" hidden>This browser can't draw 3D. The parts table below has every size.</p>
@@ -38,41 +47,24 @@ const problems = fit.overlaps.length + fit.outside.length;
               <button type="button" data-view="rear">Rear</button>
               <button type="button" data-view="top">Top</button>
             </div>
-            <ul class="build-parts" role="list">
-              {BUILD_PARTS.map((p) => (
-                <li><button type="button" class="btn" data-part={p.id} aria-pressed="false">{p.name}</button></li>
-              ))}
-            </ul>
+            <ul class="build-parts" id="part-list" role="list"></ul>
             <div class="build-info" id="part-info" aria-live="polite"></div>
           </div>
         </div>
       </section>
 
       <section class="panel" aria-labelledby="h-fit">
-        <div class="panel-head"><h2 id="h-fit">Fit check</h2><span class="pill" data-state={problems ? 'bad' : 'ok'}>{problems ? `${problems} problem${problems > 1 ? 's' : ''}` : 'Nothing overlaps'}</span></div>
-        <ul class="flags">
-          {fit.overlaps.map(([a, b]) => <li data-state="bad">{a} overlaps {b}</li>)}
-          {fit.outside.map((id) => <li data-state="bad">{id} pokes outside the chassis</li>)}
-          {fit.gaps.map((g) => <li data-state={g.mm < 15 ? 'warn' : 'ok'}>{g.label}: {g.mm} mm</li>)}
-        </ul>
+        <div class="panel-head"><h2 id="h-fit">Fit check</h2><span class="pill" id="fit-pill"></span></div>
+        <ul class="flags" id="fit-flags"></ul>
         <p class="hint">Computed from the same boxes the model draws. Chassis positions came from listing photos and the board's from a review photo, so treat anything under 15 mm as "measure it".</p>
       </section>
 
       <section class="panel" aria-labelledby="h-parts">
-        <div class="panel-head"><h2 id="h-parts">Parts</h2><span class="eyebrow">{BUILD_PARTS.length} parts</span></div>
+        <div class="panel-head"><h2 id="h-parts">Parts</h2><span class="eyebrow" id="build-total"></span></div>
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Part</th><th>What</th><th class="n">Size (mm)</th><th>Notes</th></tr></thead>
-            <tbody>
-              {BUILD_PARTS.map((p) => (
-                <tr>
-                  <td>{p.source ? <a href={p.source} rel="noopener" target="_blank">{p.name}</a> : p.name}</td>
-                  <td>{p.spec}</td>
-                  <td class="n">{p.size}</td>
-                  <td>{p.note ?? ''}</td>
-                </tr>
-              ))}
-            </tbody>
+            <thead><tr><th>Part</th><th>What</th><th class="n">Size (mm)</th><th class="n">Price</th><th>Notes</th></tr></thead>
+            <tbody id="parts-body"></tbody>
           </table>
         </div>
       </section>

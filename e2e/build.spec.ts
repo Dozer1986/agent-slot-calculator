@@ -13,8 +13,111 @@ test('builder sees the model, the fit check and a part’s details', async ({ pa
   await expect(page.locator('.pill')).toHaveText('Nothing overlaps');
   await page.getByRole('button', { name: 'Corsair SF1000 Platinum' }).click();
   await expect(page.locator('#part-info')).toContainText('125 × 100 × 63.5 mm');
+  await expect(page.locator('#parts-body')).toContainText('$630');
+  await expect(page.locator('#parts-body')).toContainText('In the bundle');
+  await expect(page.locator('#build-total')).toContainText('total');
   await page.getByRole('button', { name: 'Rear', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Corsair SF1000 Platinum' })).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('swapping parts updates the model, the fit check and the prices', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(url);
+  const boxes = () => page.evaluate(() => {
+    const parts = new Set<string>();
+    (window as any).__build.model().group.traverse((o: any) => o.userData.part && parts.add(o.userData.part));
+    return [...parts];
+  });
+  const total = page.locator('#build-total');
+  const before = await total.textContent();
+
+  await page.getByLabel('GPU').selectOption('');
+  expect(await boxes()).not.toContain('gpu');
+  await expect(page.getByRole('button', { name: 'NVIDIA RTX A6000' })).toHaveCount(0);
+  await expect(page.locator('#fit-flags')).not.toContainText('GPU');
+  await expect(total).not.toHaveText(before!);
+  await page.getByLabel('GPU').selectOption('a6000');
+  expect(await boxes()).toContain('gpu');
+  await expect(total).toHaveText(before!);
+
+  await page.getByLabel('Power supply').selectOption('gx750');
+  await expect(page.locator('.pill')).toHaveText('1 problem');
+  await expect(page.locator('#fit-flags')).toContainText('psu pokes outside the chassis');
+
+  await page.getByLabel('Chassis').selectOption('rosewill');
+  await expect(page.locator('.pill')).toHaveText('Nothing overlaps');
+  await expect(page.getByLabel('Power supply')).toHaveValue('gx750');
+  await expect(page.getByLabel('Rear fans')).toHaveValue('p8');
+  await expect(page.getByLabel('Rear fans').locator('option[value="nf-a6x25"]')).toBeDisabled();
+  await expect(page.getByRole('button', { name: '3 × ARCTIC P12 Pro PST, intermediary bracket' })).toBeVisible();
+  await page.getByLabel('Rear fans').selectOption('nf-r8');
+  await expect(page.getByRole('button', { name: '2 × Noctua NF-R8 redux-1800 PWM' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Rosewill RSV-L4620 4U rackmount chassis' })).toHaveAttribute('href', 'https://www.amazon.com/dp/B0FZ2VL2P7');
+  // A chassis swap reframes the camera on the taller case.
+  expect(await page.evaluate(() => (window as any).__build.controls.target.y)).toBe(80);
+
+  await page.getByLabel('Chassis').selectOption('rackchoice');
+  await expect(page.getByLabel('Power supply')).toHaveValue('sf1000');
+  await expect(page.getByLabel('Rear fans')).toHaveValue('nf-a6x25');
+  await expect(page.getByRole('button', { name: '3 × ARCTIC P12 Pro PST, push' })).toBeVisible();
+});
+
+test('leaving out the GPU warns only with a CPU that has no integrated graphics', async ({ page }) => {
+  await page.goto(url);
+  const warnings = page.locator('#swap-warnings');
+  await expect(page.getByLabel('Chassis')).toHaveValue('rackchoice');
+  await page.getByLabel('GPU').selectOption('');
+  await expect(warnings).toBeEmpty();
+  await page.getByLabel('CPU').selectOption('250kf-plus');
+  await expect(warnings).toContainText('no integrated graphics');
+  await page.getByLabel('GPU').selectOption('a6000');
+  await expect(warnings).toBeEmpty();
+});
+
+test('the shroud follows the network card', async ({ page }) => {
+  await page.goto(url);
+  const shroud = page.getByRole('button', { name: /shroud/ });
+  await expect(shroud).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Dell Mellanox ConnectX-4 Lx CX4121C' })).toHaveAttribute('href', 'https://www.ebay.com/itm/298740750660');
+  await page.getByLabel('Network card', { exact: true }).selectOption('');
+  await expect(shroud).toHaveCount(0);
+  await expect(page.getByLabel('Network card shroud')).toBeDisabled();
+  await page.getByLabel('Network card', { exact: true }).selectOption('cx4121c');
+  await expect(shroud).toBeVisible();
+});
+
+test('a chosen part stays selected across a swap of another part, and clears when removed', async ({ page }) => {
+  await page.goto(url);
+  const gpu = page.getByRole('button', { name: 'NVIDIA RTX A6000' });
+  await gpu.click();
+  await expect(page.locator('#part-info')).toContainText('Lowest new US price');
+  await page.getByLabel('Chassis').selectOption('rosewill');
+  await expect(gpu).toHaveAttribute('aria-pressed', 'true');
+  await page.getByLabel('GPU').selectOption('');
+  await expect(page.locator('#part-info')).toContainText('Click a part');
+});
+
+test('going back to the page shows the default parts in the dropdowns as well as the table', async ({ page }) => {
+  await page.goto(url);
+  const total = page.locator('#build-total');
+  const before = await total.textContent();
+  await page.getByLabel('Chassis').selectOption('rosewill');
+  await page.getByLabel('GPU').selectOption('');
+  await page.getByRole('link', { name: 'Settings' }).click();
+  await page.waitForURL(/settings/);
+  await page.goBack();
+  await expect(total).toHaveText(before!);
+  await expect(page.getByLabel('Chassis')).toHaveValue('rackchoice');
+  await expect(page.getByLabel('GPU')).toHaveValue('a6000');
+  await expect(page.getByLabel('Power supply')).toHaveValue('sf1000');
+});
+
+test('without WebGL the parts table still shows and the swaps are hidden', async ({ page }) => {
+  await page.addInitScript(() => { HTMLCanvasElement.prototype.getContext = () => null; });
+  await page.goto(url);
+  await expect(page.locator('#no-webgl')).toBeVisible();
+  await expect(page.locator('#swaps')).toBeHidden();
+  await expect(page.locator('#parts-body')).toContainText('NVIDIA RTX A6000');
 });
 
 test('build page has no horizontal scroll at 400px', async ({ page }) => {

@@ -95,3 +95,11 @@ for (const width of [400, 1280]) {
     });
   }
 }
+
+test('a change is saved even if the page reloads before the next frame', async ({ page }) => {
+  await page.goto(page_);
+  await page.evaluate(() => { window.requestAnimationFrame = () => 0; });
+  await page.getByRole('checkbox', { name: /Rack servers/ }).uncheck();
+  await page.reload();
+  await expect(page.getByRole('checkbox', { name: /Rack servers/ })).not.toBeChecked();
+});

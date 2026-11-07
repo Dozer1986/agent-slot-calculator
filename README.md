@@ -10,7 +10,7 @@ The strategy page (`/strategy/`) starts from your situation instead: cash on han
 
 The settings page (`/settings/`) holds the default prices for build parts and RAM sticks, saved in your browser. Machines priced from parts, like the Micro Center bundles, use them on every page, and the RAM prices set what it costs to take a bundle past its stock memory.
 
-The build page (`/build/`) draws the parts of the Proxmox node build at true size inside their 3U chassis, with a fit check computed from the same boxes the model draws.
+The build page (`/build/`) draws the parts of the Proxmox node build at true size inside the chassis you pick, the RackChoice 3U or the Rosewill 4U, with a fit check computed from the same boxes the model draws. When you swap a part or leave one out, the model, fit check, prices and total update. These choices aren't saved.
 
 ## Run locally
 
