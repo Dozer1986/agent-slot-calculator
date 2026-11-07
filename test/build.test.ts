@@ -21,7 +21,7 @@ describe('build layout', () => {
       expect(fit.overlaps).toEqual([]);
     });
 
-    it(`${name}: leaves room between the GPU and the pull fans`, () => {
+    it(`${name}: leaves room between the GPU and the fans ahead of it`, () => {
       const gap = fit.gaps.find((g) => g.label.startsWith('GPU end'))!;
       expect(gap.mm).toBeGreaterThan(0);
     });
@@ -33,8 +33,8 @@ describe('build layout', () => {
   });
 
   it('RackChoice is the default, and a chassis sets its parts and leaves the rest alone', () => {
-    expect(DEFAULT_CONFIG).toMatchObject({ chassis: 'rackchoice', psu: 'sf1000', 'fans-rear': 'nf-a6x25', 'fans-push': 'p12-push' });
-    expect(rosewill).toEqual({ ...DEFAULT_CONFIG, chassis: 'rosewill', psu: 'gx750', 'fans-rear': 'p8', 'fans-push': 'p12-bracket' });
+    expect(DEFAULT_CONFIG).toMatchObject({ chassis: 'rackchoice', psu: 'sf1000', 'fans-rear': 'nf-a6x25', 'fans-bracket': null });
+    expect(rosewill).toEqual({ ...DEFAULT_CONFIG, chassis: 'rosewill', psu: 'gx750', 'fans-rear': 'p8', 'fans-bracket': 'p12-bracket' });
     expect(withChassis(rosewill, 'rackchoice')).toEqual(DEFAULT_CONFIG);
   });
 
@@ -49,6 +49,16 @@ describe('build layout', () => {
       expect(checkFit(boxes, c).overlaps).toEqual([]);
       expect(checkFit(boxes, c).outside).toEqual([]);
     }
+  });
+
+  it('Rosewill stacks fans, radiator and fans at the front, then the bracket fans, then the board', () => {
+    const boxes = layout(rosewill);
+    const z = (id: string) => boxes.find((b) => b.id === id)!;
+    expect(z('push-0').max[2]).toBeGreaterThan(z('radiator').max[2]);
+    expect(z('radiator').min[2]).toBeGreaterThanOrEqual(z('pull-0').max[2]);
+    expect(z('pull-0').min[2]).toBeGreaterThan(z('bracket-0').max[2]);
+    expect(z('bracket-0').min[2]).toBeGreaterThan(z('gpu').max[2]);
+    expect(layout(DEFAULT_CONFIG).some((b) => b.part === 'fans-bracket')).toBe(false);
   });
 
   it('warns only when there is no GPU and the CPU has no integrated graphics', () => {

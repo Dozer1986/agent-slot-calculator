@@ -170,7 +170,7 @@ export const SLOTS: Slot[] = [
     parts: [{
       id: 'lf3-radiator',
       name: 'ARCTIC Liquid Freezer III Pro 360, radiator',
-      spec: 'On the fan wall, where the stock fans were',
+      spec: 'At the front of the case; in the RackChoice, on the fan wall where the stock fans were',
       size: '398 × 120 × 38',
       source: 'https://www.alza.cz/kod/CBlf3b07',
       note: 'In the RackChoice the fan row is 360 mm wide, so the radiator overhangs it by 19 mm each side, and the 15 mm gap to the fan wall is assumed.',
@@ -184,16 +184,6 @@ export const SLOTS: Slot[] = [
     id: 'fans-push',
     label: 'Push fans',
     parts: [{
-      id: 'p12-bracket',
-      name: '3 × ARCTIC P12 Pro PST, intermediary bracket',
-      spec: 'In the Rosewill’s intermediary fan bracket, in place of its stock fans, pushing through the radiator',
-      size: '120 × 120 × 25 each',
-      url: 'https://tomshardware.com/pc-components/the-best-cpu-cooler-money-can-buy-is-now-just-usd89-99-grab-28-percent-off-an-arctic-liquid-freezer-iii-pro-at-amazon-just-usd7-shy-of-its-best-ever-price',
-      price: 0,
-      priceLabel: 'With the cooler',
-      priceNote: 'The cooler ships with three P12 Pro fans.',
-      chassis: 'rosewill',
-    }, {
       id: 'p12-push',
       name: '3 × ARCTIC P12 Pro PST, push',
       spec: 'Between the front panel and the radiator',
@@ -202,7 +192,6 @@ export const SLOTS: Slot[] = [
       price: 0,
       priceLabel: 'With the cooler',
       priceNote: 'The cooler ships with three P12 Pro fans.',
-      chassis: 'rackchoice',
     }],
   },
   {
@@ -217,6 +206,22 @@ export const SLOTS: Slot[] = [
       url: 'https://www.centralcomputer.com/arctic-acfan00307a-p12-pro-pst-5-pack-black-powerful-premium-fan-120-mm-pwm-fan-with-y-cable-splitter-600-3000-rpm-0-rpm-5-pwm-fluid-dynamic-bearing-4-pin.html',
       price: (s) => s.parts.fans,
       priceNote: `One 5-pack, which leaves two spare. Aaron’s parts list, 2026-10-29; the link shows the same pack. ${SETTINGS}`,
+    }],
+  },
+  {
+    id: 'fans-bracket',
+    label: 'Bracket fans',
+    optional: true,
+    parts: [{
+      id: 'p12-bracket',
+      name: '3 × ARCTIC P12 Pro PST, intermediary bracket',
+      spec: 'In the Rosewill’s intermediary fan bracket, in place of its stock fans, between the radiator and the board',
+      size: '120 × 120 × 25 each',
+      note: 'Radiator and bracket positions scaled from photos of a built Rosewill, so they can be 10 mm out.',
+      url: 'https://www.centralcomputer.com/arctic-acfan00307a-p12-pro-pst-5-pack-black-powerful-premium-fan-120-mm-pwm-fan-with-y-cable-splitter-600-3000-rpm-0-rpm-5-pwm-fluid-dynamic-bearing-4-pin.html',
+      price: (s) => s.parts.fans,
+      priceNote: `A second 5-pack, because the pull fans’ pack leaves only two spare. ${SETTINGS}`,
+      chassis: 'rosewill',
     }],
   },
   {
@@ -351,8 +356,8 @@ export const SLOTS: Slot[] = [
 
 /** The parts each chassis is built with; choosing a chassis sets these, and they can still be changed after. */
 const CHASSIS_PARTS: Record<string, Config> = {
-  rackchoice: { psu: 'sf1000', 'fans-rear': 'nf-a6x25', 'fans-push': 'p12-push' },
-  rosewill: { psu: 'gx750', 'fans-rear': 'p8', 'fans-push': 'p12-bracket' },
+  rackchoice: { psu: 'sf1000', 'fans-rear': 'nf-a6x25', 'fans-bracket': null },
+  rosewill: { psu: 'gx750', 'fans-rear': 'p8', 'fans-bracket': 'p12-bracket' },
 };
 export const withChassis = (c: Config, chassis: string): Config => ({ ...c, chassis, ...CHASSIS_PARTS[chassis] });
 
